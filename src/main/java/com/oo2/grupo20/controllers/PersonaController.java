@@ -1,4 +1,4 @@
-package controllers;
+package com.oo2.grupo20.controllers;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import dto.request.FiltroPersonasRequest;
-import dto.request.PersonaRequest;
-import dto.response.PersonaResponse;
-import dto.response.PersonaResumenResponse;
-import services.PersonaService;
+import com.oo2.grupo20.dto.request.FiltroPersonasRequest;
+import com.oo2.grupo20.dto.request.PersonaRequest;
+import com.oo2.grupo20.dto.response.PersonaResponse;
+import com.oo2.grupo20.dto.response.PersonaResumenResponse;
+import com.oo2.grupo20.services.PersonaService;
 
 @RestController
 @RequestMapping("api/personas")

@@ -1,12 +1,6 @@
-package services;
+package com.oo2.grupo20.services;
 
-import dto.request.*;
-import dto.response.*;
-import entities.Persona;
-import exceptions.PersonaNotFoundException;
 import jakarta.annotation.PostConstruct;
-import exceptions.DuplicatePersonaException;
-import repositories.PersonaRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -14,6 +8,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.oo2.grupo20.dto.request.FiltroPersonasRequest;
+import com.oo2.grupo20.dto.request.PersonaRequest;
+import com.oo2.grupo20.dto.response.PersonaResponse;
+import com.oo2.grupo20.dto.response.PersonaResumenResponse;
+import com.oo2.grupo20.entities.Persona;
+import com.oo2.grupo20.exceptions.DuplicatePersonaException;
+import com.oo2.grupo20.exceptions.PersonaNotFoundException;
+import com.oo2.grupo20.repositories.PersonaRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -87,7 +90,6 @@ public class PersonaService {
 
         return spec;
     }
-    
     
 
     // ========== Métodos Utilitarios ==========

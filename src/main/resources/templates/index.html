@@ -5,9 +5,12 @@
     <title>Sistema de Turnos</title>
 </head>
 <body>
-    <h1 th:text="${mensaje}">Mensaje por defecto</h1>
+    <!-- Mensaje principal -->
+    <h1 th:text="${mensaje}">[Mensaje no cargado]</h1>
     
-    <!-- Prueba adicional para verificar Thymeleaf -->
-    <p th:text="'Hora actual: ' + ${#temporals.format(#temporals.createNow(), 'HH:mm:ss')}"></p>
+    <!-- Hora actual -->
+    <div>
+        <p th:text="'Hora actual: ' + ${#temporals.format(#temporals.createNow(), 'HH:mm:ss')}"></p>
+    </div>
 </body>
 </html>

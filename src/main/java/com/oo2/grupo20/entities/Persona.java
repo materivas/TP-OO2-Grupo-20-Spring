@@ -1,4 +1,4 @@
-package entities;
+package com.oo2.grupo20.entities;
 
 import jakarta.persistence.*;
 import lombok.Getter;

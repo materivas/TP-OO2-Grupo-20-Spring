@@ -1,6 +1,4 @@
-package repositories;
-
-import entities.Persona;
+package com.oo2.grupo20.repositories;
 
 import java.util.List;
 import org.springframework.data.domain.Page;
@@ -10,6 +8,8 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import com.oo2.grupo20.entities.Persona;
 
 import java.util.Optional;
 
@@ -31,7 +31,7 @@ public interface PersonaRepository extends JpaRepository<Persona, Long>, JpaSpec
     * @param anio Año de nacimiento (ej: 1990)
     * @return Lista de personas que nacieron en ese año
     */
-    @Query("SELECT p FROM Persona p WHERE FUNCTION('YEAR', p.fechaNacimiento) = :anio")
+    @Query("SELECT p FROM Persona p WHERE FUNCTION('YEAR', p.fechaDeNacimiento) = :anio")
     List<Persona> findByAnioNacimiento(@Param("anio") int anio);  // Agregar <Persona>
 
     // --- Paginación básica ---

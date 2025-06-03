@@ -1,4 +1,4 @@
-package dto.response;
+package com.oo2.grupo20.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

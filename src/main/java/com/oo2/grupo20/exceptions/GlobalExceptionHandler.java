@@ -1,4 +1,4 @@
-package exceptions;
+package com.oo2.grupo20.exceptions;
 
 import java.util.HashMap;
 import java.util.Map;
