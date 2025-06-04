@@ -8,7 +8,7 @@
     <!-- Mensaje principal -->
     <h1 th:text="${mensaje}">[Mensaje no cargado]</h1>
     
-    <!-- Hora actual -->
+    <!-- Hora actual  --> 
     <div>
         <p th:text="'Hora actual: ' + ${#temporals.format(#temporals.createNow(), 'HH:mm:ss')}"></p>
     </div>

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Grupo20Application {
 	
-	//Commit de testeo
+	//Commit de testeo 
 	public static void main(String[] args) {
 		SpringApplication.run(Grupo20Application.class, args);
 	}
