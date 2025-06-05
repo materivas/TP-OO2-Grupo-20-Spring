@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Establecimiento</title>
+</head>
+<body>
+    <h1>Editar Establecimiento</h1>
+    <form th:action="@{/establecimiento/update}" method="post" th:object="${establecimiento}">
+        <input type="hidden" th:field="*{idEstablecimiento}">
+        <div>
+            <label>Nombre:</label>
+            <input type="text" th:field="*{nombre}" required>
+        </div>
+        <div>
+            <label>Dirección:</label>
+            <input type="text" th:field="*{localidad}" required>
+        </div>
+        <button type="submit">Actualizar</button>
+    </form>
+    <a th:href="@{/establecimiento/index}">Volver</a>
+</body>
+</html>

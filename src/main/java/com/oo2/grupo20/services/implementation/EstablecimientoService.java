@@ -16,7 +16,7 @@ import com.oo2.grupo20.dto.EstablecimientoDTO;
 import com.oo2.grupo20.services.IEstablecimientoService;
 import com.oo2.grupo20.repositories.IEmpleadoRepository;
 import com.oo2.grupo20.repositories.IEstablecimientoRepository;
-
+import com.oo2.grupo20.exceptions.EstablecimientoConEmpleadosException;
 
 @Service ("establecimientoService")
 public class EstablecimientoService implements IEstablecimientoService{
@@ -54,13 +54,21 @@ private IEstablecimientoRepository establecimientoRepository;
 	
 	
 	@Override
-	public boolean remove (long idEstablecimiento) {
-		try {
-			establecimientoRepository.deleteById(idEstablecimiento);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean remove(long idEstablecimiento) {
+	    Optional<Establecimiento> optionalEstablecimiento = establecimientoRepository.findByIdWithEmpleados(idEstablecimiento);
+
+	    if (optionalEstablecimiento.isPresent()) {
+	        Establecimiento est = optionalEstablecimiento.get();
+
+	        if (!est.getEmpleados().isEmpty()) {
+	            throw new EstablecimientoConEmpleadosException("No se puede eliminar el establecimiento con empleados asociados.");
+	        }
+
+	        establecimientoRepository.deleteById(idEstablecimiento);
+	        return true;
+	    }
+
+	    return false; // no se encontró
 	}
 	
 	

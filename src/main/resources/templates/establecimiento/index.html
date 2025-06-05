@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Establecimientos</title>
+</head>
+<body>
+    <h1>Lista de Establecimientos</h1>
+    <a th:href="@{/establecimiento/new}">Nuevo Establecimiento</a>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="establecimiento : ${establecimientos}">
+                <td th:text="${establecimiento.idEstablecimiento}"></td>
+                <td th:text="${establecimiento.nombre}"></td>
+                <td th:text="${establecimiento.localidad}"></td>
+                <td>
+                    <a th:href="@{/establecimiento/} + ${establecimiento.idEstablecimiento}">Editar</a> |
+                    <a th:href="@{/establecimiento/with_empleados/} + ${establecimiento.idEstablecimiento}">Ver Empleados</a> |
+                    <form th:action="@{/establecimiento/delete/} + ${establecimiento.idEstablecimiento}" method="post" style="display:inline;">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

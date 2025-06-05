@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Editar Especialidad</title>
+</head>
+<body>
+    <h1>Editar Especialidad</h1>
+    <form th:action="@{/especialidad/update}" th:object="${especialidad}" method="post">
+        <input type="hidden" th:field="*{idEspecialidad}" />
+        <label>Nombre:</label>
+        <input type="text" th:field="*{nombre}" required />
+        <button type="submit">Actualizar</button>
+    </form>
+    <a th:href="@{/especialidad/index2}">Volver a la lista</a>
+</body>
+</html>

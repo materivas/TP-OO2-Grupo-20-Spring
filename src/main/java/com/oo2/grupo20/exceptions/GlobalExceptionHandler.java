@@ -5,9 +5,13 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import com.oo2.grupo20.exceptions.EstablecimientoConEmpleadosException;
+import com.oo2.grupo20.exceptions.EstablecimientoNoEncontradoException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -39,5 +43,22 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.badRequest().body(errors);
     }
+    
+    
+    @ExceptionHandler(EstablecimientoConEmpleadosException.class)
+    public String handleEstablecimientoConEmpleados(EstablecimientoConEmpleadosException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/establecimiento-con-empleados";
+    }
+
+    @ExceptionHandler(EstablecimientoNoEncontradoException.class)
+    public String handleEstablecimientoNoEncontrado(EstablecimientoNoEncontradoException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/establecimiento-no-encontrado";
+    }
+    
+    
+    
+    
 }
 

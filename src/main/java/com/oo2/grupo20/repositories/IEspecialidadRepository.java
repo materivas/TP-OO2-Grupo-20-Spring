@@ -21,7 +21,7 @@ public interface IEspecialidadRepository extends JpaRepository <Especialidad, Se
 	public abstract Optional<Especialidad> findByNombre (String nombre);
 
 	//Hacemos una Query para traer los empleados asociados con esta especialidad
-	@Query("SELECT e FROM Especialidad e JOIN FETCH e.empleados WHERE e.idEspecialidad = :idEspecialidad")
+	@Query("SELECT e FROM Especialidad e LEFT JOIN FETCH e.empleados WHERE e.idEspecialidad = :idEspecialidad")
 	Optional<Especialidad> findByIdWithEmpleados(long idEspecialidad);
 
 	

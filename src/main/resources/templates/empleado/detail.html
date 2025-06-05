@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Empleado</title>
+</head>
+<body>
+    <h1>Detalle de Empleado</h1>
+    <div th:if="${empleado}">
+        <p><strong>Nombre:</strong> <span th:text="${empleado.nombre}"></span></p>
+        <p><strong>Apellido:</strong> <span th:text="${empleado.apellido}"></span></p>
+        <p><strong>CUIL:</strong> <span th:text="${empleado.CUIL}"></span></p>
+        
+        <h3>Especialidades:</h3>
+        <ul th:if="${empleado.especialidades} and ${!empleado.especialidades.empty}">
+            <li th:each="especialidad : ${empleado.especialidades}" 
+                th:text="${especialidad.nombre}"></li>
+        </ul>
+        <p th:unless="${empleado.especialidades} and ${!empleado.especialidades.empty}">
+            No tiene especialidades asignadas
+        </p>
+    </div>
+    <div th:unless="${empleado}">
+        <p>Empleado no encontrado</p>
+    </div>
+    <a th:href="@{/empleado/index}">Volver</a>
+</body>
+</html>

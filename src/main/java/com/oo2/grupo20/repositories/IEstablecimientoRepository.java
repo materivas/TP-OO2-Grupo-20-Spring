@@ -21,7 +21,7 @@ public interface IEstablecimientoRepository extends JpaRepository <Establecimien
 	public abstract Optional<Establecimiento> findByNombre (String nombre);
 
 	//Hacemos una Query para traer los empleados asociados con este establecimiento
-	@Query("SELECT e FROM Establecimiento e JOIN FETCH e.empleados WHERE e.idEstablecimiento = :idEstablecimiento")
+	@Query("SELECT e FROM Establecimiento e LEFT JOIN FETCH e.empleados WHERE e.idEstablecimiento = :idEstablecimiento")
 	public abstract Optional<Establecimiento> findByIdWithEmpleados(long idEstablecimiento);
 	
 	//Faltaría agregar una query que busque los servicios asociados a este establecimiento

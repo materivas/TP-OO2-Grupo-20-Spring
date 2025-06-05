@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Error al eliminar establecimiento</title>
+    <link rel="stylesheet" href="/css/error.css" />
+</head>
+<body>
+    <h1>No se puede eliminar el establecimiento</h1>
+    <p th:text="${errorMessage}">Este establecimiento tiene empleados asociados.</p>
+
+    <a th:href="@{/establecimiento/index}">Volver al listado</a>
+</body>
+</html>

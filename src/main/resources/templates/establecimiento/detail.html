@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Establecimiento</title>
+</head>
+<body>
+    <h1>Detalle de Establecimiento</h1>
+    <div th:if="${establecimiento}">
+        <p><strong>Nombre:</strong> <span th:text="${establecimiento.nombre}"></span></p>
+        <p><strong>Dirección:</strong> <span th:text="${establecimiento.localidad}"></span></p>
+        
+        <h3>Empleados:</h3>
+        <ul th:if="${establecimiento.empleados} and ${!establecimiento.empleados.empty}">
+            <li th:each="empleado : ${establecimiento.empleados}">
+                <span th:text="${empleado.nombre} + ' ' + ${empleado.apellido}"></span> - 
+                <span th:text="${empleado.CUIL}"></span>
+            </li>
+        </ul>
+        <p th:unless="${establecimiento.empleados} and ${!establecimiento.empleados.empty}">
+            No tiene empleados asignados
+        </p>
+    </div>
+    <div th:unless="${establecimiento}">
+        <p>Establecimiento no encontrado</p>
+    </div>
+    <a th:href="@{/establecimiento/index}">Volver</a>
+</body>
+</html>

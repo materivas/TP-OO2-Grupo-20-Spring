@@ -38,7 +38,7 @@ public class Establecimiento {
 	 private String nombre;
 
 	    // Relación OneToMany con Empleado (bidireccional)
-	    @OneToMany(mappedBy = "establecimiento", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	    @OneToMany(mappedBy = "establecimiento", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	    private Set<Empleado> empleados = new HashSet<>();
 	 
 

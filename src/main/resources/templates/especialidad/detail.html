@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Detalle de Especialidad</title>
+</head>
+<body>
+    <h1 th:text="'Especialidad: ' + ${especialidad.nombre}">Nombre de la especialidad</h1>
+
+    <h3>Empleados con esta especialidad:</h3>
+    <ul th:if="${especialidad.empleados} and ${!especialidad.empleados.empty}">
+        <li th:each="empleado : ${especialidad.empleados}" th:text="${empleado.nombre} + ' ' + ${empleado.apellido}">Empleado</li>
+    </ul>
+    <p th:unless="${especialidad.empleados} and ${!especialidad.empleados.empty}">
+        No tiene empleados asignados
+    </p>
+
+    <a th:href="@{/especialidad/index}">Volver</a>
+</body>
+</html>

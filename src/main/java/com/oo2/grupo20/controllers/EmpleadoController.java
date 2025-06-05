@@ -37,11 +37,11 @@ public class EmpleadoController {
 		
 		//GET Example: SERVER/index
 		@GetMapping("/index")
-		public ModelAndView index() {
-		    ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.EMPLEADO_INDEX);
-		    return modelAndView;
-		}
-		
+	    public ModelAndView index() {
+	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_INDEX);
+	        mAV.addObject("empleados", empleadoService.getAll());
+	        return mAV;
+	    }
 		
 		@GetMapping("/index2")
 	    public ModelAndView index2() {
@@ -68,7 +68,55 @@ public class EmpleadoController {
 	        return new RedirectView("/empleado/index2");
 	    }
 		
-		
+		// NUEVOS MVC
+	    
+	    @GetMapping("/{id}")
+	    public ModelAndView get(@PathVariable("id") long id) {
+	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_UPDATE);
+	        EmpleadoDTO empleadoDTO = modelMapper.map(empleadoService.getAll().stream()
+	                .filter(e -> e.getIdEmpleado() == id)
+	                .findFirst()
+	                .orElse(null), EmpleadoDTO.class);
+	        mAV.addObject("empleado", empleadoDTO);
+	        return mAV;
+	    }
+
+	    @GetMapping("/by_nombre/{nombre}")
+	    public ModelAndView getByNombre(@PathVariable("nombre") String nombre) {
+	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_UPDATE);
+	        empleadoService.findByNombre(nombre).ifPresent(empleadoDTO -> 
+	            mAV.addObject("empleado", empleadoDTO));
+	        return mAV;
+	    }
+
+	    @GetMapping("/by_apellido/{apellido}")
+	    public ModelAndView getByApellido(@PathVariable("apellido") String apellido) {
+	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_UPDATE);
+	        empleadoService.findByApellido(apellido).ifPresent(empleadoDTO -> 
+	            mAV.addObject("empleado", empleadoDTO));
+	        return mAV;
+	    }
+
+	    @GetMapping("/by_cuil/{cuil}")
+	    public ModelAndView getByCuilWithEspecialidades(@PathVariable("cuil") String cuil) {
+	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_DETAIL);
+	        empleadoService.findByCUILWithEspecialidades(cuil).ifPresent(empleadoDTO -> 
+	            mAV.addObject("empleado", empleadoDTO));
+	        return mAV;
+	    }
+
+	    @PostMapping("/update")
+	    public RedirectView update(@ModelAttribute("empleado") EmpleadoDTO empleadoDTO) {
+	        Empleado empleado = modelMapper.map(empleadoDTO, Empleado.class);
+	        empleadoService.insertOrUpdate(empleado);
+	        return new RedirectView(ViewRouteHelper.EMPLEADO_ROOT);
+	    }
+
+	    @PostMapping("/delete/{id}")
+	    public RedirectView delete(@PathVariable("id") long id) {
+	        empleadoService.remove(id);
+	        return new RedirectView(ViewRouteHelper.EMPLEADO_ROOT);
+	    }
 		
 
 		

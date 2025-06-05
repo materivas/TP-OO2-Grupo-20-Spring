@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Establecimiento</title>
+</head>
+<body>
+    <h1>Nuevo Establecimiento</h1>
+    <form th:action="@{/establecimiento/create}" method="post" th:object="${establecimiento}">
+        <div>
+            <label>Nombre:</label>
+            <input type="text" th:field="*{nombre}" required>
+        </div>
+        <div>
+            <label>Dirección:</label>
+            <input type="text" th:field="*{localidad}" required>
+        </div>
+        <button type="submit">Guardar</button>
+    </form>
+    <a th:href="@{/establecimiento/index}">Volver</a>
+</body>
+</html>

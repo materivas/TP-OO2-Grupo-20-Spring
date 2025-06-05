@@ -2,6 +2,11 @@ package com.oo2.grupo20.dto;
 
 
 
+import java.util.HashSet;
+import java.util.Set;
+
+import com.oo2.grupo20.entities.Empleado;
+
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +18,8 @@ public class EstablecimientoDTO {
 	private long idEstablecimiento;
 	private String localidad;
 	private String nombre;
+	private Set<Empleado> empleados = new HashSet<>();
+	
 	
 	public EstablecimientoDTO (long idEstablecimiento,String nombre, String localidad) {
 		
