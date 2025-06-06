@@ -35,16 +35,17 @@ public class ClienteController {
     }
     
     // Vistas principales
-    @GetMapping("/index")
+   /* @GetMapping("/index")
     public ModelAndView index() {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_INDEX);
         mAV.addObject("clientes", clienteService.getAll());
         return mAV;
     }
+    */
     
-    @GetMapping("/index2")
-    public ModelAndView index2() {
-        ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_INDEX2);
+    @GetMapping("/index")
+    public ModelAndView index() {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_INDEX);
         List<ClienteDTO> clientesDTO = clienteService.getAll().stream()
                 .map(c -> modelMapper.map(c, ClienteDTO.class))
                 .collect(Collectors.toList());
@@ -72,7 +73,7 @@ public class ClienteController {
     public ModelAndView get(@PathVariable("id") long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_UPDATE);
         ClienteDTO clienteDTO = modelMapper.map(clienteService.getAll().stream()
-                .filter(e -> e.getIdCliente() == id)
+                .filter(e -> e.getId() == id)
                 .findFirst()
                 .orElse(null), ClienteDTO.class);
         mAV.addObject("cliente", clienteDTO);
@@ -80,7 +81,7 @@ public class ClienteController {
     }
 
     @GetMapping("/by_dni/{dni}")
-    public ModelAndView getByDni(@PathVariable("dni") String dni) {
+    public ModelAndView getByDni(@PathVariable("dni") Integer dni) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_DETAIL);
         clienteService.findByDni(dni).ifPresent(clienteDTO -> 
             mAV.addObject("cliente", clienteDTO));
@@ -94,12 +95,12 @@ public class ClienteController {
         return mAV;
     }
 
-    @GetMapping("/con_turno/{fecha}")
+ /*   @GetMapping("/con_turno/{fecha}")
     public ModelAndView getClientesConTurnoEnFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_INDEX);
         mAV.addObject("clientes", clienteService.findClientesConTurnoEnFecha(fecha));
         return mAV;
-    }
+    }*/
     
     // Actualización y eliminación
     @PostMapping("/update")

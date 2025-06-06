@@ -12,17 +12,24 @@ import org.springframework.stereotype.Service;
 import com.oo2.grupo20.dto.ClienteDTO;
 import com.oo2.grupo20.entities.Cliente;
 import com.oo2.grupo20.repositories.IClienteRepository;
+import com.oo2.grupo20.repositories.IEmpleadoRepository;
 import com.oo2.grupo20.services.IClienteService;
 
 import lombok.RequiredArgsConstructor;
 
 @Service("clienteService")
-@RequiredArgsConstructor
 public class ClienteService implements IClienteService {
 
     private IClienteRepository clienteRepository;
     private ModelMapper modelMapper = new ModelMapper ();
 
+    //Faltaba agregar el constructor!!!
+    public ClienteService (IClienteRepository clienteRepository) {
+		this.clienteRepository = clienteRepository;
+	}
+
+    
+    
     @Override
     public List<Cliente> getAll() {
         return clienteRepository.findAll();
@@ -44,7 +51,7 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
-    public Optional<ClienteDTO> findByDni(String dni) {
+    public Optional<ClienteDTO> findByDni(Integer dni) {
         return clienteRepository.findByDni(dni)
                 .map(cliente -> modelMapper.map(cliente, ClienteDTO.class));
     }
@@ -63,22 +70,25 @@ public class ClienteService implements IClienteService {
                 .collect(Collectors.toList());
     }
 
+    /*
     @Override
     public List<ClienteDTO> findByFechaRegistroBetween(LocalDate inicio, LocalDate fin) {
         return clienteRepository.findByFechaRegistroBetween(inicio, fin).stream()
                 .map(cliente -> modelMapper.map(cliente, ClienteDTO.class))
                 .collect(Collectors.toList());
     }
-
+*/
+    
+/*
     @Override
     public List<ClienteDTO> findClientesConTurnoEnFecha(LocalDate fecha) {
         return clienteRepository.findClientesConTurnoEnFecha(fecha).stream()
                 .map(cliente -> modelMapper.map(cliente, ClienteDTO.class))
                 .collect(Collectors.toList());
     }
-
+*/
     @Override
-    public boolean existsByDni(String dni) {
+    public boolean existsByDni(Integer dni) {
         return clienteRepository.existsByDni(dni);
     }
 
