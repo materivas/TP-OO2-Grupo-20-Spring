@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Clientes</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<h1>Clientes</h1>
+
+<a th:href="@{/clientes/nuevo}">
+    <button>Nuevo Cliente</button>
+</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>DNI</th>
+            <th>Email</th>
+            <th>Fecha de Registro</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="cliente : ${clientes}">
+            <td th:text="${cliente.id}"></td>
+            <td th:text="${cliente.nombre}"></td>
+            <td th:text="${cliente.apellido}"></td>
+            <td th:text="${cliente.dni}"></td>
+            <td th:text="${cliente.email}"></td>
+            <td th:text="${cliente.fechaRegistro}"></td>
+            <td>
+                <a th:href="@{'/clientes/' + ${cliente.id}}">
+                    <button>Ver</button>
+                </a>
+                <a th:href="@{'/clientes/editar/' + ${cliente.id}}">
+                    <button>Editar</button>
+                </a>
+                <a th:href="@{'/clientes/eliminar/' + ${cliente.id}}" 
+                   onclick="return confirm('¿Estás seguro de eliminar este cliente?')">
+                    <button>Eliminar</button>
+                </a>
+                <a th:href="@{'/clientes/' + ${cliente.id} + '/sacar-turno'}">
+                    <button>Sacar Turno</button>
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

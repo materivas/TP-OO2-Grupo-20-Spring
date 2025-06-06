@@ -1,5 +1,5 @@
 package com.oo2.grupo20.controllers;
-
+/*
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -17,14 +17,14 @@ import com.oo2.grupo20.dto.request.FiltroPersonasRequest;
 import com.oo2.grupo20.dto.request.PersonaRequest;
 import com.oo2.grupo20.dto.response.PersonaResponse;
 import com.oo2.grupo20.dto.response.PersonaResumenResponse;
-import com.oo2.grupo20.services.PersonaService;
+import com.oo2.grupo20.services.IPersonaService;
 
 @RestController
 @RequestMapping("api/personas")
 public class PersonaController {
-	private final PersonaService personaService;
+	private final IPersonaService personaService;
 
-	public PersonaController(PersonaService personaService) {
+	public PersonaController(IPersonaService personaService) {
 		this.personaService = personaService;
 	}
 
@@ -52,3 +52,4 @@ public class PersonaController {
 		return ResponseEntity.noContent().build();
 	}
 }
+*/
