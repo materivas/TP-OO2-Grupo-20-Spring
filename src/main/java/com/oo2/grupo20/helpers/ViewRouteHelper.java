@@ -40,5 +40,21 @@ public class ViewRouteHelper {
 	public final static String PERSON_ROOT = "/person";
 	public final static String EMPLEADO_ROOT = "/empleado/index";
 	public final static String ESTABLECIMIENTO_ROOT = "/establecimiento/index";
+	public final static String CLIENTE_ROOT = "/cliente/index";
 	
+	//CLIENTE
+	public final static String CLIENTE_INDEX = "cliente/index";
+    public final static String CLIENTE_INDEX2 = "cliente/index2";
+    public final static String CLIENTE_FORM = "cliente/form";
+    public final static String CLIENTE_NEW = "cliente/new";
+    public final static String CLIENTE_UPDATE = "cliente/update";
+    public final static String CLIENTE_DETAIL = "cliente/detail";
+    public final static String CLIENTE_TURNO_FORM = "cliente/sacar-turno";
+	
+    //TURNO
+    public final static String TURNO_INDEX = "turno/index";
+    public final static String TURNO_FORM = "turno/form";
+    public final static String TURNO_DETAIL = "turno/detail";
+    public final static String TURNO_UPDATE = "turno/update";
+
 }
