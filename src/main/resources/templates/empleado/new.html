@@ -5,13 +5,20 @@
 </head>
 <body>
     <h1>Nuevo Empleado</h1>
+
     <form th:action="@{/empleado/create}" th:object="${empleado}" method="post">
+
         <label>Nombre: <input type="text" th:field="*{nombre}" /></label><br/>
         <label>Apellido: <input type="text" th:field="*{apellido}" /></label><br/>
+        <label>DNI: <input type="number" th:field="*{dni}" /></label><br/>
+        <label>Email: <input type="email" th:field="*{email}" /></label><br/>
+        <label>Fecha de Nacimiento: <input type="date" th:field="*{fechaDeNacimiento}" /></label><br/>
         <label>CUIL: <input type="text" th:field="*{CUIL}" /></label><br/>
-        <label>Disponible: <input type="checkbox" th:field="*{estaDisponible}" /></label><br/>
+        <label>Estado activo: <input type="checkbox" th:field="*{estado}" /></label><br/>
+
         <button type="submit">Guardar</button>
     </form>
-    <a th:href="@{/empleado/index2}">Volver a la lista</a>
+
+    <a th:href="@{/empleado/index}">Volver a la lista</a>
 </body>
 </html>

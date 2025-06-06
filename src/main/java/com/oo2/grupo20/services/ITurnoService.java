@@ -11,12 +11,13 @@ import com.oo2.grupo20.entities.Turno;
 
 public interface ITurnoService {
 
-	public List<Turno> findByClienteDni(String dni);
+	public List<Turno> findByClienteDni(Integer dni);
 
 	public List<Turno> findByClienteEmail(String email);
 
 	public List<Turno> findByClienteApellido(String apellido);
 
+	/*
 	public List<Turno> findByDia_Fecha(LocalDate fecha);
 
 	public List<Turno> findByDia_FechaBetween(LocalDate inicio, LocalDate fin);
@@ -26,12 +27,13 @@ public interface ITurnoService {
     boolean existsByClienteAndDia_FechaAndHora(Cliente cliente, LocalDate fecha, LocalTime hora);
 
     public List<Cliente> findClientesConTurnoEnFecha(@Param("fecha") LocalDate fecha);
+    */
 	
     public List<Turno> findByEmpleadoId(Long id);
     
-    public List<Turno> findByServicioNombre(String nombre);
+  //  public List<Turno> findByServicioNombre(String nombre);
     
-    public List<Turno> findByEstado(String estado);
+ //   public List<Turno> findByEstado(String estado);
 
 	public Turno save(Turno turno);
 
