@@ -48,8 +48,6 @@ public class EmpleadoController {
 	    public ModelAndView indexBootstrap() {
 	        ModelAndView modelAndView = new ModelAndView("empleado/indexBootstrap");
 	        
-	        // Puedes agregar datos necesarios para la vista aquí
-	        // Por ejemplo, lista de empleados disponibles para turnos
 	        List<EmpleadoDTO> empleadosDisponibles = empleadoService.getAll()
 	            .stream()
 	            .map(e -> modelMapper.map(e, EmpleadoDTO.class))
