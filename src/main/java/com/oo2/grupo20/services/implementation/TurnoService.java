@@ -34,7 +34,7 @@ public class TurnoService implements ITurnoService {
     }
     
     @Override
-    public List<Turno> findByClienteDni(Integer dni) {
+    public List<Turno> findByClienteDni(String dni) {
         return turnoRepository.findByClienteDni(dni);
     }
 
@@ -48,7 +48,6 @@ public class TurnoService implements ITurnoService {
         return turnoRepository.findByClienteApellido(apellido);
     }
 
-    /*
     @Override
     public List<Turno> findByDia_Fecha(LocalDate fecha) {
         return turnoRepository.findByDia_Fecha(fecha);
@@ -74,22 +73,21 @@ public class TurnoService implements ITurnoService {
         return turnoRepository.findClientesConTurnoEnFecha(fecha);
     }
 
-*/
     @Override
     public List<Turno> findByEmpleadoId(Long id) {
         return turnoRepository.findByEmpleadoId(id);
     }
-/*
+
     @Override
     public List<Turno> findByServicioNombre(String nombre) {
         return turnoRepository.findByServicioNombre(nombre);
     }
-*/
-  /*  @Override
+
+    @Override
     public List<Turno> findByEstado(String estado) {
         return turnoRepository.findByEstado(estado);
     }
-*/
+
     public List<Turno> findAll(){
     	return turnoRepository.findAll();
     };

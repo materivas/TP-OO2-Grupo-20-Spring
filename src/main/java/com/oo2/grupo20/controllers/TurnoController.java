@@ -26,7 +26,7 @@ public class TurnoController {
     }
 
     @GetMapping("/cliente/{dni}")
-    public String turnosPorCliente(@PathVariable("dni") Integer dni, Model model) {
+    public String turnosPorCliente(@PathVariable("dni") String dni, Model model) {
         List<Turno> turnos = turnoService.findByClienteDni(dni);
         model.addAttribute("turnos", turnos);
         return TURNO_INDEX;

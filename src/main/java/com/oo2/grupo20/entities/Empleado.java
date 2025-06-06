@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,11 +24,15 @@ import lombok.Setter;
 @Entity
 @Getter @Setter
 @NoArgsConstructor
-public class Empleado extends Persona {
-  
-	
-	@Column (unique=true)
+public class Empleado {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long idEmpleado;
+
+    private String nombre;
+    private String apellido;
     private String CUIL;
+    private boolean estaDisponible;
 
     // Relación ManyToOne con Establecimiento
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,12 +51,20 @@ public class Empleado extends Persona {
     
     
     
-    public Empleado(long id, String CUIL) {
-		this.id = id;
-		this.CUIL = CUIL;
+    public Empleado(long idEmpleado, String name, String apellido) {
+		this.idEmpleado = idEmpleado;
+		this.nombre = name;
+		this.apellido = apellido;
 	}
 
-	
+	public Empleado(String name) {
+		this.nombre = name;
+	}
+    
+    
+    
+    
+    
     
     
 }

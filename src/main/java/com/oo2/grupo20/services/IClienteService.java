@@ -15,17 +15,17 @@ public interface IClienteService {
 	
 	public boolean remove(long idCliente);
 	    
-	public Optional<ClienteDTO> findByDni(Integer dni);
+	public Optional<ClienteDTO> findByDni(String dni);
 	
 	public List<ClienteDTO> findByApellido(String apellido);
 	
 	public List<ClienteDTO> findByNombreAndApellido(String nombre, String apellido);
 	    
-//	public List<ClienteDTO> findByFechaRegistroBetween(LocalDate inicio, LocalDate fin);
+	public List<ClienteDTO> findByFechaRegistroBetween(LocalDate inicio, LocalDate fin);
 	
-//	public List<ClienteDTO> findClientesConTurnoEnFecha(LocalDate fecha);
+	public List<ClienteDTO> findClientesConTurnoEnFecha(LocalDate fecha);
 	    
-	public boolean existsByDni(Integer dni);
+	public boolean existsByDni(String dni);
 	
 	public boolean existsByEmail(String email);
 

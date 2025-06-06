@@ -15,22 +15,21 @@ import com.oo2.grupo20.entities.Cliente;
 @Repository ("clienteRepository")
 public interface IClienteRepository extends JpaRepository <Cliente, Serializable> {
 	
-	public abstract Optional<Cliente> findByDni(Integer dni);
+	public abstract Optional<Cliente> findByDni(String dni);
 	
 	public abstract List<Cliente> findByApellido(String apellido);
 	
 	public abstract List<Cliente> findByNombreAndApellido(String nombre, String apellido);
 	
-	//public abstract List<Cliente> findByFechaRegistroBetween(LocalDate inicio, LocalDate fin);
+	public abstract List<Cliente> findByFechaRegistroBetween(LocalDate inicio, LocalDate fin);
 	
 	@Query("SELECT c FROM Cliente c WHERE SIZE(c.turnos) > :minTurnos")
 	List<Cliente> findClientesFrecuentes(@Param("minTurnos") int minTurnos);
 
-	/*
 	@Query("SELECT c FROM Cliente c JOIN c.turnos t WHERE t.fecha = :fecha")
 	List<Cliente> findClientesConTurnoEnFecha(@Param("fecha") LocalDate fecha);
-	*/
-	boolean existsByDni(Integer dni);
+	
+	boolean existsByDni(String dni);
 	
 	boolean existsByEmail(String email);
 	

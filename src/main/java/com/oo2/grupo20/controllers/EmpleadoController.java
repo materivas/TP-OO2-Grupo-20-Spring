@@ -12,14 +12,10 @@ import org.springframework.web.servlet.view.RedirectView;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.modelmapper.ModelMapper;
-
 import com.oo2.grupo20.entities.Empleado;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
 import com.oo2.grupo20.dto.EmpleadoDTO;
 import com.oo2.grupo20.services.IEmpleadoService;
-
-
 
 
 
@@ -36,35 +32,16 @@ public class EmpleadoController {
 		}
 		
 		//GET Example: SERVER/index
-	/*	@GetMapping("/index")
+		@GetMapping("/index")
 	    public ModelAndView index() {
 	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_INDEX);
 	        mAV.addObject("empleados", empleadoService.getAll());
 	        return mAV;
-	    } */
-		
-		// Vista del sistema de turnos con Bootstrap
-	    @GetMapping("/indexBootstrap")
-	    public ModelAndView indexBootstrap() {
-	        ModelAndView modelAndView = new ModelAndView("empleado/indexBootstrap");
-	        
-	        // Puedes agregar datos necesarios para la vista aquí
-	        // Por ejemplo, lista de empleados disponibles para turnos
-	        List<EmpleadoDTO> empleadosDisponibles = empleadoService.getAll()
-	            .stream()
-	            .map(e -> modelMapper.map(e, EmpleadoDTO.class))
-	            .collect(Collectors.toList());
-	        
-	        modelAndView.addObject("empleadosDisponibles", empleadosDisponibles);
-	        return modelAndView;
 	    }
 		
-		
-		
-		
-		@GetMapping("/index")
-	    public ModelAndView index() {
-	        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.EMPLEADO_INDEX);
+		@GetMapping("/index2")
+	    public ModelAndView index2() {
+	        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.EMPLEADO_INDEX2);
 	        List<EmpleadoDTO> empleadosDTO = empleadoService.getAll()
 	                .stream()
 	                .map(e -> modelMapper.map(e, EmpleadoDTO.class))
@@ -84,7 +61,7 @@ public class EmpleadoController {
 	    public RedirectView create(@ModelAttribute("empleado") EmpleadoDTO empleadoDTO) {
 	        Empleado empleado = modelMapper.map(empleadoDTO, Empleado.class);
 	        empleadoService.insertOrUpdate(empleado);
-	        return new RedirectView("/empleado/index");
+	        return new RedirectView("/empleado/index2");
 	    }
 		
 		// NUEVOS MVC
@@ -93,7 +70,7 @@ public class EmpleadoController {
 	    public ModelAndView get(@PathVariable("id") long id) {
 	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_UPDATE);
 	        EmpleadoDTO empleadoDTO = modelMapper.map(empleadoService.getAll().stream()
-	                .filter(e -> e.getId() == id)
+	                .filter(e -> e.getIdEmpleado() == id)
 	                .findFirst()
 	                .orElse(null), EmpleadoDTO.class);
 	        mAV.addObject("empleado", empleadoDTO);

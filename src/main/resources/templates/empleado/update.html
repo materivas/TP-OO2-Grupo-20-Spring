@@ -7,43 +7,19 @@
 <body>
     <h1>Editar Empleado</h1>
     <form th:action="@{/empleado/update}" method="post" th:object="${empleado}">
-        <input type="hidden" th:field="*{id}">
-
+        <input type="hidden" th:field="*{idEmpleado}">
         <div>
             <label>Nombre:</label>
             <input type="text" th:field="*{nombre}" required>
         </div>
-
         <div>
             <label>Apellido:</label>
             <input type="text" th:field="*{apellido}" required>
         </div>
-
-        <div>
-            <label>DNI:</label>
-            <input type="number" th:field="*{dni}" required>
-        </div>
-
-        <div>
-            <label>Email:</label>
-            <input type="email" th:field="*{email}">
-        </div>
-
-        <div>
-            <label>Fecha de Nacimiento:</label>
-            <input type="date" th:field="*{fechaDeNacimiento}">
-        </div>
-
         <div>
             <label>CUIL:</label>
             <input type="text" th:field="*{CUIL}" required>
         </div>
-
-        <div>
-            <label>Estado activo:</label>
-            <input type="checkbox" th:field="*{estado}">
-        </div>
-
         <button type="submit">Actualizar</button>
     </form>
     <a th:href="@{/empleado/index}">Volver</a>
