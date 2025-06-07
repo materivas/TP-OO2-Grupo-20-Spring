@@ -1,27 +1,26 @@
 package com.oo2.grupo20.dto;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 import com.oo2.grupo20.entities.Servicio;
-
 import lombok.Data;
+import com.oo2.grupo20.entities.Turno;
 
 @Data
 public class DiaDTO {
-
-    private long idDia;
+    private Long idDia;
     private LocalDate fecha;
     private Servicio servicio;
+    private Set<Turno> turnos;
 
-
-    // Constructor vacío
     public DiaDTO() {
     }
 
-    // Constructor completo
     public DiaDTO(long idDia, LocalDate fecha) {
         this.idDia = idDia;
         this.fecha = fecha;
     }
 }
+
 

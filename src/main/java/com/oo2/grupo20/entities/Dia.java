@@ -13,7 +13,7 @@ public class Dia {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idDia;
+    private Long idDia;
 
     private LocalDate fecha;
 

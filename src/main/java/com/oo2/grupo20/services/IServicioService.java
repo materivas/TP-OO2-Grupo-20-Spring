@@ -26,6 +26,9 @@ public interface IServicioService {
 	
 	public Optional<ServicioDTO> findByIdServicioWithTurnos(long idServicio);
 	
+	public Optional<ServicioDTO> findByIdServicioWithDiasAndTurnos(Long id);
+
+	
 	
 
 }

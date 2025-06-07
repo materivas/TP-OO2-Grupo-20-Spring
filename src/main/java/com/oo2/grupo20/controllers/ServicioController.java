@@ -1,12 +1,10 @@
 package com.oo2.grupo20.controllers;
 
+import java.util.HashSet;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -57,6 +55,7 @@ public class ServicioController {
         servicioService.findByIdServicio(id).ifPresent(servicio ->
             mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
         );
+        mAV.addObject("establecimientos", establecimientoService.getAllPublic());
         return mAV;
     }
 
@@ -66,6 +65,7 @@ public class ServicioController {
         servicioService.findByNombreServicio(nombre).ifPresent(servicio ->
             mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
         );
+        mAV.addObject("establecimientos", establecimientoService.getAllPublic());
         return mAV;
     }
 
@@ -75,17 +75,13 @@ public class ServicioController {
         servicioService.findByIdServicioWithDias(id).ifPresent(servicio ->
             mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
         );
+        mAV.addObject("establecimientos", establecimientoService.getAllPublic());
         return mAV;
     }
 
-    @GetMapping("with_turnos/{id}")
-    public ModelAndView getWithTurnos(@PathVariable("id") long id) {
-        ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_DETAIL);
-        servicioService.findByIdServicioWithTurnos(id).ifPresent(servicio ->
-            mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
-        );
-        return mAV;
-    }
+
+
+
 
     @PostMapping("/update")
     public RedirectView update(@ModelAttribute("servicio") ServicioDTO servicioDTO) {
@@ -99,4 +95,16 @@ public class ServicioController {
         servicioService.remove(id);
         return new RedirectView(ViewRouteHelper.SERVICIO_ROOT);
     }
+    
+    @GetMapping("/detail/{id}")
+    public ModelAndView detalle(@PathVariable("id") long id) {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_DETAIL);
+        servicioService.findByIdServicioWithDiasAndTurnos(id).ifPresent(servicio -> 
+            mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
+        );
+        return mAV;
+    }
+
+
 }
+

@@ -1,5 +1,9 @@
 package com.oo2.grupo20.dto;
 import java.time.LocalTime;
+import java.util.Set;
+
+import com.oo2.grupo20.entities.Dia;
+import com.oo2.grupo20.entities.Turno;
 
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -8,7 +12,7 @@ import lombok.Data;
 public class ServicioDTO {
 	
  
-	private long idServicio;
+	private Long idServicio;
     
 	@Size(max = 20, message ="El nombre del servicio no puede ser mas largo que 20 caracteres")
 	private String nombreServicio;
@@ -20,6 +24,8 @@ public class ServicioDTO {
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
 	private EstablecimientoDTO establecimiento;
+	private Set<Dia> dias;
+	private Set<Turno> turnos;
 
 
 	

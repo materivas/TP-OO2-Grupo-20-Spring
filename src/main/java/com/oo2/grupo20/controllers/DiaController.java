@@ -9,8 +9,8 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import com.oo2.grupo20.dto.DiaDTO;
 import com.oo2.grupo20.entities.Dia;
-import com.oo2.grupo20.helpers.ViewRouteHelper;
 import com.oo2.grupo20.services.IDiaService;
+import com.oo2.grupo20.services.IServicioService;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
 
 import java.time.LocalDate;
@@ -20,10 +20,12 @@ import java.time.LocalDate;
 public class DiaController {
 
     private final IDiaService diaService;
+    private final IServicioService servicioService;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public DiaController(IDiaService diaService) {
+    public DiaController(IDiaService diaService, IServicioService servicioService) {
         this.diaService = diaService;
+        this.servicioService = servicioService;
     }
 
     @GetMapping("/index")
@@ -37,6 +39,7 @@ public class DiaController {
     public ModelAndView create() {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.DIA_NEW);
         mAV.addObject("dia", new DiaDTO());
+        mAV.addObject("servicios", servicioService.getAll()); // Carga los servicios
         return mAV;
     }
 
@@ -46,15 +49,19 @@ public class DiaController {
         diaService.insertOrUpdate(dia);
         return new RedirectView(ViewRouteHelper.DIA_ROOT);
     }
+    
+    
 
     @GetMapping("/{id:\\d+}")
     public ModelAndView get(@PathVariable("id") long id) {
-
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.DIA_UPDATE);
         diaService.findByIdDia(id).ifPresent(dia ->
-            mAV.addObject("dia", modelMapper.map(dia, DiaDTO.class)));
+            mAV.addObject("dia", modelMapper.map(dia, DiaDTO.class))
+        );
+        mAV.addObject("servicios", servicioService.getAll()); // <--- ¡Esto es necesario!
         return mAV;
     }
+
 
     @PostMapping("/update")
     public RedirectView update(@ModelAttribute("dia") DiaDTO diaDTO) {
@@ -69,7 +76,6 @@ public class DiaController {
         return new RedirectView(ViewRouteHelper.DIA_ROOT);
     }
 
-    //Traer un día por fecha
     @GetMapping("/by_fecha/{fecha}")
     public ModelAndView getByFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.DIA_UPDATE);
@@ -78,7 +84,6 @@ public class DiaController {
         return mAV;
     }
 
-    //Traer un día con sus turnos
     @GetMapping("/with_turnos/{id}")
     public ModelAndView getWithTurnos(@PathVariable("id") long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.DIA_DETAIL);
@@ -87,4 +92,5 @@ public class DiaController {
         return mAV;
     }
 }
+
 

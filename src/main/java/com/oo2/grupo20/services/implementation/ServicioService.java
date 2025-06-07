@@ -72,5 +72,12 @@ public class ServicioService implements IServicioService {
 				.map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
 	}
 	
+	@Override
+	public Optional<ServicioDTO> findByIdServicioWithDiasAndTurnos(Long id) {
+	    return servicioRepository.findByIdServicioWithDiasAndTurnos(id)
+	            .map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+	}
+
+	
 
 }
