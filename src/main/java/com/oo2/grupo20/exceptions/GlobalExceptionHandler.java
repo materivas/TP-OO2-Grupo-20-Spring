@@ -58,6 +58,13 @@ public class GlobalExceptionHandler {
         return "error/establecimiento-no-encontrado";
     }
     
+    @ExceptionHandler(EspecialidadesConEmpleadosException.class)
+    public String handleEspecialidadesConEmpleados(EspecialidadesConEmpleadosException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/especialidad-con-empleados";
+    }
+
+    
     
     
     

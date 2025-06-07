@@ -20,6 +20,26 @@
             margin-right: 0.5rem;
             margin-bottom: 0.5rem;
         }
+
+        /* Encabezado negro con texto blanco */
+        thead.table-primary {
+            background-color: #000000 !important;
+            color: white;
+        }
+
+        /* Alinear la columna "Acciones" a la derecha (th y td) */
+        table thead th:last-child,
+        table tbody td:last-child {
+            text-align: right;
+        }
+
+        /* Iconos negro para "Ver Empleados" y "Editar" */
+        .btn-info .fa-users,
+        .btn-warning .fa-edit {
+            color: black !important;
+        }
+
+        
     </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -39,7 +59,7 @@
                     <a class="nav-link active" href="#"><i class="fa fa-home"></i> Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-building"></i> Establecimientos</a>
+                    <a class="nav-link" th:href="@{/especialidad/index}"><i class="fa-solid fa-wrench"></i>  Especialidades</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
@@ -60,6 +80,7 @@
 
     <div class="table-responsive">
         <table class="table table-bordered table-striped align-middle">
+
             <thead class="table-primary">
                 <tr>
                     <th>ID</th>
@@ -74,13 +95,15 @@
                     <td th:text="${establecimiento.nombre}"></td>
                     <td th:text="${establecimiento.localidad}"></td>
                     <td>
-                        <div class="d-flex flex-wrap">
-                            <a th:href="@{/establecimiento/} + ${establecimiento.idEstablecimiento}" class="btn btn-warning btn-sm text-white btn-acciones">
-                                <i class="fa fa-edit"></i> Editar
-                            </a>
-                            <a th:href="@{/establecimiento/with_empleados/} + ${establecimiento.idEstablecimiento}" class="btn btn-info btn-sm text-white btn-acciones">
+                        <div class="d-flex flex-wrap justify-content-end"> <!-- Alineamos botones a la derecha -->
+                            <a th:href="@{/establecimiento/with_empleados/} + ${establecimiento.idEstablecimiento}" class="btn btn-info btn-sm btn-acciones">
                                 <i class="fa fa-users"></i> Ver Empleados
                             </a>
+
+                            <a th:href="@{/establecimiento/} + ${establecimiento.idEstablecimiento}" class="btn btn-warning btn-sm btn-acciones">
+                                <i class="fa fa-edit"></i> Editar
+                            </a>
+
                             <form th:action="@{/establecimiento/delete/} + ${establecimiento.idEstablecimiento}" method="post" class="d-inline">
                                 <button type="submit" class="btn btn-danger btn-sm btn-acciones" onclick="return confirm('¿Está seguro de que desea eliminar este establecimiento?');">
                                     <i class="fa fa-trash"></i> Eliminar

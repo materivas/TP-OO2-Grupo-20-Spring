@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.oo2.grupo20.entities.Especialidad;
+import com.oo2.grupo20.exceptions.EspecialidadesConEmpleadosException;
 import com.oo2.grupo20.dto.EspecialidadDTO;
 import com.oo2.grupo20.services.IEspecialidadService;
 import com.oo2.grupo20.repositories.IEspecialidadRepository;
@@ -51,14 +52,23 @@ public class EspecialidadService implements IEspecialidadService {
 	
 	
 	@Override
-	public boolean remove (long idEspecialidad) {
-		try {
-			especialidadRepository.deleteById(idEspecialidad);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean remove(long idEspecialidad) {
+	    Optional<Especialidad> optionalEspecialidad = especialidadRepository.findByIdWithEmpleados(idEspecialidad);
+
+	    if (optionalEspecialidad.isPresent()) {
+	        Especialidad especialidad = optionalEspecialidad.get();
+
+	        if (!especialidad.getEmpleados().isEmpty()) {
+	            throw new EspecialidadesConEmpleadosException("No se puede eliminar la especialidad porque tiene empleados asociados.");
+	        }
+
+	        especialidadRepository.deleteById(idEspecialidad);
+	        return true;
+	    }
+
+	    return false; // No se encontró la especialidad
 	}
+
 	
 	@Override
 	public Optional<Especialidad> findByIdEspecialidad(long idEspecialidad) {

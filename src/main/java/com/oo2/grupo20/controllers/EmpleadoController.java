@@ -15,9 +15,13 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 
 import com.oo2.grupo20.entities.Empleado;
+import com.oo2.grupo20.entities.Especialidad;
+import com.oo2.grupo20.entities.Establecimiento;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
 import com.oo2.grupo20.dto.EmpleadoDTO;
 import com.oo2.grupo20.services.IEmpleadoService;
+import com.oo2.grupo20.services.IEspecialidadService;
+import com.oo2.grupo20.services.IEstablecimientoService;
 
 
 
@@ -29,10 +33,16 @@ public class EmpleadoController {
 
 	
 		private IEmpleadoService empleadoService;
+		private IEstablecimientoService establecimientoService;
+		private IEspecialidadService especialidadService;
 		private final ModelMapper modelMapper = new ModelMapper();
 	
-		public EmpleadoController(IEmpleadoService empleadoService) {
+		
+		//Inyectamos las dependencias.
+		public EmpleadoController(IEmpleadoService empleadoService, IEstablecimientoService establecimientoService ,IEspecialidadService especialidadService) {
 			this.empleadoService = empleadoService;
+			this.establecimientoService = establecimientoService;
+			this.especialidadService = especialidadService;
 		}
 		
 		//GET Example: SERVER/index
@@ -72,12 +82,16 @@ public class EmpleadoController {
 	        return modelAndView;
 	    }
 
-	    @GetMapping("/new")
-	    public ModelAndView create() {
-	        ModelAndView modelAndView = new ModelAndView(ViewRouteHelper.EMPLEADO_NEW);
-	        modelAndView.addObject("empleado", new EmpleadoDTO());
-	        return modelAndView;
-	    }
+		//TRAEMOS ESTABLECIMIENTOS Y EMPLEADOS PARA MOSTRARLO EN LA VISTA.
+		@GetMapping("/new")
+		public ModelAndView createView() {
+		    ModelAndView mav = new ModelAndView("empleado/new");
+		    mav.addObject("empleado", new EmpleadoDTO());
+		    mav.addObject("establecimientos", establecimientoService.getAllFull());
+		    mav.addObject("especialidades", especialidadService.getAllFull());
+		    return mav;
+		}
+
 
 	    @PostMapping("/create")
 	    public RedirectView create(@ModelAttribute("empleado") EmpleadoDTO empleadoDTO) {
