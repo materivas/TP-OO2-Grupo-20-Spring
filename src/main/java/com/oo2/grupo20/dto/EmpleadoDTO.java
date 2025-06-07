@@ -1,7 +1,11 @@
 package com.oo2.grupo20.dto;
 
-
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.oo2.grupo20.entities.Especialidad;
+import com.oo2.grupo20.entities.Establecimiento;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -9,12 +13,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
-
 @Getter @Setter @NoArgsConstructor
 public class EmpleadoDTO {
 
-    private Long id;  // mejor nombre que idEmpleado
+    private Long id;
 
     private String nombre;
     private String apellido;
@@ -23,24 +25,27 @@ public class EmpleadoDTO {
     @Pattern(regexp = "\\d{11}", message = "El CUIL debe contener solo números")
     private String CUIL;
 
-
     private Integer dni;
     private String email;
     private LocalDate fechaDeNacimiento;
     private boolean estado;
+
+    
+    private Set<Especialidad> especialidades = new HashSet<>();
+
+  
+    private Establecimiento establecimiento;
 
     public EmpleadoDTO(Long id, String nombre, String apellido, String CUIL, boolean estaDisponible) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.CUIL = CUIL;
-
     }
 
     public EmpleadoDTO(String nombre, String apellido, String CUIL, boolean estaDisponible) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.CUIL = CUIL;
- 
     }
 }

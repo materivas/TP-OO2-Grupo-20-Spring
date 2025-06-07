@@ -24,7 +24,9 @@ public class Turno {
     private Empleado empleado;
 
     
-    /*
+    //CUANDO SE AGREGUEN LAS CLASES SERVICIO Y DIA, DESCOMENTAR ESTA SECCIÓN
+    
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_servicio", nullable = false)
     private Servicio servicio;
@@ -32,6 +34,6 @@ public class Turno {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_dia", nullable = false)
     private Dia dia;
-*/
+
     
 }

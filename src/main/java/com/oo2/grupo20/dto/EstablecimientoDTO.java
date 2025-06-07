@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter @Setter @NoArgsConstructor
 public class EstablecimientoDTO {
 
-	private long idEstablecimiento;
+	private Long idEstablecimiento;
 	private String localidad;
 	private String nombre;
 	private Set<Empleado> empleados = new HashSet<>();

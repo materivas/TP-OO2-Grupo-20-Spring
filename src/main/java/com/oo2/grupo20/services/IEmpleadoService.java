@@ -18,6 +18,12 @@ public interface IEmpleadoService {
     public Optional<EmpleadoDTO> findByApellido(String apellido);
 
     public Optional<EmpleadoDTO> findByCUILWithEspecialidades(String cuil);
+    
+    //public Optional<EmpleadoDTO> findByIdWithEspecialidades(Long id);
+    
+    public Optional<EmpleadoDTO> findByIdWithEspecialidadesAndEstablecimiento(Long id);
+    
+    
 	
 
 }

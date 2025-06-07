@@ -1,24 +1,106 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
     <title>Nuevo Empleado</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #e9ecef; /* gris claro */
+        }
+        .bg-azul-oscuro {
+            background-color: #001f3f !important;
+        }
+    </style>
 </head>
-<body>
-    <h1>Nuevo Empleado</h1>
+<body class="d-flex flex-column min-vh-100">
 
-    <form th:action="@{/empleado/create}" th:object="${empleado}" method="post">
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <i class="fa-solid fa-clock"></i> Sistema de Turnos
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-home"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="fa fa-calendar-check"></i> Turnos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
-        <label>Nombre: <input type="text" th:field="*{nombre}" /></label><br/>
-        <label>Apellido: <input type="text" th:field="*{apellido}" /></label><br/>
-        <label>DNI: <input type="number" th:field="*{dni}" /></label><br/>
-        <label>Email: <input type="email" th:field="*{email}" /></label><br/>
-        <label>Fecha de Nacimiento: <input type="date" th:field="*{fechaDeNacimiento}" /></label><br/>
-        <label>CUIL: <input type="text" th:field="*{CUIL}" /></label><br/>
-        <label>Estado activo: <input type="checkbox" th:field="*{estado}" /></label><br/>
+    <!-- CONTENIDO -->
+    <main class="container my-5 flex-grow-1">
+        <div class="card shadow">
+            <div class="card-header bg-azul-oscuro text-white">
+                <h3 class="mb-0"><i class="fa fa-user-plus"></i> Nuevo Empleado</h3>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/empleado/create}" th:object="${empleado}" method="post">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre</label>
+                        <input type="text" class="form-control" th:field="*{nombre}" placeholder="Ingrese nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Apellido</label>
+                        <input type="text" class="form-control" th:field="*{apellido}" placeholder="Ingrese apellido" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">DNI</label>
+                        <input type="number" class="form-control" th:field="*{dni}" placeholder="Ingrese DNI" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email</label>
+                        <input type="email" class="form-control" th:field="*{email}" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Fecha de Nacimiento</label>
+                        <input type="date" class="form-control" th:field="*{fechaDeNacimiento}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">CUIL</label>
+                        <input type="text" class="form-control" th:field="*{CUIL}" placeholder="Ingrese CUIL" required>
+                    </div>
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" th:field="*{estado}" id="estadoActivo">
+                        <label class="form-check-label" for="estadoActivo">
+                            Estado activo
+                        </label>
+                    </div>
 
-        <button type="submit">Guardar</button>
-    </form>
+                    <div class="d-flex justify-content-between">
+                        <a th:href="@{/empleado/index}" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Volver
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
 
-    <a th:href="@{/empleado/index}">Volver a la lista</a>
+    <!-- FOOTER -->
+    <footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
+        <small>Grupo 20 &copy; Sistema de Turnos - Todos los derechos reservados</small>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

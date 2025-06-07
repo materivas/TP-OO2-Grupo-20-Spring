@@ -66,6 +66,20 @@ public class EmpleadoService implements IEmpleadoService {
 	            .map(empleado -> modelMapper.map(empleado, EmpleadoDTO.class));
 	}
 	
+	/*@Override
+	public Optional<EmpleadoDTO> findByIdWithEspecialidades(Long id) {
+	    return empleadoRepository.findByIdWithEspecialidades(id)
+	            .map(empleado -> modelMapper.map(empleado, EmpleadoDTO.class));
+	}*/
+	
+	@Override
+	public Optional<EmpleadoDTO> findByIdWithEspecialidadesAndEstablecimiento(Long id) {
+	    return empleadoRepository.findByIdWithEspecialidadesAndEstablecimiento(id)
+	            .map(empleado -> modelMapper.map(empleado, EmpleadoDTO.class));
+	}
+
+
+	
 	
 	
 }

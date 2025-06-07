@@ -44,7 +44,8 @@ public class EmpleadoController {
 	    } */
 		
 		// Vista del sistema de turnos con Bootstrap
-	    @GetMapping("/indexBootstrap")
+		
+	  /*  @GetMapping("/indexBootstrap")
 	    public ModelAndView indexBootstrap() {
 	        ModelAndView modelAndView = new ModelAndView("empleado/indexBootstrap");
 	        
@@ -55,7 +56,7 @@ public class EmpleadoController {
 	        
 	        modelAndView.addObject("empleadosDisponibles", empleadosDisponibles);
 	        return modelAndView;
-	    }
+	    }*/
 		
 		
 		
@@ -122,6 +123,16 @@ public class EmpleadoController {
 	        return mAV;
 	    }
 
+	    @GetMapping("/detail/{id}")
+	    public ModelAndView getByIdWithEspecialidades(@PathVariable("id") Long id) {
+	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_DETAIL);
+	        empleadoService.findByIdWithEspecialidadesAndEstablecimiento(id).ifPresent(empleadoDTO -> 
+	            mAV.addObject("empleado", empleadoDTO));
+	        return mAV;
+	    }
+
+
+	    
 	    @PostMapping("/update")
 	    public RedirectView update(@ModelAttribute("empleado") EmpleadoDTO empleadoDTO) {
 	        Empleado empleado = modelMapper.map(empleadoDTO, Empleado.class);
