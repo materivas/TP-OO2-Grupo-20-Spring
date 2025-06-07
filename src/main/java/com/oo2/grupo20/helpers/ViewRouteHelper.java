@@ -40,6 +40,8 @@ public class ViewRouteHelper {
     public final static String ESPECIALIDAD_ROOT = "/especialidad/index";
 	public final static String ESTABLECIMIENTO_ROOT = "/establecimiento/index";
 	public final static String CLIENTE_ROOT = "/cliente/index";
+	public final static String DIA_ROOT = "/dia/index";
+	public final static String SERVICIO_ROOT = "/servicio/index";
 	
 	//CLIENTE
 	public final static String CLIENTE_INDEX = "cliente/index";
@@ -55,5 +57,17 @@ public class ViewRouteHelper {
     public final static String TURNO_FORM = "turno/form";
     public final static String TURNO_DETAIL = "turno/detail";
     public final static String TURNO_UPDATE = "turno/update";
+    
+	// DIA
+	public final static String DIA_INDEX = "dia/index";
+	public final static String DIA_NEW = "dia/new";
+	public final static String DIA_UPDATE = "dia/update";
+	public final static String DIA_DETAIL = "dia/detail";
+
+	// SERVICIO
+	public final static String SERVICIO_INDEX = "servicio/index";
+	public final static String SERVICIO_NEW = "servicio/new";
+	public final static String SERVICIO_UPDATE = "servicio/update";
+	public final static String SERVICIO_DETAIL = "servicio/detail";
 
 }

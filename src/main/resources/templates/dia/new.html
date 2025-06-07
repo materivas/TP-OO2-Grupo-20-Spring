@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Nuevo Día</title>
+</head>
+<body>
+    <h1>Nuevo Día</h1>
+    <form th:action="@{/dia/create}" method="post" th:object="${dia}">
+        <div>
+            <label>Fecha:</label>
+            <input type="date" th:field="*{fecha}" required>
+        </div>
+        <div>
+            <label>Servicio:</label>
+            <select th:field="*{servicio.idServicio}" required>
+                <option th:each="servicio : ${servicios}" 
+                        th:value="${servicio.idServicio}" 
+                        th:text="${servicio.nombreServicio}">
+                </option>
+            </select>
+        </div>
+        <button type="submit">Guardar</button>
+    </form>
+    <a th:href="@{/dia/index}">Volver</a>
+</body>
+</html>

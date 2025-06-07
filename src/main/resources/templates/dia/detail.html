@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle de Día</title>
+</head>
+<body>
+    <h1>Detalle de Día</h1>
+
+    <div th:if="${dia}">
+        <p><strong>ID:</strong> <span th:text="${dia.idDia}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${dia.fecha}"></span></p>
+
+        <h3>Servicio:</h3>
+        <p th:if="${dia.servicio != null}">
+            <span th:text="${dia.servicio.nombreServicio}"></span> - 
+            <span th:text="${dia.servicio.descripcion}"></span>
+        </p>
+        <p th:unless="${dia.servicio != null}">No tiene servicio asignado</p>
+
+        <h3>Turnos:</h3>
+        <ul th:if="${dia.turnos != null}">
+            <li th:each="turno : ${dia.turnos}">
+                <span th:text="${turno.hora}"></span> - 
+                <span th:text="${turno.estado}"></span>
+            </li>
+        </ul>
+        <p th:unless="${dia.turnos != null}">No tiene turnos asignados</p>
+    </div>
+
+    <div th:unless="${dia}">
+        <p>Día no encontrado</p>
+    </div>
+
+    <a th:href="@{/dia/index}">Volver</a>
+</body>
+</html>
