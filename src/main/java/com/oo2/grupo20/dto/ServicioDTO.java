@@ -3,6 +3,7 @@ import java.time.LocalTime;
 import java.util.Set;
 
 import com.oo2.grupo20.entities.Dia;
+import com.oo2.grupo20.entities.Establecimiento;
 import com.oo2.grupo20.entities.Turno;
 
 import jakarta.validation.constraints.Size;
@@ -23,7 +24,7 @@ public class ServicioDTO {
 	private double precio;
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
-	private EstablecimientoDTO establecimiento;
+	private EstablecimientoBasicDTO establecimiento;
 	private Set<Dia> dias;
 	private Set<Turno> turnos;
 

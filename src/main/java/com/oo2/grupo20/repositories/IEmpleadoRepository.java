@@ -32,6 +32,12 @@ public interface IEmpleadoRepository extends JpaRepository <Empleado, Serializab
 		       "LEFT JOIN FETCH e.establecimiento " +
 		       "WHERE e.id = :id")
 		Optional<Empleado> findByIdWithEspecialidadesAndEstablecimiento(@Param("id") Long id);
+	
+	@Query("SELECT e FROM Empleado e " +
+		       "LEFT JOIN FETCH e.especialidades " +
+		       "LEFT JOIN FETCH e.establecimiento " +
+		       "WHERE e.id = :id")
+		Optional<Empleado> findByIdWithEspecialidadesAndEstablecimiento2(@Param("id") Long id);
 
 
 

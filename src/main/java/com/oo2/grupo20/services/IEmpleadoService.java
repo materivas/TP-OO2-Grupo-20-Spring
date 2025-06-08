@@ -2,6 +2,8 @@ package com.oo2.grupo20.services;
 
 import java.util.*;
 import com.oo2.grupo20.entities.Empleado;
+import com.oo2.grupo20.dto.EmpleadoConEspecialidadesYEstablecimientoDTO;
+
 import com.oo2.grupo20.dto.EmpleadoDTO;
 
 
@@ -22,6 +24,10 @@ public interface IEmpleadoService {
     //public Optional<EmpleadoDTO> findByIdWithEspecialidades(Long id);
     
     public Optional<EmpleadoDTO> findByIdWithEspecialidadesAndEstablecimiento(Long id);
+    
+    public Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> findByIdWithEspecialidadesAndEstablecimiento2(Long id);
+    
+    
     
     
 	

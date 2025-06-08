@@ -26,6 +26,10 @@ public interface IServicioService {
 	
 	public Optional<ServicioDTO> findByIdServicioWithDiasAndTurnos(Long id);
 	
+	public Optional<ServicioDTO> findByIdServicioWithEstablecimientoAndEmpleados(Long id);
+	
+	public Optional<ServicioDTO> findByIdWithEstablecimiento(Long id);
+	
 	Servicio getServicioEntityById(Long id);
 
 

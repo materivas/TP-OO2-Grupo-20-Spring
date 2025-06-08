@@ -7,6 +7,7 @@ import com.oo2.grupo20.repositories.IEspecialidadRepository;
 import com.oo2.grupo20.repositories.IEstablecimientoRepository;
 import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.dto.EmpleadoDTO;
+import com.oo2.grupo20.dto.EmpleadoConEspecialidadesYEstablecimientoDTO;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,10 +72,10 @@ public class EmpleadoServiceIntegrationTest {
         Empleado empleadoGuardado1 = empleadoService.insertOrUpdate(empleado1);
         assertNotNull(empleadoGuardado1.getId());
 
-        Optional<EmpleadoDTO> resultado1 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento(empleadoGuardado1.getId());
+        Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado1 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado1.getId());
         assertTrue(resultado1.isPresent());
 
-        EmpleadoDTO dto1 = resultado1.get();
+        EmpleadoConEspecialidadesYEstablecimientoDTO dto1 = resultado1.get();
         assertEquals("Carlos", dto1.getNombre());
         assertEquals("García", dto1.getApellido());
         assertEquals("20303030303", dto1.getCUIL());
@@ -101,10 +102,10 @@ public class EmpleadoServiceIntegrationTest {
         Empleado empleadoGuardado2 = empleadoService.insertOrUpdate(empleado2);
         assertNotNull(empleadoGuardado2.getId());
 
-        Optional<EmpleadoDTO> resultado2 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento(empleadoGuardado2.getId());
+        Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado2 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado2.getId());
         assertTrue(resultado2.isPresent());
 
-        EmpleadoDTO dto2 = resultado2.get();
+        EmpleadoConEspecialidadesYEstablecimientoDTO dto2 = resultado2.get();
         assertEquals("Lucía", dto2.getNombre());
         assertEquals("Ramírez", dto2.getApellido());
         assertEquals("20404040404", dto2.getCUIL());

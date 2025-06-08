@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import com.oo2.grupo20.entities.Empleado;
+import com.oo2.grupo20.dto.EmpleadoConEspecialidadesYEstablecimientoDTO;
 import com.oo2.grupo20.dto.EmpleadoDTO;
 import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.repositories.IEmpleadoRepository;
@@ -77,6 +78,14 @@ public class EmpleadoService implements IEmpleadoService {
 	    return empleadoRepository.findByIdWithEspecialidadesAndEstablecimiento(id)
 	            .map(empleado -> modelMapper.map(empleado, EmpleadoDTO.class));
 	}
+	
+    public Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> findByIdWithEspecialidadesAndEstablecimiento2(Long id){
+    	
+    	 return empleadoRepository.findByIdWithEspecialidadesAndEstablecimiento2(id)
+ 	            .map(empleado -> modelMapper.map(empleado, EmpleadoConEspecialidadesYEstablecimientoDTO.class));
+ 	
+    }
+
 
 
 	

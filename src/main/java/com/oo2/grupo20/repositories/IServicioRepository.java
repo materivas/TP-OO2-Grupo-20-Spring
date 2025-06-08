@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-
+import com.oo2.grupo20.dto.ServicioDTO;
 import com.oo2.grupo20.entities.Servicio;
 
 
@@ -33,6 +33,15 @@ public interface IServicioRepository extends JpaRepository<Servicio, Serializabl
 	// Trae el servicio con sus turnos y dias asociados
 	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.dias LEFT JOIN FETCH s.turnos WHERE s.idServicio = :id")
 	public abstract Optional<Servicio> findByIdServicioWithDiasAndTurnos(@Param("id") Long id);
+
+	//Trae el establecimiento con sus empleados asociados.
+	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.establecimiento e JOIN FETCH e.empleados WHERE s.idServicio = :id")
+	Optional<Servicio> findByIdWithEstablecimientoAndEmpleados(@Param("id") Long id);
+
+	
+	//Trae el establecimiento.
+	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.establecimiento WHERE s.idServicio = :id")
+	Optional<Servicio> findByIdWithEstablecimiento(@Param("id") Long id);
 
 
 
