@@ -10,6 +10,6 @@ public class HomeController {
     @GetMapping("/")
     public String home(Model model) {
         model.addAttribute("mensaje", "Sistema de Turnos funcionando");
-        return "index"; // Debe coincidir con el nombre del archivo HTML
+        return "index";
     }
 }

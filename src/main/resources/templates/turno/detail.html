@@ -1,0 +1,12 @@
+<div class="card">
+    <div class="card-header">
+        <h4 th:text="'Turno #' + ${turno.id}"></h4>
+    </div>
+    <div class="card-body">
+        <p><strong>Cliente:</strong> 
+           <span th:text="${turno.cliente.nombre + ' ' + turno.cliente.apellido}"></span></p>
+        <p><strong>Fecha:</strong> 
+           <span th:text="${#temporals.format(turno.dia.fecha, 'EEEE dd/MM/yyyy')}"></span></p>
+        <a th:href="@{/turno/index}" class="btn btn-secondary">Volver</a>
+    </div>
+</div>

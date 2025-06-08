@@ -1,11 +1,10 @@
 package com.oo2.grupo20.controllers;
 
-import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +16,16 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.oo2.grupo20.entities.Cliente;
+import com.oo2.grupo20.entities.Dia;
+import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.entities.Turno;
 import com.oo2.grupo20.dto.ClienteDTO;
 import com.oo2.grupo20.dto.TurnoFormDTO;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
 import com.oo2.grupo20.services.IClienteService;
+import com.oo2.grupo20.services.IDiaService;
+import com.oo2.grupo20.services.IServicioService;
+import com.oo2.grupo20.services.ITurnoService;
 
 @Controller
 @RequestMapping("/cliente")
@@ -29,19 +33,21 @@ public class ClienteController {
     
     private final IClienteService clienteService;
     private final ModelMapper modelMapper = new ModelMapper();
+    private final ITurnoService turnoService;
+    private final IServicioService servicioService;
+    private final IDiaService diaService;
     
-    public ClienteController(IClienteService clienteService) {
-        this.clienteService = clienteService;
-    }
-    
-    // Vistas principales
-   /* @GetMapping("/index")
-    public ModelAndView index() {
-        ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_INDEX);
-        mAV.addObject("clientes", clienteService.getAll());
-        return mAV;
-    }
-    */
+    public ClienteController(
+            IClienteService clienteService,
+            IServicioService servicioService,
+            IDiaService diaService,
+            ITurnoService turnoService
+        ) {
+            this.clienteService = clienteService;
+            this.servicioService = servicioService;
+            this.diaService = diaService;
+            this.turnoService = turnoService;
+        }   
     
     @GetMapping("/index")
     public ModelAndView index() {
@@ -56,7 +62,7 @@ public class ClienteController {
     //Creación de clientes
     @GetMapping("/new")
     public ModelAndView create() {
-        ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_NEW);
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_FORM);
         mAV.addObject("cliente", new ClienteDTO());
         return mAV;
     }
@@ -94,15 +100,27 @@ public class ClienteController {
         mAV.addObject("clientes", clienteService.findByApellido(apellido));
         return mAV;
     }
-
- /*   @GetMapping("/con_turno/{fecha}")
+/*
+    @GetMapping("/con_turno/{fecha}")
     public ModelAndView getClientesConTurnoEnFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_INDEX);
         mAV.addObject("clientes", clienteService.findClientesConTurnoEnFecha(fecha));
         return mAV;
-    }*/
+    }
+ */
     
-    // Actualización y eliminación
+    @GetMapping("/editar/{dni}")
+    public String editForm(@PathVariable Integer dni, Model model) {
+        Optional<ClienteDTO> clienteOpt = clienteService.findByDni(dni);
+        if (clienteOpt.isPresent()) {
+            model.addAttribute("cliente", clienteOpt.get());
+            return "cliente/form"; 
+        } else {
+            // Se redirige a la lista con un mensaje o a una página de error
+            return "redirect:/cliente/index"; 
+        }
+    }
+
     @PostMapping("/update")
     public RedirectView update(@ModelAttribute("cliente") ClienteDTO clienteDTO) {
         Cliente cliente = modelMapper.map(clienteDTO, Cliente.class);
@@ -115,12 +133,12 @@ public class ClienteController {
         clienteService.remove(id);
         return new RedirectView(ViewRouteHelper.CLIENTE_ROOT);
     }
-    /*
+    
     //GET para sacar turno mediante un forms
     @GetMapping("/clientes/{id}/sacar-turno")
     public String mostrarFormularioTurno(@PathVariable("id") Long clienteId, Model model) {
         Cliente cliente = clienteService.getClienteEntityById(clienteId); 
-        List<Servicio> serviciosDisponibles = servicioService.getAll(); //Falta crear servicio
+        List<Servicio> serviciosDisponibles = servicioService.getAll(); 
 
         model.addAttribute("cliente", cliente);
         model.addAttribute("servicios", serviciosDisponibles);
@@ -133,10 +151,11 @@ public class ClienteController {
     public String procesarTurno(@PathVariable Long id, @ModelAttribute("turnoForm") TurnoFormDTO form) {
 
         Cliente cliente = clienteService.getClienteEntityById(id);
-        Servicio servicio = servicioService.getById(form.getServicioId());
+        Servicio servicio = servicioService.getServicioEntityById(form.getServicioId());
 
         // Lógica para obtener/crear el Día
         Dia dia = diaService.findOrCreateByFecha(form.getFecha());
+
 
         Turno turno = new Turno();
         turno.setCliente(cliente);
@@ -147,7 +166,7 @@ public class ClienteController {
 
         return "redirect:/clientes/" + id + "/detalle";
     }
-*/
+
 
     
 }

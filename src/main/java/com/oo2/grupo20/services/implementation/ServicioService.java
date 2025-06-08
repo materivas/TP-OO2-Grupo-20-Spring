@@ -33,7 +33,7 @@ public class ServicioService implements IServicioService {
 	}
 	
 	@Override
-	public boolean remove(long idServicio) {
+	public boolean remove(Long idServicio) {
 		try {
 			servicioRepository.deleteById(idServicio);
 			return true;
@@ -55,23 +55,18 @@ public class ServicioService implements IServicioService {
 	}
 	
 	@Override
-	public Optional<ServicioDTO> findByIdServicio(long idServicio){
+	public Optional<ServicioDTO> findByIdServicio(Long idServicio){
 		return servicioRepository.findById(idServicio)
 				.map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
 	}
 	
 	@Override
-	public Optional<ServicioDTO> findByIdServicioWithDias(long idServicio){
+	public Optional<ServicioDTO> findByIdServicioWithDias(Long idServicio){
 		return servicioRepository.findServicioByIdWithDias(idServicio)
 				.map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
 	}
 	
-	@Override
-	public Optional<ServicioDTO> findByIdServicioWithTurnos(long idServicio){
-		return servicioRepository.findServicioByIdWithTurnos(idServicio)
-				.map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
-	}
-	
+
 	@Override
 	public Optional<ServicioDTO> findByIdServicioWithDiasAndTurnos(Long id) {
 	    return servicioRepository.findByIdServicioWithDiasAndTurnos(id)
@@ -79,5 +74,12 @@ public class ServicioService implements IServicioService {
 	}
 
 	
+
+	public Servicio getServicioEntityById(Long id) {
+	    return servicioRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Servicio no encontrado con id: " + id));
+	}
+
+
 
 }

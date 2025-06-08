@@ -22,6 +22,6 @@ public interface IDiaRepository extends JpaRepository<Dia, Serializable> {
 	@Query("SELECT d FROM Dia d LEFT JOIN FETCH d.turnos WHERE d.idDia = :idDia")
 	public abstract Optional<Dia> findDiaByIdWithTurnos(@Param("idDia") long idDia);
 	
-	
+	public Dia findOrCreateByFecha(LocalDate fecha);
 
 }

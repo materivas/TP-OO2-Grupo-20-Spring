@@ -1,6 +1,5 @@
 package com.oo2.grupo20.services.implementation;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -12,10 +11,7 @@ import org.springframework.stereotype.Service;
 import com.oo2.grupo20.dto.ClienteDTO;
 import com.oo2.grupo20.entities.Cliente;
 import com.oo2.grupo20.repositories.IClienteRepository;
-import com.oo2.grupo20.repositories.IEmpleadoRepository;
 import com.oo2.grupo20.services.IClienteService;
-
-import lombok.RequiredArgsConstructor;
 
 @Service("clienteService")
 public class ClienteService implements IClienteService {
@@ -70,23 +66,6 @@ public class ClienteService implements IClienteService {
                 .collect(Collectors.toList());
     }
 
-    /*
-    @Override
-    public List<ClienteDTO> findByFechaRegistroBetween(LocalDate inicio, LocalDate fin) {
-        return clienteRepository.findByFechaRegistroBetween(inicio, fin).stream()
-                .map(cliente -> modelMapper.map(cliente, ClienteDTO.class))
-                .collect(Collectors.toList());
-    }
-*/
-    
-/*
-    @Override
-    public List<ClienteDTO> findClientesConTurnoEnFecha(LocalDate fecha) {
-        return clienteRepository.findClientesConTurnoEnFecha(fecha).stream()
-                .map(cliente -> modelMapper.map(cliente, ClienteDTO.class))
-                .collect(Collectors.toList());
-    }
-*/
     @Override
     public boolean existsByDni(Integer dni) {
         return clienteRepository.existsByDni(dni);

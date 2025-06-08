@@ -42,7 +42,7 @@ public class Servicio {
     }
 
     // Constructor con argumentos 
-    public Servicio(long idServicio,String nombreServicio,String descripcion,int duracion, double precio, LocalTime horaInicio, LocalTime horaFin, Establecimiento establecimiento) {
+    public Servicio(Long idServicio,String nombreServicio,String descripcion,int duracion, double precio, LocalTime horaInicio, LocalTime horaFin, Establecimiento establecimiento) {
         this.idServicio=idServicio;
         this.nombreServicio=nombreServicio;
         this.descripcion=descripcion;

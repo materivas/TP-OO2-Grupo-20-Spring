@@ -17,17 +17,18 @@ public interface IServicioRepository extends JpaRepository<Servicio, Serializabl
 
 	public abstract Optional<Servicio> findByNombreServicio(String nombreServicio);
 	
-	public abstract Optional<Servicio> findByIdServicio(long idServicio);
+	public abstract Optional<Servicio> findByIdServicio(Long idServicio);
 	
 	public abstract Optional<Servicio> findByDescripcion(String Descripcion);
 
 	// Trae el servicio con sus días asociados
 	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.dias WHERE s.idServicio = :idServicio")
-	public abstract Optional<Servicio> findServicioByIdWithDias(@Param("idServicio") long idServicio);
+	public abstract Optional<Servicio> findServicioByIdWithDias(@Param("idServicio") Long idServicio);
 
 	// Trae el servicio con sus turnos asociados
 	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.turnos WHERE s.idServicio = :idServicio")
 	public abstract Optional<Servicio> findServicioByIdWithTurnos(@Param("idServicio") long idServicio);
+
 	
 	// Trae el servicio con sus turnos y dias asociados
 	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.dias LEFT JOIN FETCH s.turnos WHERE s.idServicio = :id")

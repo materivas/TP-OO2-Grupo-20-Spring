@@ -61,5 +61,15 @@ public class DiaService implements IDiaService {
 				.map(dia -> modelMapper.map(dia, DiaDTO.class));
 		
 	}
+	
+	public Dia findOrCreateByFecha(LocalDate fecha) {
+	    return diaRepository.findByFecha(fecha)
+	            .orElseGet(() -> {
+	                Dia nuevoDia = new Dia();
+	                nuevoDia.setFecha(fecha);
+	                return diaRepository.save(nuevoDia);
+	            });
+	}
+
 
 }

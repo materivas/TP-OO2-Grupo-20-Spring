@@ -14,21 +14,19 @@ public interface IServicioService {
 	
 	public Servicio insertOrUpdate(Servicio servicio);
 	
-	public boolean remove(long idServicio);
+	public boolean remove(Long idServicio);
 	
 	public Optional<ServicioDTO> findByNombreServicio(String nombreServicio);
 	
 	public Optional<ServicioDTO> findByDescripcion(String descripcion);
 	
-	public Optional<ServicioDTO> findByIdServicio(long idServicio);
+	public Optional<ServicioDTO> findByIdServicio(Long idServicio);
 	
-	public Optional<ServicioDTO> findByIdServicioWithDias(long idServicio);
-	
-	public Optional<ServicioDTO> findByIdServicioWithTurnos(long idServicio);
+	public Optional<ServicioDTO> findByIdServicioWithDias(Long idServicio);
 	
 	public Optional<ServicioDTO> findByIdServicioWithDiasAndTurnos(Long id);
+	
+	Servicio getServicioEntityById(Long id);
 
-	
-	
 
 }

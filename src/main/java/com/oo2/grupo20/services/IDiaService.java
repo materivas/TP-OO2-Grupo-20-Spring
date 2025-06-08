@@ -20,5 +20,6 @@ public interface IDiaService {
 	public Optional<DiaDTO> findByFecha(LocalDate fecha);
 	
 	public Optional<DiaDTO> findDiaByIdWithTurnos(long idDia);
-
+	
+	public Dia findOrCreateByFecha(LocalDate fecha);
 }

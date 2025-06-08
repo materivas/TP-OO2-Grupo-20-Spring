@@ -1,7 +1,6 @@
 package com.oo2.grupo20.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,7 +12,7 @@ public class Turno {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long idTurno;
+    private Long idTurno;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", nullable = false)
@@ -23,10 +22,6 @@ public class Turno {
     @JoinColumn(name = "id_empleado", nullable = false)
     private Empleado empleado;
 
-    
-    //CUANDO SE AGREGUEN LAS CLASES SERVICIO Y DIA, DESCOMENTAR ESTA SECCIÓN
-    
-    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_servicio", nullable = false)
     private Servicio servicio;
