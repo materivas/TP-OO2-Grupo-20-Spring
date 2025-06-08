@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.oo2.grupo20.dto.ServicioDTO;
 import com.oo2.grupo20.entities.Servicio;
+import com.oo2.grupo20.dto.ServicioSinTurnoDiaDTO;
 
 public interface IServicioService {
 	
@@ -29,6 +30,8 @@ public interface IServicioService {
 	public Optional<ServicioDTO> findByIdServicioWithEstablecimientoAndEmpleados(Long id);
 	
 	public Optional<ServicioDTO> findByIdWithEstablecimiento(Long id);
+	
+	public Optional<ServicioSinTurnoDiaDTO> findByIdWithEstablecimiento2(Long id);
 	
 	Servicio getServicioEntityById(Long id);
 

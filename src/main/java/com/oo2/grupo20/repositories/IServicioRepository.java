@@ -43,7 +43,11 @@ public interface IServicioRepository extends JpaRepository<Servicio, Serializabl
 	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.establecimiento WHERE s.idServicio = :id")
 	Optional<Servicio> findByIdWithEstablecimiento(@Param("id") Long id);
 
+	//Trae el establecimiento.
+	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.establecimiento WHERE s.idServicio = :id")
+	Optional<Servicio> findByIdWithEstablecimiento2(@Param("id") Long id);
+	
 
-
+	
 }
 

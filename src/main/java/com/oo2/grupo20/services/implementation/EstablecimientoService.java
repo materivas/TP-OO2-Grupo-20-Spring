@@ -31,6 +31,7 @@ private IEstablecimientoRepository establecimientoRepository;
 	}
 
 	
+	//Trae la entidad completa (Para una vista de admin por ejemplo)
 	@Override
 	public List<Establecimiento> getAllFull(){
 		

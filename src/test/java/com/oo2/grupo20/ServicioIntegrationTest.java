@@ -3,6 +3,7 @@ package com.oo2.grupo20;
 import com.oo2.grupo20.entities.Establecimiento;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.dto.ServicioDTO;
+import com.oo2.grupo20.dto.ServicioSinTurnoDiaDTO;
 import com.oo2.grupo20.repositories.IEstablecimientoRepository;
 import com.oo2.grupo20.services.IServicioService;
 
@@ -67,14 +68,14 @@ public class ServicioIntegrationTest {
         assertNotNull(serv2Guardado.getIdServicio());
 
         // VERIFICACIÓN SERVICIO 1
-        Optional<ServicioDTO> dto1 = servicioService.findByIdWithEstablecimiento(serv1Guardado.getIdServicio());
+        Optional<ServicioSinTurnoDiaDTO> dto1 = servicioService.findByIdWithEstablecimiento2(serv1Guardado.getIdServicio());
         assertTrue(dto1.isPresent());
         assertEquals("Pediatría", dto1.get().getNombreServicio());
         assertEquals("Clínica del Sur", dto1.get().getEstablecimiento().getNombre());
         assertEquals("Avenida Siempreviva 742", dto1.get().getEstablecimiento().getLocalidad());
 
         // VERIFICACIÓN SERVICIO 2
-        Optional<ServicioDTO> dto2 = servicioService.findByIdWithEstablecimiento(serv2Guardado.getIdServicio());
+        Optional<ServicioSinTurnoDiaDTO> dto2 = servicioService.findByIdWithEstablecimiento2(serv2Guardado.getIdServicio());
         assertTrue(dto2.isPresent());
         assertEquals("Traumatología", dto2.get().getNombreServicio());
         assertEquals("Sanatorio Central", dto2.get().getEstablecimiento().getNombre());

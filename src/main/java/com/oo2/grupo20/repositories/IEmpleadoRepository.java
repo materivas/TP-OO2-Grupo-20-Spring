@@ -23,7 +23,7 @@ public interface IEmpleadoRepository extends JpaRepository <Empleado, Serializab
 	public abstract Optional<Empleado> findByCUIL (String cuil);
 
 	//Hacemos una Query para traer las especialidades asociadas a este CUIL
-	@Query("SELECT e FROM Empleado e JOIN FETCH e.especialidades WHERE e.CUIL = :cuil")
+	@Query("SELECT e FROM Empleado e LEFT JOIN FETCH e.especialidades WHERE e.CUIL = :cuil")
 	Optional<Empleado> findByCUILWithEspecialidades(@Param("cuil") String cuil);
 	
 	//Hacemos una Query para traer tanto las especialidades como el establecimiento asociado a este empleado.

@@ -72,9 +72,12 @@ public class EmpleadoServiceIntegrationTest {
         Empleado empleadoGuardado1 = empleadoService.insertOrUpdate(empleado1);
         assertNotNull(empleadoGuardado1.getId());
 
+        //UTILIZAMOS ESTE DTO DE EMPLEADO QUE NOS TRAE SUS ATRIBUTOS JUNTO CON LAS ESPECIALIDADES Y ESTABLECIMIENTOS ASOCIADOS
         Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado1 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado1.getId());
         assertTrue(resultado1.isPresent());
 
+        /*VERIFICAMOS QUE LOS DATOS SE HAYAN CARGADO CORRECTAMENTE CON assertEquals, 
+        QUE TIRA UNA EXCEPCION (NULL POINTER EXCEPTION) SI ENCUENTRA UN VALOR NULO */
         EmpleadoConEspecialidadesYEstablecimientoDTO dto1 = resultado1.get();
         assertEquals("Carlos", dto1.getNombre());
         assertEquals("García", dto1.getApellido());
@@ -102,9 +105,12 @@ public class EmpleadoServiceIntegrationTest {
         Empleado empleadoGuardado2 = empleadoService.insertOrUpdate(empleado2);
         assertNotNull(empleadoGuardado2.getId());
 
+      //UTILIZAMOS ESTE DTO DE EMPLEADO QUE NOS TRAE SUS ATRIBUTOS JUNTO CON LAS ESPECIALIDADES Y ESTABLECIMIENTOS ASOCIADOS
         Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado2 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado2.getId());
         assertTrue(resultado2.isPresent());
 
+        /*VERIFICAMOS QUE LOS DATOS SE HAYAN CARGADO CORRECTAMENTE CON assertEquals, 
+        QUE TIRA UNA EXCEPCION (NULL POINTER EXCEPTION) SI ENCUENTRA UN VALOR NULO */
         EmpleadoConEspecialidadesYEstablecimientoDTO dto2 = resultado2.get();
         assertEquals("Lucía", dto2.getNombre());
         assertEquals("Ramírez", dto2.getApellido());

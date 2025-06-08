@@ -10,6 +10,7 @@ import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.repositories.IServicioRepository;
 import com.oo2.grupo20.services.IServicioService;
 import com.oo2.grupo20.dto.ServicioDTO;
+import com.oo2.grupo20.dto.ServicioSinTurnoDiaDTO;
 
 @Service("servicioService")
 public class ServicioService implements IServicioService {
@@ -79,6 +80,13 @@ public class ServicioService implements IServicioService {
 	    return servicioRepository.findByIdWithEstablecimiento(id)
 	            .map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
 	}
+	
+	@Override
+	public Optional<ServicioSinTurnoDiaDTO> findByIdWithEstablecimiento2(Long id) {
+	    return servicioRepository.findByIdWithEstablecimiento(id)
+	            .map(servicio -> modelMapper.map(servicio, ServicioSinTurnoDiaDTO.class));
+	}
+	
 	
 	@Override
 	public Optional<ServicioDTO> findByIdServicioWithEstablecimientoAndEmpleados(Long id) {
