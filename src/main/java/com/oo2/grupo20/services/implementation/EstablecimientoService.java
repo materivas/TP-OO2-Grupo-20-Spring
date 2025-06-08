@@ -88,6 +88,11 @@ private IEstablecimientoRepository establecimientoRepository;
 	    return establecimientoRepository.findByIdWithEmpleados(idEstablecimiento);
 	}
 	
+	@Override
+	public Optional<Establecimiento> findByIdWithServicios(long idEstablecimiento) {
+	    return establecimientoRepository.findByIdWithServicios(idEstablecimiento);
+	}
+	
 	
 	
 

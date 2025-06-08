@@ -3,8 +3,10 @@ package com.oo2.grupo20.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -45,6 +47,11 @@ public class Empleado extends Persona {
     )
     
     private Set<Especialidad> especialidades = new HashSet<>();
+    
+    //Relación OneToMany con Turnos
+    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Turno> turnos;
+    
     
     
     

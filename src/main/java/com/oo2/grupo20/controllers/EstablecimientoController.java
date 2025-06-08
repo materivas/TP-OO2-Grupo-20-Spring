@@ -14,16 +14,19 @@ import com.oo2.grupo20.entities.Establecimiento;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
 import com.oo2.grupo20.dto.EstablecimientoDTO;
 import com.oo2.grupo20.services.IEstablecimientoService;
+import com.oo2.grupo20.services.IServicioService;
 
 @Controller
 @RequestMapping("/establecimiento")
 public class EstablecimientoController {
 
     private final IEstablecimientoService establecimientoService;
+    private final IServicioService servicioService;
     private final ModelMapper modelMapper = new ModelMapper();
 
-    public EstablecimientoController(IEstablecimientoService establecimientoService) {
+    public EstablecimientoController(IEstablecimientoService establecimientoService, IServicioService servicioService) {
         this.establecimientoService = establecimientoService;
+        this.servicioService = servicioService;
     }
 
     @GetMapping("/index")
@@ -37,6 +40,7 @@ public class EstablecimientoController {
     public ModelAndView create() {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.ESTABLECIMIENTO_NEW);
         mAV.addObject("establecimiento", new EstablecimientoDTO());
+        mAV.addObject("servicios", servicioService.getAll());
         return mAV;
     }
 
@@ -48,7 +52,7 @@ public class EstablecimientoController {
     }
 
     @GetMapping("/{id}")
-    public ModelAndView get(@PathVariable("id") long id) {
+    public ModelAndView get(@PathVariable("id") Long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.ESTABLECIMIENTO_UPDATE);
         establecimientoService.findByIdEstablecimiento(id).ifPresent(establecimiento -> 
             mAV.addObject("establecimiento", modelMapper.map(establecimiento, EstablecimientoDTO.class)));
@@ -64,9 +68,17 @@ public class EstablecimientoController {
     }
 
     @GetMapping("/with_empleados/{id}")
-    public ModelAndView getWithEmpleados(@PathVariable("id") long id) {
+    public ModelAndView getWithEmpleados(@PathVariable("id") Long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.ESTABLECIMIENTO_DETAIL);
         establecimientoService.findByIdWithEmpleados(id).ifPresent(establecimiento -> 
+            mAV.addObject("establecimiento", modelMapper.map(establecimiento, EstablecimientoDTO.class)));
+        return mAV;
+    }
+    
+    @GetMapping("/with_servicios/{id}")
+    public ModelAndView getWithServicios(@PathVariable("id") Long id) {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.ESTABLECIMIENTO_DETAIL_SERVICIOS);
+        establecimientoService.findByIdWithServicios(id).ifPresent(establecimiento -> 
             mAV.addObject("establecimiento", modelMapper.map(establecimiento, EstablecimientoDTO.class)));
         return mAV;
     }
@@ -79,7 +91,7 @@ public class EstablecimientoController {
     }
 
     @PostMapping("/delete/{id}")
-    public RedirectView delete(@PathVariable("id") long id) {
+    public RedirectView delete(@PathVariable("id") Long id) {
         establecimientoService.remove(id);
         return new RedirectView(ViewRouteHelper.ESTABLECIMIENTO_ROOT);
     }

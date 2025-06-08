@@ -6,6 +6,8 @@ import java.util.Set;
 
 import com.oo2.grupo20.entities.Especialidad;
 import com.oo2.grupo20.entities.Establecimiento;
+import com.oo2.grupo20.entities.Servicio;
+import com.oo2.grupo20.entities.Turno;
 
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -32,9 +34,13 @@ public class EmpleadoDTO {
 
     
     private Set<Especialidad> especialidades = new HashSet<>();
+    private Set<Turno> turnos = new HashSet<>();
+
 
   
     private Establecimiento establecimiento;
+    
+    private Servicio servicio;
 
     public EmpleadoDTO(Long id, String nombre, String apellido, String CUIL, boolean estaDisponible) {
         this.id = id;

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.oo2.grupo20.entities.Empleado;
+import com.oo2.grupo20.entities.Servicio;
 
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class EstablecimientoDTO {
 	private String localidad;
 	private String nombre;
 	private Set<Empleado> empleados = new HashSet<>();
+	private Set<Servicio> servicios = new HashSet<>();
 	
 	
 	public EstablecimientoDTO (long idEstablecimiento,String nombre, String localidad) {

@@ -70,17 +70,19 @@
 
                 <div class="mb-3">
                     <label for="establecimiento" class="form-label">Establecimiento:</label>
-                    <select id="establecimiento" name="establecimiento.idEstablecimiento" class="form-select" required>
-                        <option value="">Seleccione un establecimiento</option>
-                        <option th:each="establecimiento : ${establecimientos}"
-                                th:value="${establecimiento.idEstablecimiento}"
-                                th:text="${establecimiento.nombre}"></option>
-                    </select>
+					<select id="establecimiento" th:field="*{establecimiento}" class="form-select">
+					    <option th:value="${null}">Seleccione un establecimiento (OPCIONAL)</option> //COLOCAMOS NULL SI QUEREMOS QUE ESE SEA EL VALOR POR DEFECTO, ASI NO TIENE PROBLEMAS LA BD
+					    <option th:each="establecimiento : ${establecimientos}"
+					            th:value="${establecimiento.idEstablecimiento}"
+					            th:text="${establecimiento.nombre}">
+					    </option>
+					</select>
+
                 </div>
 
                 <div class="mb-3">
                     <label for="especialidades" class="form-label">Especialidades:</label>
-                    <select id="especialidades" name="especialidades" multiple size="5" class="form-select" required>
+                    <select id="especialidades" name="especialidades" multiple size="5" class="form-select">
                         <option th:each="especialidad : ${especialidades}"
                                 th:value="${especialidad.idEspecialidad}"
                                 th:text="${especialidad.nombre}"></option>

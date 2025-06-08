@@ -22,6 +22,7 @@ import com.oo2.grupo20.dto.EmpleadoDTO;
 import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.services.IEspecialidadService;
 import com.oo2.grupo20.services.IEstablecimientoService;
+import com.oo2.grupo20.services.IServicioService;
 
 
 
@@ -35,11 +36,12 @@ public class EmpleadoController {
 		private IEmpleadoService empleadoService;
 		private IEstablecimientoService establecimientoService;
 		private IEspecialidadService especialidadService;
+		
 		private final ModelMapper modelMapper = new ModelMapper();
 	
 		
 		//Inyectamos las dependencias.
-		public EmpleadoController(IEmpleadoService empleadoService, IEstablecimientoService establecimientoService ,IEspecialidadService especialidadService) {
+		public EmpleadoController(IEmpleadoService empleadoService, IEstablecimientoService establecimientoService ,IEspecialidadService especialidadService ) {
 			this.empleadoService = empleadoService;
 			this.establecimientoService = establecimientoService;
 			this.especialidadService = especialidadService;
@@ -89,6 +91,7 @@ public class EmpleadoController {
 		    mav.addObject("empleado", new EmpleadoDTO());
 		    mav.addObject("establecimientos", establecimientoService.getAllFull());
 		    mav.addObject("especialidades", especialidadService.getAllFull());
+
 		    return mav;
 		}
 
@@ -103,7 +106,7 @@ public class EmpleadoController {
 		// NUEVOS MVC
 	    
 	    @GetMapping("/{id}")
-	    public ModelAndView get(@PathVariable("id") long id) {
+	    public ModelAndView get(@PathVariable("id") Long id) {
 	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_UPDATE);
 	        EmpleadoDTO empleadoDTO = modelMapper.map(empleadoService.getAll().stream()
 	                .filter(e -> e.getId() == id)
@@ -155,7 +158,7 @@ public class EmpleadoController {
 	    }
 
 	    @PostMapping("/delete/{id}")
-	    public RedirectView delete(@PathVariable("id") long id) {
+	    public RedirectView delete(@PathVariable("id") Long id) {
 	        empleadoService.remove(id);
 	        return new RedirectView(ViewRouteHelper.EMPLEADO_ROOT);
 	    }

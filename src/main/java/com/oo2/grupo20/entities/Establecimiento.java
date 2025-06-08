@@ -32,7 +32,7 @@ public class Establecimiento {
 	 
 	 @Id
 	 @GeneratedValue (strategy = GenerationType.IDENTITY)
-	 private long idEstablecimiento;
+	 private Long idEstablecimiento;
 	 
 	 private String localidad;
 	 private String nombre;
@@ -40,6 +40,11 @@ public class Establecimiento {
 	    // Relación OneToMany con Empleado (bidireccional)
 	    @OneToMany(mappedBy = "establecimiento", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	    private Set<Empleado> empleados = new HashSet<>();
+	    
+	 // Relación OneToMany con Servicio (bidireccional)
+	    @OneToMany(mappedBy = "establecimiento", fetch = FetchType.LAZY, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	    private Set<Servicio> servicios = new HashSet<>();
+
 	 
 
 }

@@ -26,6 +26,8 @@ public interface IEstablecimientoService {
     public Optional <Establecimiento> findByNombre (String nombre);
 
     public Optional <Establecimiento> findByIdWithEmpleados (long idEstablecimiento);
+    
+    public Optional <Establecimiento> findByIdWithServicios(long idEstablecimiento);
 
     
     

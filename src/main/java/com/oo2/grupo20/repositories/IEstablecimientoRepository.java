@@ -24,9 +24,10 @@ public interface IEstablecimientoRepository extends JpaRepository <Establecimien
 	@Query("SELECT e FROM Establecimiento e LEFT JOIN FETCH e.empleados WHERE e.idEstablecimiento = :idEstablecimiento")
 	public abstract Optional<Establecimiento> findByIdWithEmpleados(long idEstablecimiento);
 	
-	//Faltaría agregar una query que busque los servicios asociados a este establecimiento
-
 	
+
+	@Query("SELECT e FROM Establecimiento e LEFT JOIN FETCH e.servicios WHERE e.idEstablecimiento = :idEstablecimiento")
+	public abstract Optional <Establecimiento> findByIdWithServicios(long idEstablecimiento);
 	
 	
 

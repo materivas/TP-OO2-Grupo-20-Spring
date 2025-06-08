@@ -19,6 +19,7 @@ public class ViewRouteHelper {
 	public final static String ESTABLECIMIENTO_UPDATE = "establecimiento/update";
 	public final static String ESTABLECIMIENTO_PARTIAL_VIEW = "establecimiento/partialEstablecimientoView";
 	public static final String ESTABLECIMIENTO_DETAIL = "establecimiento/detail";
+	public static final String ESTABLECIMIENTO_DETAIL_SERVICIOS = "establecimiento/detailServicio";
 	
 	//ESPECIALIDAD
 	

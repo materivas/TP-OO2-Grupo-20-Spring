@@ -99,6 +99,10 @@
                             <a th:href="@{/establecimiento/with_empleados/} + ${establecimiento.idEstablecimiento}" class="btn btn-info btn-sm btn-acciones">
                                 <i class="fa fa-users"></i> Ver Empleados
                             </a>
+							
+							<a th:href="@{/establecimiento/with_servicios/} + ${establecimiento.idEstablecimiento}" class="btn btn-secondary btn-sm btn-acciones">
+							       <i class="fa fa-concierge-bell"></i> Ver Servicios
+							   </a>
 
                             <a th:href="@{/establecimiento/} + ${establecimiento.idEstablecimiento}" class="btn btn-warning btn-sm btn-acciones">
                                 <i class="fa fa-edit"></i> Editar
