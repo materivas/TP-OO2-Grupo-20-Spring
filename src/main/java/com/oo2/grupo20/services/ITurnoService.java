@@ -24,6 +24,6 @@ public interface ITurnoService {
 
 	public List<Turno> findAll();
 
-	
+	public List<Turno> findAllWithRelations();
 
 }

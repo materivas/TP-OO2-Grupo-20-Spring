@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.oo2.grupo20.dto.DiaDTO;
 import com.oo2.grupo20.entities.Dia;
+import com.oo2.grupo20.entities.Servicio;
 
 public interface IDiaService {
 	
@@ -21,5 +22,10 @@ public interface IDiaService {
 	
 	public Optional<DiaDTO> findDiaByIdWithTurnos(long idDia);
 	
+	public Dia findOrCreateByFechaAndServicio(LocalDate fecha, Servicio servicio);
+
+	public Optional<Dia> findByFechaAndServicio(LocalDate fecha, Servicio servicio);
+
 	public Dia findOrCreateByFecha(LocalDate fecha);
+	
 }

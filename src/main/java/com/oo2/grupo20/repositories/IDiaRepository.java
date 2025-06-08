@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.oo2.grupo20.entities.Dia;
+import com.oo2.grupo20.entities.Servicio;
 
 public interface IDiaRepository extends JpaRepository<Dia, Serializable> {
 	
@@ -22,6 +23,9 @@ public interface IDiaRepository extends JpaRepository<Dia, Serializable> {
 	@Query("SELECT d FROM Dia d LEFT JOIN FETCH d.turnos WHERE d.idDia = :idDia")
 	public abstract Optional<Dia> findDiaByIdWithTurnos(@Param("idDia") long idDia);
 	
+	public Dia findOrCreateByFechaAndServicio(LocalDate fecha, Servicio servicio);
+	
+	Optional<Dia> findByFechaAndServicio(LocalDate fecha, Servicio servicio);
+	
 	public Dia findOrCreateByFecha(LocalDate fecha);
-
 }

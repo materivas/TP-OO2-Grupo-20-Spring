@@ -1,8 +1,10 @@
 package com.oo2.grupo20.services.implementation;
 
 import com.oo2.grupo20.entities.Turno;
+import com.oo2.grupo20.repositories.IDiaRepository;
 import com.oo2.grupo20.repositories.ITurnoRepository;
 import com.oo2.grupo20.services.ITurnoService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +17,12 @@ import java.util.Optional;
 public class TurnoService implements ITurnoService {
 
     private final ITurnoRepository turnoRepository;
-
+    private final IDiaRepository diaRepository;
     @Override
     public Turno save(Turno turno) {
+    	if(turno.getDia() != null && turno.getDia().getIdDia() == null) {
+            diaRepository.save(turno.getDia()); // Guarda primero el Día
+        }
         return turnoRepository.save(turno);
     }
 
@@ -48,12 +53,17 @@ public class TurnoService implements ITurnoService {
     }
 
    public List<Turno> findAll(){
-    	return turnoRepository.findAll();
+    	return turnoRepository.findAllWithRelations();
     }
    
    @Override
    public Optional<Turno> findById(Long id) {
        return turnoRepository.findById(id);
+   }
+
+   @Override
+   public List<Turno> findAllWithRelations() {
+       return turnoRepository.findAllWithRelations();
    }
 
 

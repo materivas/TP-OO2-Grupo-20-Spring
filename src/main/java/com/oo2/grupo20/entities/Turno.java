@@ -26,7 +26,7 @@ public class Turno {
     @JoinColumn(name = "id_servicio", nullable = false)
     private Servicio servicio;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST ) 
     @JoinColumn(name = "id_dia", nullable = false)
     private Dia dia;
 

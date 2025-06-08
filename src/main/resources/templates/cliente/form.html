@@ -2,49 +2,124 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title th:text="${cliente.id} != null ? 'Editar Cliente' : 'Nuevo Cliente'">Formulario Cliente</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #e9ecef;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .bg-azul-oscuro {
+            background-color: #001f3f !important;
+        }
+        .form-card {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+    </style>
 </head>
-<body>
-    <div class="container mt-5">
-        <h2 class="mb-4" th:text="${cliente.id} != null ? 'Editar Cliente' : 'Nuevo Cliente'"></h2>
+<body class="d-flex flex-column min-vh-100">
 
-        <form th:action="${cliente.id} != null ? @{/cliente/update} : @{/cliente/create}" 
-              th:object="${cliente}" method="post">
-              
-            <input type="hidden" th:field="*{id}">
-
-            <div class="mb-3">
-                <label for="dni" class="form-label">DNI</label>
-                <input type="number" id="dni" th:field="*{dni}" class="form-control" required>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fa-solid fa-clock"></i> Sistema de Turnos
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i> Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a>
+                    </li>
+                </ul>
             </div>
+        </div>
+    </nav>
 
-            <div class="mb-3">
-                <label for="nombre" class="form-label">Nombre</label>
-                <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required>
-            </div>
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container my-5 flex-grow-1">
+        <div class="card form-card bg-white p-4 mx-auto" style="max-width: 700px;">
+            <div class="card-body">
+				<h2 class="mb-4">
+				    <i class="fa fa-user-edit" th:if="${cliente.id} != null"></i>
+				    <i class="fa fa-user-plus" th:unless="${cliente.id} != null"></i>
+				    <span th:text="${cliente.id} != null ? ' Editar Cliente' : ' Nuevo Cliente'"></span>
+				</h2>
+                <form th:action="${cliente.id} != null ? @{/cliente/update} : @{/cliente/create}" 
+                    th:object="${cliente}" method="post">
+                    
+                    <input type="hidden" th:field="*{id}">
 
-            <div class="mb-3">
-                <label for="apellido" class="form-label">Apellido</label>
-                <input type="text" id="apellido" th:field="*{apellido}" class="form-control" required>
-            </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="dni" class="form-label"><i class="fa fa-id-card"></i> DNI</label>
+                            <input type="number" id="dni" th:field="*{dni}" class="form-control" required>
+                        </div>
 
-            <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" id="email" th:field="*{email}" class="form-control">
-            </div>
+                        <div class="col-md-6 mb-3" th:if="${cliente.fechaRegistro != null}">
+                            <label class="form-label"><i class="fa fa-calendar-day"></i> Fecha de Registro</label>
+                            <input type="text" th:value="${#temporals.format(cliente.fechaRegistro, 'dd/MM/yyyy')}" class="form-control" readonly>
+                        </div>
+                    </div>
 
-            <!-- (readonly) -->
-            <div class="mb-3" th:if="${cliente.fechaRegistro != null}">
-                <label class="form-label">Fecha de Registro</label>
-                <input type="text" th:value="${#temporals.format(cliente.fechaRegistro, 'dd/MM/yyyy')}" class="form-control" readonly>
-            </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombre" class="form-label"><i class="fa fa-signature"></i> Nombre</label>
+                            <input type="text" id="nombre" th:field="*{nombre}" class="form-control" required>
+                        </div>
 
-            <div class="d-flex justify-content-between">
-                <button type="submit" class="btn btn-success" th:text="${cliente.id} != null ? 'Actualizar' : 'Guardar'"></button>
-                <a th:href="@{/cliente/index}" class="btn btn-secondary">Cancelar</a>
+                        <div class="col-md-6 mb-3">
+                            <label for="apellido" class="form-label"><i class="fa fa-signature"></i> Apellido</label>
+                            <input type="text" id="apellido" th:field="*{apellido}" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label"><i class="fa fa-envelope"></i> Email</label>
+                        <input type="email" id="email" th:field="*{email}" class="form-control">
+                    </div>
+
+					<div class="d-flex justify-content-between mt-4">
+					    <button type="submit" class="btn btn-success">
+					        <i class="fa fa-save"></i>
+					        <span th:text="${cliente.id} != null ? ' Actualizar' : ' Guardar'"></span>
+					    </button>
+					    <a th:href="@{/cliente/index}" class="btn btn-secondary">
+					        <i class="fa fa-times"></i> Cancelar
+					    </a>
+					</div>
+                </form>
             </div>
-        </form>
-    </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
+        <small>© 2025 Grupo 20 - Universidad Nacional - Todos los derechos reservados.</small>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

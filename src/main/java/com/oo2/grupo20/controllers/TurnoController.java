@@ -7,6 +7,7 @@ import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.entities.Turno;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
 import com.oo2.grupo20.services.IClienteService;
+import com.oo2.grupo20.services.IDiaService;
 import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.services.IServicioService;
 import com.oo2.grupo20.services.ITurnoService;
@@ -29,15 +30,21 @@ public class TurnoController {
     private final IClienteService clienteService;
     private final IEmpleadoService empleadoService;
     private final IServicioService servicioService;
-
-    // Listar turnos
+    private final IDiaService diaService;
+    
     @GetMapping("/index")
     public String listarTurnos(Model model) {
         List<Turno> turnos = turnoService.findAll();
-        model.addAttribute("turno", turnos);
+        model.addAttribute("turnos", turnos); 
         return ViewRouteHelper.TURNO_INDEX;
     }
 
+    private void cargarDatosModelo(Model model) {
+        model.addAttribute("clientes", clienteService.getAll());
+        model.addAttribute("empleados", empleadoService.getAll());
+        model.addAttribute("servicios", servicioService.getAll());
+    }
+    
     @GetMapping("/nuevo")
     public String nuevoTurno(Model model) {
         Turno turno = new Turno();
@@ -47,27 +54,44 @@ public class TurnoController {
         turno.setDia(new Dia());            
         model.addAttribute("turno", turno);
 
-        model.addAttribute("clientes", clienteService.getAll());
-        model.addAttribute("empleados", empleadoService.getAll());
-        model.addAttribute("servicios", servicioService.getAll());
+        cargarDatosModelo(model);
 
         return "turno/form"; 
     }
 
-
     @PostMapping("/guardar")
-    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno, 
-                             BindingResult result, Model model) {
+    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno, BindingResult result, Model model) {
+        
         if (result.hasErrors()) {
-            model.addAttribute("clientes", clienteService.getAll());
-            model.addAttribute("empleados", empleadoService.getAll());
-            model.addAttribute("servicios", servicioService.getAll());
+            cargarDatosModelo(model);
             return "turno/form";
         }
-        turnoService.save(turno);
+
+        try {
+            // Validación adicional
+            if (turno.getServicio() == null) {
+                throw new IllegalArgumentException("El servicio es requerido");
+            }
+
+            Dia diaPersistido = diaService.findOrCreateByFechaAndServicio(
+                turno.getDia().getFecha(),
+                turno.getServicio()
+            );
+            
+            turno.setDia(diaPersistido);
+            turnoService.save(turno);
+            
+        } catch (Exception e) {
+            model.addAttribute("error", "Error al guardar: " + e.getMessage());
+            cargarDatosModelo(model);
+            return "turno/form";
+        }
+        
         return "redirect:/turno/index";
     }
 
+   
+    
     @PostMapping("/eliminar/{id}")
     public String eliminarTurno(@PathVariable("id") Long id) {
         turnoService.deleteById(id);
