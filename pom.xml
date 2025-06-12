@@ -87,7 +87,7 @@
 			<scope>test</scope>
 		</dependency>
 		
-		<!-- DEPENDENCIA NECESARIO PARA EL ENVIO DE MAIL -->
+		<!-- DEPENDENCIA NECESARIO PARA EL ENVIO DE MAIL CORRECTO-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
