@@ -6,11 +6,13 @@ import com.oo2.grupo20.entities.Empleado;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.entities.Turno;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
+import com.oo2.grupo20.repositories.ITurnoRepository;
 import com.oo2.grupo20.services.IClienteService;
 import com.oo2.grupo20.services.IDiaService;
 import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.services.IServicioService;
 import com.oo2.grupo20.services.ITurnoService;
+import com.oo2.grupo20.services.implementation.EmailService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -31,6 +34,8 @@ public class TurnoController {
     private final IEmpleadoService empleadoService;
     private final IServicioService servicioService;
     private final IDiaService diaService;
+    private final EmailService emailService;
+    
     
     @GetMapping("/index")
     public String listarTurnos(Model model) {
@@ -60,7 +65,7 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno, BindingResult result, Model model) {
+    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno, BindingResult result, Model model,RedirectAttributes redirectAttributes ) {
         
         if (result.hasErrors()) {
             cargarDatosModelo(model);
@@ -79,7 +84,38 @@ public class TurnoController {
             );
             
             turno.setDia(diaPersistido);
+            
+            
+            
+            // Obtener cliente completo desde la base de datos PARA EL ENVIO DE MAIL
+            Long idCliente = turno.getCliente().getId();
+            Cliente clienteCompleto = clienteService.getClienteEntityById(idCliente);
+            turno.setCliente(clienteCompleto);
+            
             turnoService.save(turno);
+         
+          
+           // System.out.println("EMAIL CLIENTE: " + turno.getCliente().getEmail());
+            
+            // Obtener el servicio completo desde base de datos PARA EL ENVIO DEL MAIL
+            Servicio servicioCompleto = servicioService.getServicioEntityById(turno.getServicio().getIdServicio());
+            turno.setServicio(servicioCompleto); // Actualizamos el turno con el servicio completo
+			
+            // System.out.println("NOMBRE SERVICIO: " + turno.getServicio().getNombreServicio());
+
+            // Enviar email de confirmación
+            String email = turno.getCliente().getEmail();
+            String asunto = "Confirmación de Turno";
+            String cuerpo = "Hola " + turno.getCliente().getNombre() + 
+                    ", tu turno fue confirmado para el día " + turno.getDia().getFecha() +
+                    " con el servicio " + turno.getServicio().getNombreServicio() + ".";
+
+                emailService.enviarEmail(email, asunto, cuerpo);
+            
+                // Mensaje flash para redirección
+                redirectAttributes.addFlashAttribute("mensajeExito", 
+                    "¡El turno fue registrado y se envió un correo con los datalles a " + email + "!");
+
             
         } catch (Exception e) {
             model.addAttribute("error", "Error al guardar: " + e.getMessage());
@@ -89,7 +125,9 @@ public class TurnoController {
         
         return "redirect:/turno/index";
     }
-
+    
+    
+    
    
     
     @PostMapping("/eliminar/{id}")

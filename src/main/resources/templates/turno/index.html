@@ -57,6 +57,13 @@
             </a>
         </div>
 
+		<!-- Mensaje de éxito -->
+		<div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+		    <span th:text="${mensajeExito}"></span>
+		    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+		</div>
+		
+		
         <!-- Tabla de Turnos -->
         <div class="table-responsive">
 			<table class="table table-bordered table-striped align-middle">
