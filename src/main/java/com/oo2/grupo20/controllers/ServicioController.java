@@ -38,34 +38,45 @@ public class ServicioController {
     public ModelAndView create() {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_NEW);
         mAV.addObject("servicio", new ServicioDTO());
-        mAV.addObject("establecimientos", establecimientoService.getAllPublic());
+        mAV.addObject("establecimientos", establecimientoService.getAllFull());
         return mAV;
     }
     
     @PostMapping("/create")
     public RedirectView create(@ModelAttribute("servicio") ServicioDTO servicioDTO) {
-        Servicio servicio = modelMapper.map(servicioDTO, Servicio.class);
+        Servicio servicio = ServicioDTO.fromDTO(servicioDTO);
         servicioService.insertOrUpdate(servicio);
         return new RedirectView(ViewRouteHelper.SERVICIO_ROOT);
     }
+
 
     @GetMapping("/{id}")
     public ModelAndView get(@PathVariable("id") long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_UPDATE);
         servicioService.findByIdServicio(id).ifPresent(servicio ->
-            mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
+            mAV.addObject("servicio", servicio)
         );
-        mAV.addObject("establecimientos", establecimientoService.getAllPublic());
+        mAV.addObject("establecimientos", establecimientoService.getAllFull());
         return mAV;
     }
+    
+    /*    @GetMapping("/{id}")
+    public ModelAndView get(@PathVariable("id") long id) {
+        ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_UPDATE);
+        servicioService.findByIdServicio(id).ifPresent(servicio ->
+            mAV.addObject("servicio", servicio) 
+        );
+        mAV.addObject("establecimientos", establecimientoService.getAllFull());
+        return mAV;
+    } */
 
     @GetMapping("/by_nombre/{nombre}")
     public ModelAndView getByNombre(@PathVariable("nombre") String nombre) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_UPDATE);
         servicioService.findByNombreServicio(nombre).ifPresent(servicio ->
-            mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
+            mAV.addObject("servicio",servicio)
         );
-        mAV.addObject("establecimientos", establecimientoService.getAllPublic());
+        mAV.addObject("establecimientos", establecimientoService.getAllFull());
         return mAV;
     }
 
@@ -73,9 +84,9 @@ public class ServicioController {
     public ModelAndView getWithDias(@PathVariable("id") long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_DETAIL);
         servicioService.findByIdServicioWithDias(id).ifPresent(servicio ->
-            mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
+            mAV.addObject("servicio", servicio)
         );
-        mAV.addObject("establecimientos", establecimientoService.getAllPublic());
+        mAV.addObject("establecimientos", establecimientoService.getAllFull());
         return mAV;
     }
 
@@ -85,7 +96,7 @@ public class ServicioController {
 
     @PostMapping("/update")
     public RedirectView update(@ModelAttribute("servicio") ServicioDTO servicioDTO) {
-        Servicio servicio = modelMapper.map(servicioDTO, Servicio.class);
+        Servicio servicio = ServicioDTO.fromDTO(servicioDTO);
         servicioService.insertOrUpdate(servicio);
         return new RedirectView(ViewRouteHelper.SERVICIO_ROOT);
     }
@@ -100,7 +111,7 @@ public class ServicioController {
     public ModelAndView detalle(@PathVariable("id") long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_DETAIL);
         servicioService.findByIdServicioWithDiasAndTurnos(id).ifPresent(servicio -> 
-            mAV.addObject("servicio", modelMapper.map(servicio, ServicioDTO.class))
+            mAV.addObject("servicio", servicio)
         );
         return mAV;
     }

@@ -46,39 +46,39 @@ public class ServicioService implements IServicioService {
 	@Override
 	public Optional<ServicioDTO> findByNombreServicio(String nombreServicio){
 	    return servicioRepository.findByNombreServicio(nombreServicio)
-	            .map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+	            .map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 	
 	@Override
 	public Optional<ServicioDTO> findByDescripcion(String descripcion){
 		return servicioRepository.findByDescripcion(descripcion)
-				.map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+				.map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 	
 	@Override
 	public Optional<ServicioDTO> findByIdServicio(Long idServicio){
 		return servicioRepository.findById(idServicio)
-				.map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+				.map(servicio ->ServicioDTO.toDTO(servicio));
 	}
 	
 	@Override
 	public Optional<ServicioDTO> findByIdServicioWithDias(Long idServicio){
 		return servicioRepository.findServicioByIdWithDias(idServicio)
-				.map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+				.map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 	
 
 	@Override
 	public Optional<ServicioDTO> findByIdServicioWithDiasAndTurnos(Long id) {
 	    return servicioRepository.findByIdServicioWithDiasAndTurnos(id)
-	            .map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+	            .map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 	
 	
 	@Override
 	public Optional<ServicioDTO> findByIdWithEstablecimiento(Long id) {
 	    return servicioRepository.findByIdWithEstablecimiento(id)
-	            .map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+	            .map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 	
 	@Override
@@ -91,7 +91,7 @@ public class ServicioService implements IServicioService {
 	@Override
 	public Optional<ServicioDTO> findByIdServicioWithEstablecimientoAndEmpleados(Long id) {
 	    return servicioRepository.findByIdWithEstablecimientoAndEmpleados(id)
-	        .map(servicio -> modelMapper.map(servicio, ServicioDTO.class));
+	        .map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 
 
