@@ -1,6 +1,7 @@
 package com.oo2.grupo20.controllers;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -110,11 +111,27 @@ public class ServicioController {
     @GetMapping("/detail/{id}")
     public ModelAndView detalle(@PathVariable("id") long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_DETAIL);
-        servicioService.findByIdServicioWithDiasAndTurnos(id).ifPresent(servicio -> 
-            mAV.addObject("servicio", servicio)
-        );
+
+        ServicioDTO servicio = servicioService.findByIdServicioWithDiasAndTurnos(id)
+                                              .orElse(null);
+
+        if(servicio != null) {
+            System.out.println("Servicio: " + servicio.getNombreServicio());
+            System.out.println("Dias asociados:");
+            if(servicio.getDias() != null) {
+                servicio.getDias().forEach(d -> System.out.println(d.getFecha()));
+            } else {
+                System.out.println("La lista de días es null");
+            }
+            mAV.addObject("servicio", servicio);
+        } else {
+            System.out.println("Servicio no encontrado");
+        }
+
         return mAV;
     }
+
+
 
 
 }

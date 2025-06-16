@@ -4,6 +4,7 @@ import java.util.Set;
 
 import com.oo2.grupo20.entities.Dia;
 import com.oo2.grupo20.entities.Establecimiento;
+import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.entities.Turno;
 
 import jakarta.validation.constraints.Size;
@@ -24,7 +25,35 @@ public class ServicioSinTurnoDiaDTO {
 	private double precio;
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
-	private EstablecimientoBasicDTO establecimiento;
+	private Establecimiento establecimiento;
+	
+	public static ServicioSinTurnoDiaDTO toDTO(Servicio servicio) {
+		ServicioSinTurnoDiaDTO serviciodto=new ServicioSinTurnoDiaDTO();
+		serviciodto.setDescripcion(servicio.getDescripcion());
+		serviciodto.setDuracion(servicio.getDuracion());
+		serviciodto.setPrecio(servicio.getPrecio());
+		serviciodto.setHoraInicio(servicio.getHoraInicio());
+		serviciodto.setHoraFin(servicio.getHoraFin());
+		serviciodto.setEstablecimiento(servicio.getEstablecimiento());
+		serviciodto.setIdServicio(servicio.getIdServicio());
+		
+		
+		return serviciodto;
+	}
+	
+	public static Servicio fromDTO(ServicioSinTurnoDiaDTO dto) {
+	    Servicio servicio = new Servicio();
+	    servicio.setIdServicio(dto.getIdServicio());
+	    servicio.setNombreServicio(dto.getNombreServicio());
+	    servicio.setDescripcion(dto.getDescripcion());
+	    servicio.setDuracion(dto.getDuracion());
+	    servicio.setPrecio(dto.getPrecio());
+	    servicio.setHoraInicio(dto.getHoraInicio());
+	    servicio.setHoraFin(dto.getHoraFin());
+	    servicio.setEstablecimiento(dto.getEstablecimiento());
+	  
+	    return servicio;
+	}
 
 
 

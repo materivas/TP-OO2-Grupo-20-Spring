@@ -11,6 +11,7 @@ import com.oo2.grupo20.entities.Dia;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.repositories.IDiaRepository;
 import com.oo2.grupo20.dto.DiaDTO;
+import com.oo2.grupo20.dto.ServicioDTO;
 import com.oo2.grupo20.services.IDiaService;
 
 import jakarta.transaction.Transactional;
@@ -49,19 +50,19 @@ public class DiaService implements IDiaService {
 	@Override
 	public Optional<DiaDTO> findByIdDia(long idDia){
 		return diaRepository.findById(idDia)
-				.map(dia -> modelMapper.map(dia, DiaDTO.class));
+				.map(dia -> DiaDTO.toDTO(dia));
 	}
 	
 	
 	@Override
 	public Optional<DiaDTO> findByFecha(LocalDate fecha){
 	    return diaRepository.findByFecha(fecha)
-	            .map(dia -> modelMapper.map(dia, DiaDTO.class));
+	            .map(dia -> DiaDTO.toDTO(dia));
 	}
  
 	public Optional<DiaDTO> findDiaByIdWithTurnos(long idDia){
 		return diaRepository.findDiaByIdWithTurnos(idDia)
-				.map(dia -> modelMapper.map(dia, DiaDTO.class));
+				.map(dia -> DiaDTO.toDTO(dia));
 		
 	}
 	
