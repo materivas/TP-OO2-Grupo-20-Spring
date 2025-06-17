@@ -6,7 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter @Setter
@@ -16,7 +17,7 @@ public class Cliente extends Persona {
     private LocalDate fechaRegistro;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Turno> turnos;
+	private Set<Turno> turnos = new HashSet<>();
 
     public Cliente(String nombre, String apellido) {
 		this.nombre = nombre;

@@ -22,8 +22,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/turno")
@@ -65,70 +68,71 @@ public class TurnoController {
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno, BindingResult result, Model model,RedirectAttributes redirectAttributes ) {
-        
+    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+
+        // 1. Cargar datos necesarios para el formulario (si hay errores)
+        cargarDatosModelo(model);
+
+        // 2. Validación manual de fecha futura
+        if (turno.getDia() == null || turno.getDia().getFecha() == null) {
+            result.rejectValue("dia.fecha", "error.fecha", "La fecha es requerida");
+        } else if (turno.getDia().getFecha().isBefore(LocalDate.now())) {
+            result.rejectValue("dia.fecha", "error.fecha", "La fecha debe ser futura");
+        }
+
+        // 3. Validación manual de hora
+        if (turno.getHora() == null) {
+            result.rejectValue("hora", "error.hora", "La hora es requerida");
+        } else if (turno.getHora().isBefore(LocalTime.of(8, 0))) {
+            result.rejectValue("hora", "error.hora", "La hora mínima es 08:00");
+        } else if (turno.getHora().isAfter(LocalTime.of(18, 0))) {
+            result.rejectValue("hora", "error.hora", "La hora máxima es 18:00");
+        }
+
+        // 4. Si hay errores, volver al formulario
         if (result.hasErrors()) {
-            cargarDatosModelo(model);
             return "turno/form";
         }
 
         try {
-            // Validación adicional
+            // 5. Validación y persistencia del día
             if (turno.getServicio() == null) {
                 throw new IllegalArgumentException("El servicio es requerido");
             }
-
             Dia diaPersistido = diaService.findOrCreateByFechaAndServicio(
                 turno.getDia().getFecha(),
                 turno.getServicio()
             );
-            
             turno.setDia(diaPersistido);
-            
-            
-            
-            // Obtener cliente completo desde la base de datos PARA EL ENVIO DE MAIL
-            Long idCliente = turno.getCliente().getId();
-            Cliente clienteCompleto = clienteService.getClienteEntityById(idCliente);
-            turno.setCliente(clienteCompleto);
-            
+
+            // 6. Completa las entidades relacionadas
+            turno.setCliente(clienteService.getClienteEntityById(turno.getCliente().getId()));
+            turno.setServicio(servicioService.getServicioEntityById(turno.getServicio().getIdServicio()));
+
+            // 7. Guardar el turno (con validaciones internas)
             turnoService.save(turno);
-         
-          
-           // System.out.println("EMAIL CLIENTE: " + turno.getCliente().getEmail());
-            
-            // Obtener el servicio completo desde base de datos PARA EL ENVIO DEL MAIL
-            Servicio servicioCompleto = servicioService.getServicioEntityById(turno.getServicio().getIdServicio());
-            turno.setServicio(servicioCompleto); // Actualizamos el turno con el servicio completo
-			
-            // System.out.println("NOMBRE SERVICIO: " + turno.getServicio().getNombreServicio());
 
-            // Enviar email de confirmación
-            String email = turno.getCliente().getEmail();
-            String asunto = "Confirmación de Turno";
-            String cuerpo = "Hola " + turno.getCliente().getNombre() + 
-                    ", tu turno fue confirmado para el día " + turno.getDia().getFecha() +
-                    " con el servicio " + turno.getServicio().getNombreServicio() + ".";
+            // 8. Enviar email
+            emailService.enviarEmailHtml(
+            	    turno.getCliente().getEmail(),
+            	    "Confirmación de Turno",
+            	    turno.getCliente().getNombre(),
+            	    turno.getDia().getFecha().toString(),
+            	    turno.getHora().toString(),
+            	    turno.getServicio().getNombreServicio()
+            	);
 
-                emailService.enviarEmail(email, asunto, cuerpo);
-            
-                // Mensaje flash para redirección
-                redirectAttributes.addFlashAttribute("mensajeExito", 
-                    "¡El turno fue registrado y se envió un correo con los datalles a " + email + "!");
+            redirectAttributes.addFlashAttribute("mensajeExito", 
+                "¡Turno registrado! Se envió un correo a " + turno.getCliente().getEmail());
 
-            
         } catch (Exception e) {
             model.addAttribute("error", "Error al guardar: " + e.getMessage());
-            cargarDatosModelo(model);
             return "turno/form";
         }
-        
+
         return "redirect:/turno/index";
     }
-    
-    
-    
-   
+
     
     @PostMapping("/eliminar/{id}")
     public String eliminarTurno(@PathVariable("id") Long id) {

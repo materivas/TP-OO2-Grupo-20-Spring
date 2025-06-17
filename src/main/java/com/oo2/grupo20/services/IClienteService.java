@@ -20,10 +20,6 @@ public interface IClienteService {
 	
 	public List<ClienteDTO> findByNombreAndApellido(String nombre, String apellido);
 	    
-//	public List<ClienteDTO> findByFechaRegistroBetween(LocalDate inicio, LocalDate fin);
-	
-//	public List<ClienteDTO> findClientesConTurnoEnFecha(LocalDate fecha);
-	    
 	public boolean existsByDni(Integer dni);
 	
 	public boolean existsByEmail(String email);

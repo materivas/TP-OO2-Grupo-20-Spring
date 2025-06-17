@@ -1,5 +1,7 @@
 package com.oo2.grupo20.entities;
 
+import java.time.LocalTime;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +16,9 @@ public class Turno {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idTurno;
 
+    @Column(nullable = false)
+    private LocalTime hora;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_cliente", nullable = false)
     private Cliente cliente;

@@ -19,13 +19,11 @@ public class ClienteService implements IClienteService {
     private IClienteRepository clienteRepository;
     private ModelMapper modelMapper = new ModelMapper ();
 
-    //Faltaba agregar el constructor!!!
     public ClienteService (IClienteRepository clienteRepository) {
 		this.clienteRepository = clienteRepository;
 	}
 
-    
-    
+       
     @Override
     public List<Cliente> getAll() {
         return clienteRepository.findAll();

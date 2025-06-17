@@ -100,14 +100,6 @@ public class ClienteController {
         mAV.addObject("clientes", clienteService.findByApellido(apellido));
         return mAV;
     }
-/*
-    @GetMapping("/con_turno/{fecha}")
-    public ModelAndView getClientesConTurnoEnFecha(@PathVariable("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
-        ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_INDEX);
-        mAV.addObject("clientes", clienteService.findClientesConTurnoEnFecha(fecha));
-        return mAV;
-    }
- */
     
     @GetMapping("/editar/{dni}")
     public String editForm(@PathVariable Integer dni, Model model) {

@@ -113,20 +113,44 @@
                             </div>
 
                             <!-- Campo de Fecha -->
-                            <div class="mb-3">
-                                <label class="form-label"><i class="fa fa-calendar-day"></i> Fecha</label>
-                                <input type="date" th:field="*{dia.fecha}" class="form-control" required>
-                            </div>
+							<div class="mb-3">
+							    <label class="form-label"><i class="fa fa-calendar-day"></i> Fecha</label>
+							    <input type="date" 
+							           th:field="*{dia.fecha}" 
+							           class="form-control" 
+							           th:min="${#temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')}"
+							           required>
+							    <small th:if="${#fields.hasErrors('dia.fecha')}" 
+							           th:errors="*{dia.fecha}"
+							           class="text-danger"></small>
+							</div>
+							
+							<!-- Mostrar error general -->
+							<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-                            <div class="d-flex justify-content-between mt-4">
-                                <a th:href="@{/turno/index}" class="btn btn-secondary">
-                                    <i class="fa fa-times"></i> Cancelar
-                                </a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-save"></i> 
-                                    <span th:text="${turno.idTurno != null} ? ' Actualizar' : ' Guardar'"></span>
-                                </button>
-                            </div>
+							<!-- Campo Hora con mejor retroalimentación -->
+							<div class="mb-3">
+							    <label class="form-label"><i class="fa fa-clock"></i> Hora</label>
+							    <input type="time" 
+							           th:field="*{hora}"
+							           class="form-control"
+							           min="08:00" 
+							           max="17:30"
+							           step="1800"
+							           required
+							           aria-describedby="horaHelp">
+							    <small id="horaHelp" class="form-text text-muted">
+							        Horario laboral: 08:00 - 17:30
+							    </small>
+							    <small th:if="${#fields.hasErrors('hora')}" 
+							           th:errors="*{hora}"
+							           class="text-danger d-block mt-1"></small>
+							</div>
+							<!-- Botones -->
+							<div class="d-flex justify-content-between">
+							    <a th:href="@{/turno/index}" class="btn btn-secondary">Cancelar</a>
+							    <button type="submit" class="btn btn-primary">Confirmar Turno</button>
+							</div>
                         </form>
                     </div>
                 </div>

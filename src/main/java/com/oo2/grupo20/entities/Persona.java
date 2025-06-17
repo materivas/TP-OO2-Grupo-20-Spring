@@ -23,6 +23,12 @@ public abstract class Persona {
     @Column(unique = true)
     protected String email;
 
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+    
     protected LocalDate fechaDeNacimiento;
     protected boolean estado = true;  // Por defecto activo
 }

@@ -1,7 +1,6 @@
 package com.oo2.grupo20.services.implementation;
 
 import com.oo2.grupo20.entities.Turno;
-import com.oo2.grupo20.repositories.IDiaRepository;
 import com.oo2.grupo20.repositories.ITurnoRepository;
 import com.oo2.grupo20.services.ITurnoService;
 
@@ -9,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,12 +17,28 @@ import java.util.Optional;
 public class TurnoService implements ITurnoService {
 
     private final ITurnoRepository turnoRepository;
-    private final IDiaRepository diaRepository;
+    
     @Override
     public Turno save(Turno turno) {
-    	if(turno.getDia() != null && turno.getDia().getIdDia() == null) {
-            diaRepository.save(turno.getDia()); // Guarda primero el Día
+    	   // Validar horario laboral (8:00 - 18:00)
+        if (turno.getHora().isBefore(LocalTime.of(8, 0)) || 
+            turno.getHora().isAfter(LocalTime.of(17, 30))) {
+            throw new IllegalArgumentException("El horario debe ser entre 08:00 y 17:30");
         }
+        
+        // Validar que la fecha sea futura (redundante pero segura)
+        if (turno.getDia().getFecha().isBefore(LocalDate.now())) {
+            throw new IllegalArgumentException("La fecha debe ser futura");
+        }
+        
+        // Validar solapamiento
+        if (turnoRepository.existsByDiaAndHoraAndEmpleado(
+            turno.getDia(), 
+            turno.getHora(), 
+            turno.getEmpleado())) {
+            throw new IllegalArgumentException("El empleado ya tiene un turno en ese horario");
+        }
+        
         return turnoRepository.save(turno);
     }
 
@@ -36,7 +52,6 @@ public class TurnoService implements ITurnoService {
         return turnoRepository.findByClienteDni(dni);
     }
 
-    
     @Override
     public List<Turno> findByDia_Fecha(LocalDate fecha) {
         return turnoRepository.findByDia_Fecha(fecha);
