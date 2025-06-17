@@ -23,6 +23,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class EmpleadoServiceIntegrationTest {
 
+	//USAMOS AUTOWIRED UNICAMENTE PARA CORRER LOS TESTS
     @Autowired
     private IEmpleadoService empleadoService;
 

@@ -6,9 +6,13 @@ import java.util.Set;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter @Setter
+@NoArgsConstructor
 public class Dia {
 
     @Id
@@ -26,9 +30,6 @@ public class Dia {
     @JoinColumn(name = "servicio_id", nullable = false)
     private Servicio servicio;
 
-    // Constructor sin argumentos en caso de ser necesario
-    public Dia() {
-    }
 
     // Constructor con argumentos 
     public Dia(long idDia, LocalDate fecha, Servicio servicio) {

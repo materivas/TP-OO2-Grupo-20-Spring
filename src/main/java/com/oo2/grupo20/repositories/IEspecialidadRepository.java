@@ -24,8 +24,4 @@ public interface IEspecialidadRepository extends JpaRepository <Especialidad, Se
 	@Query("SELECT e FROM Especialidad e LEFT JOIN FETCH e.empleados WHERE e.idEspecialidad = :idEspecialidad")
 	Optional<Especialidad> findByIdWithEmpleados(Long idEspecialidad);
 
-	
-	
-	
-
 }

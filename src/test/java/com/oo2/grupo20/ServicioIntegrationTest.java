@@ -62,7 +62,7 @@ public class ServicioIntegrationTest {
         serv2.setPrecio(2000.0);
         serv2.setHoraInicio(LocalTime.of(10, 0));
         serv2.setHoraFin(LocalTime.of(18, 0));
-        serv2.setEstablecimiento(est2Guardado);
+        serv2.setEstablecimiento(est2Guardado); 
 
         Servicio serv2Guardado = servicioService.insertOrUpdate(serv2);
         assertNotNull(serv2Guardado.getIdServicio());

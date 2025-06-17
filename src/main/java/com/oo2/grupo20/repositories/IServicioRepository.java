@@ -24,6 +24,22 @@ public interface IServicioRepository extends JpaRepository<Servicio, Serializabl
 	// Trae el servicio con sus días asociados
 	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.dias WHERE s.idServicio = :idServicio")
 	public abstract Optional<Servicio> findServicioByIdWithDias(@Param("idServicio") Long idServicio);
+	
+	
+	
+	@Query("""
+		    SELECT DISTINCT s FROM Servicio s
+		    JOIN FETCH s.dias d
+		    LEFT JOIN FETCH s.establecimiento 
+		    WHERE s.idServicio = :idServicio
+		""")
+		Optional<Servicio> findServicioByIdWithDiasAndEstablecimiento(@Param("idServicio") Long idServicio);
+
+	
+	
+	
+	
+	
 
 	// Trae el servicio con sus turnos asociados
 	@Query("SELECT s FROM Servicio s LEFT JOIN FETCH s.turnos WHERE s.idServicio = :idServicio")

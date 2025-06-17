@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.repositories.IServicioRepository;
 import com.oo2.grupo20.services.IServicioService;
+import com.oo2.grupo20.dto.EmpleadoDTO;
+import com.oo2.grupo20.dto.ServicioConDiaDTO;
 import com.oo2.grupo20.dto.ServicioDTO;
 import com.oo2.grupo20.dto.ServicioSinTurnoDiaDTO;
 
@@ -67,6 +69,20 @@ public class ServicioService implements IServicioService {
 				.map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 	
+	@Override
+	public Optional<ServicioConDiaDTO> findByIdServicioWithDias2(Long idServicio) {
+	    return servicioRepository.findServicioByIdWithDiasAndEstablecimiento(idServicio)
+	        .map(servicio -> {
+	            // DEBUG: Imprimimos los días recuperados
+	            System.out.println("Días encontrados:");
+	            servicio.getDias().forEach(d -> System.out.println("Fecha: " + d.getFecha()));
+
+	            // Mapeamos con ModelMapper
+	            return modelMapper.map(servicio, ServicioConDiaDTO.class);
+	        });
+	}
+
+	
 
 	@Override
 	public Optional<ServicioDTO> findByIdServicioWithDiasAndTurnos(Long id) {
@@ -81,18 +97,12 @@ public class ServicioService implements IServicioService {
 	            .map(servicio -> ServicioDTO.toDTO(servicio));
 	}
 	
-	/*@Override
-	public Optional<ServicioSinTurnoDiaDTO> findByIdWithEstablecimiento2(Long id) {
-	    return servicioRepository.findByIdWithEstablecimiento(id)
-	            .map(servicio -> modelMapper.map(servicio, ServicioSinTurnoDiaDTO.class));
-	}*/
-	
-	
 	@Override
 	public Optional<ServicioSinTurnoDiaDTO> findByIdWithEstablecimiento2(Long id) {
 	    return servicioRepository.findByIdWithEstablecimiento(id)
-	            .map(servicio -> ServicioSinTurnoDiaDTO.toDTO(servicio));
+	            .map(servicio -> modelMapper.map(servicio, ServicioSinTurnoDiaDTO.class));
 	}
+	
 	
 	@Override
 	public Optional<ServicioDTO> findByIdServicioWithEstablecimientoAndEmpleados(Long id) {

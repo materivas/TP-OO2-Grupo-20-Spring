@@ -3,50 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Detalle de Servicio</title>
-    <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body {
-            background-color: #e9ecef;
-        }
-        .bg-azul-oscuro {
-            background-color: #001f3f !important;
-        }
-        .card-title i {
-            margin-right: 0.5rem;
-        }
-    </style>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><i class="fa-solid fa-clock"></i> Sistema de Turnos</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#"><i class="fa fa-home"></i> Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-cogs"></i> Servicios</a>
-                </li>
-            </ul>
-        </div>
+        <a class="navbar-brand" href="#">Sistema de Turnos</a>
     </div>
 </nav>
 
-<!-- CONTENIDO -->
 <main class="container my-5 flex-grow-1">
     <div th:if="${servicio}">
         <div class="card shadow">
             <div class="card-body">
-                <h2 class="card-title text-primary"><i class="fa fa-cogs"></i> Detalle de Servicio</h2>
+                <h2 class="card-title text-primary">Detalle de Servicio</h2>
+                
                 <p><strong>Nombre:</strong> <span th:text="${servicio.nombreServicio}"></span></p>
                 <p><strong>Descripción:</strong> <span th:text="${servicio.descripcion}"></span></p>
                 <p><strong>Duración:</strong> <span th:text="${servicio.duracion}"></span> minutos</p>
@@ -54,56 +26,37 @@
                 <p><strong>Hora Inicio:</strong> <span th:text="${servicio.horaInicio}"></span></p>
                 <p><strong>Hora Fin:</strong> <span th:text="${servicio.horaFin}"></span></p>
 
-                <h5 class="mt-4"><i class="fa fa-hospital"></i> Establecimiento:</h5>
+                <h5 class="mt-4">Establecimiento:</h5>
                 <div th:if="${servicio.establecimiento != null}">
-                    <p><strong>Nombre:</strong>
-                        <span th:text="${servicio.establecimiento.nombre != null ? servicio.establecimiento.nombre : 'Sin nombre'}"></span>
-                    </p>
-                    <p><strong>Localidad:</strong>
-                        <span th:text="${servicio.establecimiento.localidad != null ? servicio.establecimiento.localidad : 'Sin localidad'}"></span>
-                    </p>
+                    <p><strong>Nombre:</strong> <span th:text="${servicio.establecimiento.nombre}"></span></p>
+                    <p><strong>Localidad:</strong> <span th:text="${servicio.establecimiento.localidad}"></span></p>
                 </div>
                 <p th:unless="${servicio.establecimiento != null}" class="text-muted">No tiene establecimiento asignado</p>
 
-                <h5 class="mt-4"><i class="fa fa-calendar-day"></i> Días:</h5>
-                <ul class="list-group mb-3" th:if="${servicio.dias != null and !#lists.isEmpty(servicio.dias)}">
-                    <li class="list-group-item" th:each="dia : ${servicio.dias}">
-                        <span th:text="${dia.fecha}"></span>
-                    </li>
-                </ul>
+                <h5 class="mt-4">Días asignadosxsad:</h5>
+				<ul class="list-group mb-3" th:if="${servicio.dias != null and !#lists.isEmpty(servicio.dias)}">
+				    <li class="list-group-item" th:each="dia : ${servicio.dias}">
+				        <span th:text="${dia.fecha}"></span>
+				    </li>
+				</ul>
                 <p th:unless="${servicio.dias != null and !#lists.isEmpty(servicio.dias)}" class="text-muted">No tiene días asignados</p>
-
-                <h5 class="mt-4"><i class="fa fa-clock"></i> Turnos:</h5>
-                <ul class="list-group mb-3" th:if="${servicio.turnos != null and !#lists.isEmpty(servicio.turnos)}">
-                    <li class="list-group-item" th:each="turno : ${servicio.turnos}">
-                        <span th:text="'Turno ID: ' + ${turno.idTurno}"></span>
-                    </li>
-                </ul>
-                <p th:unless="${servicio.turnos != null and !#lists.isEmpty(servicio.turnos)}" class="text-muted">No tiene turnos asignados</p>
             </div>
         </div>
     </div>
+
     <div th:unless="${servicio}">
         <div class="alert alert-danger" role="alert">Servicio no encontrado</div>
     </div>
 
     <div class="mt-4">
-        <a th:href="@{/servicio/index}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Volver a la lista</a>
+        <a th:href="@{/servicio/index}" class="btn btn-secondary">Volver a la lista</a>
     </div>
 </main>
 
-<!-- FOOTER -->
-<footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
-    <small>Grupo 20 &copy; Sistema de Turnos - Todos los derechos reservados</small>
+<footer class="bg-dark text-light text-center py-3 mt-auto">
+    <small>&copy; Sistema de Turnos - Grupo 20</small>
 </footer>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-
-
-
-
-
-
