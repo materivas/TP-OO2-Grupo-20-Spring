@@ -18,20 +18,19 @@ public class ClienteService implements IClienteService {
 
     private IClienteRepository clienteRepository;
     private ModelMapper modelMapper = new ModelMapper ();
-
-    public ClienteService (IClienteRepository clienteRepository) {
-		this.clienteRepository = clienteRepository;
-	}
-
-       
-    @Override
-    public List<Cliente> getAll() {
-        return clienteRepository.findAll();
+    
+    public ClienteService(IClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
     }
 
     @Override
     public Cliente insertOrUpdate(Cliente cliente) {
         return clienteRepository.save(cliente);
+    }
+    
+    @Override
+    public List<Cliente> getAll() {
+        return clienteRepository.findAll();
     }
 
     @Override

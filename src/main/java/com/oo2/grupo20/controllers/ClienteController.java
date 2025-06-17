@@ -1,5 +1,6 @@
 package com.oo2.grupo20.controllers;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -70,6 +71,9 @@ public class ClienteController {
     @PostMapping("/create")
     public RedirectView create(@ModelAttribute("cliente") ClienteDTO clienteDTO) {
         Cliente cliente = modelMapper.map(clienteDTO, Cliente.class);
+        
+        cliente.setFechaRegistro(LocalDate.now());
+        
         clienteService.insertOrUpdate(cliente);
         return new RedirectView(ViewRouteHelper.CLIENTE_ROOT);
     }
