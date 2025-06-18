@@ -73,7 +73,7 @@ public class EmpleadoServiceIntegrationTest {
         empleado1.setDni(32165498);
         empleado1.setUsername("CarlosGarcia12");
         empleado1.setEmail("carlos.garcia@test.com");
-        empleado1.setPassword(encoder.encode("1234"));
+        empleado1.setPassword("1234");
         empleado1.setRol(Rol.EMPLEADO);
         empleado1.setEstado(true);
         empleado1.setFechaDeNacimiento(LocalDate.of(1985, 5, 20));
@@ -108,7 +108,7 @@ public class EmpleadoServiceIntegrationTest {
         empleado2.setNombre("Lucía");
         empleado2.setApellido("Ramírez");
         empleado2.setUsername("LuRamirez");
-        empleado2.setPassword(encoder.encode("1234"));
+        empleado2.setPassword("1234");
         empleado1.setRol(Rol.EMPLEADO);
         empleado2.setCUIL("20404040404");
         empleado2.setDni(40251879);
