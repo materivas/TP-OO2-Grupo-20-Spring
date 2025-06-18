@@ -17,6 +17,9 @@ public interface ITurnoService {
 	public List<Turno> findByEmpleadoId(Long id);
 
 	public Optional<Turno> findById(Long id);
+	
+	List<Turno> findByEmpleadoDni(Integer dni);
+
 
 	public Turno save(Turno turno);
 

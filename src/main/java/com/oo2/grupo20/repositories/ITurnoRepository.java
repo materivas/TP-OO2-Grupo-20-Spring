@@ -26,6 +26,8 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
     
     public void deleteById(Long id);
     
+    List<Turno> findByEmpleadoDni(Integer dni);
+    
     public List<Turno> findAll();
     
     public Optional<Turno> findById(Long id);

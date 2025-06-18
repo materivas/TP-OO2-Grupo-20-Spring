@@ -22,5 +22,8 @@ public interface IPersonaRepository extends JpaRepository<Persona, Serializable>
     Optional<Persona> findByDni(Integer dni);
 
     Optional<Persona> findByEmail(String email);
+    
+
+
 
 }

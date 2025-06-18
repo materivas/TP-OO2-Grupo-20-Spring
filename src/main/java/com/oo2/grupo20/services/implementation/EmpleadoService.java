@@ -5,9 +5,11 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.oo2.grupo20.entities.Empleado;
+import com.oo2.grupo20.entities.Rol;
 import com.oo2.grupo20.dto.EmpleadoConEspecialidadesYEstablecimientoDTO;
 import com.oo2.grupo20.dto.EmpleadoDTO;
 import com.oo2.grupo20.services.IEmpleadoService;
@@ -19,11 +21,13 @@ import com.oo2.grupo20.repositories.IEmpleadoRepository;
 public class EmpleadoService implements IEmpleadoService {
 	
 	private IEmpleadoRepository empleadoRepository;
+	private final PasswordEncoder passwordEncoder;
 	
 	private ModelMapper modelMapper = new ModelMapper ();
 	
-	public EmpleadoService (IEmpleadoRepository empleadoRepository) {
-		this.empleadoRepository = empleadoRepository;
+	public EmpleadoService(IEmpleadoRepository empleadoRepository, PasswordEncoder passwordEncoder) {
+	    this.empleadoRepository = empleadoRepository;
+	    this.passwordEncoder = passwordEncoder;
 	}
 
 	
@@ -34,9 +38,24 @@ public class EmpleadoService implements IEmpleadoService {
 	}
 	
 	@Override
-	public Empleado insertOrUpdate (Empleado empleado) {
-		return empleadoRepository.save(empleado);
+	public Empleado insertOrUpdate(Empleado empleado) {
+	    // Si es nuevo, codificamos la contraseña
+	    if (empleado.getId() == null) {
+	        empleado.setPassword(passwordEncoder.encode(empleado.getPassword()));
+	    }
+
+	    empleado.setRol(Rol.EMPLEADO); // Asignar rol
+	    return empleadoRepository.save(empleado);
 	}
+	
+	@Override
+	public Empleado findByEmail(String email) {
+	    return empleadoRepository.findByEmail(email)
+	        .orElseThrow(() -> new RuntimeException("Empleado no encontrado con email: " + email));
+	}
+
+
+
 	
 	
 	@Override

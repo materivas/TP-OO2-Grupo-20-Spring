@@ -70,13 +70,17 @@ public class ClienteController {
     
     @PostMapping("/create")
     public RedirectView create(@ModelAttribute("cliente") ClienteDTO clienteDTO) {
+        System.out.println("Contraseña recibida desde el formulario: " + clienteDTO.getPassword());
+
         Cliente cliente = modelMapper.map(clienteDTO, Cliente.class);
-        
+        System.out.println("Contraseña en entidad Cliente (después del mapping): " + cliente.getPassword());
+
         cliente.setFechaRegistro(LocalDate.now());
         
         clienteService.insertOrUpdate(cliente);
         return new RedirectView(ViewRouteHelper.CLIENTE_ROOT);
     }
+
     
     // Búsquedas específicas
     @GetMapping("/{id}")

@@ -30,5 +30,11 @@ public abstract class Persona {
     private String password;
     
     protected LocalDate fechaDeNacimiento;
-    protected boolean estado = true;  // Por defecto activo
+    private boolean estado;  // Por defecto activo
+    
+    
+    @Enumerated(EnumType.STRING)
+    private Rol rol;
+
+    
 }

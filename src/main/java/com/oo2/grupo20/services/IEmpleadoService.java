@@ -14,6 +14,9 @@ public interface IEmpleadoService {
     public Empleado insertOrUpdate(Empleado empleado);
 
     public boolean remove(long idEmpleado);
+    
+    Empleado findByEmail(String email); // o findByDni(String dni) si usás DNI como username
+
 
     public Optional<EmpleadoDTO> findByNombre(String nombre);
 

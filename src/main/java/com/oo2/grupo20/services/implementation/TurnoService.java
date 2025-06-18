@@ -41,6 +41,12 @@ public class TurnoService implements ITurnoService {
         
         return turnoRepository.save(turno);
     }
+    
+    @Override
+    public List<Turno> findByEmpleadoDni(Integer dni) {
+        return turnoRepository.findByEmpleadoDni(dni);
+    }
+
 
     @Override
     public void deleteById(Long id) {

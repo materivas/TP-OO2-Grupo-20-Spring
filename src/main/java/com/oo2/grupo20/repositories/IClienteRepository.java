@@ -16,6 +16,8 @@ public interface IClienteRepository extends JpaRepository <Cliente, Serializable
 	
 	public abstract Optional<Cliente> findByNombreAndApellido(String nombre, String apellido);
 
+	Optional<Cliente> findByEmail(String email);
+
 	boolean existsByDni(Integer dni);
 	
 	boolean existsByEmail(String email);

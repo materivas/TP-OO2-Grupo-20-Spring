@@ -6,10 +6,12 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.oo2.grupo20.dto.ClienteDTO;
 import com.oo2.grupo20.entities.Cliente;
+import com.oo2.grupo20.entities.Rol;
 import com.oo2.grupo20.repositories.IClienteRepository;
 import com.oo2.grupo20.services.IClienteService;
 
@@ -17,16 +19,34 @@ import com.oo2.grupo20.services.IClienteService;
 public class ClienteService implements IClienteService {
 
     private IClienteRepository clienteRepository;
+    private final PasswordEncoder passwordEncoder;
+    
     private ModelMapper modelMapper = new ModelMapper ();
     
-    public ClienteService(IClienteRepository clienteRepository) {
+    
+    
+    
+    public ClienteService(IClienteRepository clienteRepository, PasswordEncoder passwordEncoder) {
         this.clienteRepository = clienteRepository;
+        this.passwordEncoder = passwordEncoder;
+        System.out.println("PasswordEncoder inyectado? " + (passwordEncoder != null));
     }
-
+    
+    
     @Override
     public Cliente insertOrUpdate(Cliente cliente) {
+    	if (cliente.getId() == null) {
+    	    System.out.println("Contraseña antes de encriptar: " + cliente.getPassword());
+    	    cliente.setPassword(passwordEncoder.encode(cliente.getPassword()));
+    	    System.out.println("Contraseña después de encriptar: " + cliente.getPassword());
+    	}
+
+
+        cliente.setRol(Rol.CLIENTE); // Asignar rol
+        cliente.setEstado(true);
         return clienteRepository.save(cliente);
     }
+
     
     @Override
     public List<Cliente> getAll() {
@@ -47,6 +67,12 @@ public class ClienteService implements IClienteService {
     public Optional<ClienteDTO> findByDni(Integer dni) {
         return clienteRepository.findByDni(dni)
                 .map(cliente -> modelMapper.map(cliente, ClienteDTO.class));
+    }
+    
+    @Override
+    public Cliente findByEmail(String email) {
+        return clienteRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Cliente no encontrado con email: " + email));
     }
 
     @Override

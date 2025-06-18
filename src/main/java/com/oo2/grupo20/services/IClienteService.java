@@ -13,6 +13,8 @@ public interface IClienteService {
 	public Cliente insertOrUpdate(Cliente cliente);
 	
 	public boolean remove(long idCliente);
+	
+	Cliente findByEmail (String email);
 	    
 	public Optional<ClienteDTO> findByDni(Integer dni);
 	

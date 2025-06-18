@@ -13,7 +13,7 @@ import com.oo2.grupo20.entities.Turno;
 
 import jakarta.validation.constraints.NotBlank;
 
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor 
 public class ClienteDTO {
 
     private Long id;

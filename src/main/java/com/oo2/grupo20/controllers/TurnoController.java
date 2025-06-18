@@ -13,6 +13,9 @@ import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.services.IServicioService;
 import com.oo2.grupo20.services.ITurnoService;
 import com.oo2.grupo20.services.implementation.EmailService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,10 +45,47 @@ public class TurnoController {
     
     @GetMapping("/index")
     public String listarTurnos(Model model) {
-        List<Turno> turnos = turnoService.findAll();
-        model.addAttribute("turnos", turnos); 
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName(); // Es el DNI o email
+
+        // Determinar el rol
+        boolean isAdmin = auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+        boolean isEmpleado = auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_EMPLEADO"));
+        boolean isCliente = auth.getAuthorities().stream()
+                .anyMatch(r -> r.getAuthority().equals("ROLE_CLIENTE"));
+
+        List<Turno> turnos;
+
+        if (isAdmin) {
+            // Admin ve todos los turnos
+            turnos = turnoService.findAll();
+        } else if (isEmpleado) {
+            // Empleado ve turnos asignados a él
+            Empleado empleado = empleadoService.findByEmail(username); // o findByDni si usás DNI
+            if (empleado == null) {
+                model.addAttribute("error", "Empleado no encontrado");
+                return ViewRouteHelper.TURNO_INDEX;
+            }
+            turnos = turnoService.findByEmpleadoDni(empleado.getDni());
+        } else if (isCliente) {
+            // Cliente ve sus propios turnos
+            Cliente cliente = clienteService.findByEmail(username); // o findByDni si usás DNI
+            if (cliente == null) {
+                model.addAttribute("error", "Cliente no encontrado");
+                return ViewRouteHelper.TURNO_INDEX;
+            }
+            turnos = turnoService.findByClienteDni(cliente.getDni());
+        } else {
+            // Por seguridad, no muestra nada si no se identifica correctamente
+            turnos = List.of();
+        }
+
+        model.addAttribute("turnos", turnos);
         return ViewRouteHelper.TURNO_INDEX;
     }
+
 
     private void cargarDatosModelo(Model model) {
         model.addAttribute("clientes", clienteService.getAll());
