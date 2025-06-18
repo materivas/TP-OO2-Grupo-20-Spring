@@ -42,7 +42,10 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i> Servicios</a></li>
-                    <li class="nav-item"><a class="nav-link active" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/dia/index}"><i class="fa fa-calendar-day"></i> Días</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/especialidad/index}"><i class="fa fa-stethoscope"></i> Especialidades</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-hospital"></i> Establecimientos</a></li>
                 </ul>
             </div>
         </div>
@@ -57,58 +60,50 @@
             </a>
         </div>
 
-		<!-- Mensaje de éxito -->
-		<div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
-		    <span th:text="${mensajeExito}"></span>
-		    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
-		</div>
-		
-		
+        <!-- Mensaje de éxito -->
+        <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <span th:text="${mensajeExito}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+        </div>
+
         <!-- Tabla de Turnos -->
         <div class="table-responsive">
-			<table class="table table-bordered table-striped align-middle">
-			    <thead>
-			        <tr>
-			            <th>ID</th>
-			            <th>Cliente</th>
-			            <th>Empleado</th>
-			            <th>Fecha</th> 
-			            <th>Acciones</th>
-			        </tr>
-			    </thead>
-			    <tbody>
-			        <tr th:each="turno : ${turnos}">
-			            <!-- ID -->
-			            <td th:text="${turno?.idTurno} ?: 'N/A'"></td>
-			            
-						<td th:text="${turno.cliente.nombre} + ' ' + ${turno.cliente.apellido}"></td>
-						<td th:text="${turno.empleado.nombre} + ' ' + ${turno.empleado.apellido}"></td>
-									  
-			            <!-- Fecha (desde Dia) -->
-			            <td th:with="fecha=${turno?.dia?.fecha}">
-			                <span th:if="${fecha != null}" 
-			                      th:text="${#temporals.format(fecha, 'dd/MM/yyyy')}"></span>
-			                <span th:if="${fecha == null}">Sin fecha</span>
-			            </td>
-			            
-			            <!-- Acciones -->
-			            <td>
-			                <div class="d-flex flex-wrap">
-			                    <a th:href="@{'/turno/editar/' + ${turno.idTurno}}" 
-			                       class="btn btn-warning text-white btn-sm btn-acciones">
-			                        <i class="fa fa-edit"></i> Editar
-			                    </a>
-			                    <form th:action="@{'/turno/eliminar/' + ${turno.idTurno}}" method="post" class="d-inline">
-			                        <button type="submit" class="btn btn-danger btn-sm btn-acciones" 
-			                                onclick="return confirm('¿Eliminar este turno?')">
-			                            <i class="fa fa-trash"></i> Eliminar
-			                        </button>
-			                    </form>
-			                </div>
-			            </td>
-			        </tr>
-			    </tbody>
-			</table>
+            <table class="table table-bordered table-striped align-middle">
+                <thead class="table-primary">
+                    <tr>
+                        <th><i class="fa fa-id-card"></i> ID</th>
+                        <th><i class="fa fa-user"></i> Cliente</th>
+                        <th><i class="fa fa-user-tie"></i> Empleado</th>
+                        <th><i class="fa fa-calendar"></i> Fecha</th>
+                        <th><i class="fa fa-cogs"></i> Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="turno : ${turnos}">
+                        <td th:text="${turno?.idTurno} ?: 'N/A'"></td>
+                        <td th:text="${turno.cliente.nombre} + ' ' + ${turno.cliente.apellido}"></td>
+                        <td th:text="${turno.empleado.nombre} + ' ' + ${turno.empleado.apellido}"></td>
+                        <td th:with="fecha=${turno?.dia?.fecha}">
+                            <span th:if="${fecha != null}" th:text="${#temporals.format(fecha, 'dd/MM/yyyy')}"></span>
+                            <span th:if="${fecha == null}">Sin fecha</span>
+                        </td>
+                        <td>
+                            <div class="d-flex flex-wrap">
+                                <a th:href="@{'/turno/editar/' + ${turno.idTurno}}" 
+                                   class="btn btn-warning text-white btn-sm btn-acciones">
+                                    <i class="fa fa-edit"></i> Editar
+                                </a>
+                                <form th:action="@{'/turno/eliminar/' + ${turno.idTurno}}" method="post" class="d-inline">
+                                    <button type="submit" class="btn btn-danger btn-sm btn-acciones"
+                                            onclick="return confirm('¿Eliminar este turno?')">
+                                        <i class="fa fa-trash"></i> Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 

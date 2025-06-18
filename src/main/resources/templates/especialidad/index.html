@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Lista de Especialidades</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
             background-color: #e9ecef;
         }
+
         .bg-azul-oscuro {
             background-color: #001f3f !important;
+        }
+
+        .btn-acciones {
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
@@ -19,23 +27,37 @@
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" th:href="@{/}">
             <i class="fa-solid fa-clock"></i> Sistema de Turnos
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavEspecialidad" aria-controls="navbarNavEspecialidad" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNavEspecialidad">
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/empleado/index}">
-                        <i class="fa fa-users"></i> Empleados
-                    </a>
+                    <a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/establecimiento/index}">
-                        <i class="fa fa-building"></i> Establecimientos
-                    </a>
+                    <a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i> Servicios</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/dia/index}"><i class="fa fa-calendar-day"></i> Días</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/especialidad/index}"><i class="fa fa-stethoscope"></i> Especialidades</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-hospital"></i> Establecimientos</a>
                 </li>
             </ul>
         </div>
@@ -45,38 +67,39 @@
 <!-- CONTENIDO -->
 <main class="container my-5 flex-grow-1">
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2><i class="fa-solid fa-wrench"></i> Lista de Especialidades</h2>
+        <h1 class="h3"><i class="fa-solid fa-stethoscope"></i> Lista de Especialidades</h1>
         <a th:href="@{/especialidad/new}" class="btn btn-primary">
             <i class="fa fa-plus"></i> Nueva Especialidad
         </a>
     </div>
 
-    <!-- Tabla ocupa todo el ancho -->
     <div class="table-responsive">
-        <table class="table table-bordered table-striped align-middle w-100">
-            <thead class="table-dark">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-primary">
                 <tr>
                     <th>ID</th>
                     <th>Nombre</th>
-                    <th class="text-end">Acciones</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="especialidad : ${especialidades}">
                     <td th:text="${especialidad.idEspecialidad}"></td>
                     <td th:text="${especialidad.nombre}"></td>
-                    <td class="text-end">
-                        <a th:href="@{'/especialidad/with_empleados/' + ${especialidad.idEspecialidad}}" class="btn btn-sm btn-info me-1">
-                            <i class="fa fa-eye"></i> Detalle
-                        </a>
-                        <a th:href="@{'/especialidad/' + ${especialidad.idEspecialidad}}" class="btn btn-sm btn-warning me-1">
-                            <i class="fa fa-edit"></i> Editar
-                        </a>
-                        <form th:action="@{'/especialidad/delete/' + ${especialidad.idEspecialidad}}" method="post" class="d-inline">
-                            <button type="submit" class="btn btn-sm btn-danger">
-                                <i class="fa fa-trash"></i> Eliminar
-                            </button>
-                        </form>
+                    <td>
+                        <div class="d-flex flex-wrap">
+                            <a th:href="@{'/especialidad/with_empleados/' + ${especialidad.idEspecialidad}}" class="btn btn-info btn-sm text-white btn-acciones">
+                                <i class="fa fa-eye"></i> Ver Detalle
+                            </a>
+                            <a th:href="@{'/especialidad/' + ${especialidad.idEspecialidad}}" class="btn btn-warning btn-sm text-white btn-acciones">
+                                <i class="fa fa-edit"></i> Editar
+                            </a>
+                            <form th:action="@{'/especialidad/delete/' + ${especialidad.idEspecialidad}}" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-danger btn-sm btn-acciones" onclick="return confirm('¿Está seguro de que desea eliminar esta especialidad?');">
+                                    <i class="fa fa-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -89,6 +112,8 @@
     <small>Grupo 20 &copy; Sistema de Turnos - Todos los derechos reservados</small>
 </footer>
 
+<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+

@@ -46,28 +46,44 @@
 
 <!-- NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">
-            <i class="fa-solid fa-clock"></i> Sistema de Turnos
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="#"><i class="fa fa-home"></i> Inicio</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/especialidad/index}"><i class="fa-solid fa-wrench"></i>  Especialidades</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+	    <div class="container-fluid">
+	        <a class="navbar-brand" th:href="@{/}">
+	            <i class="fa-solid fa-clock"></i> Sistema de Turnos
+	        </a>
+	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+	            <span class="navbar-toggler-icon"></span>
+	        </button>
+	        <div class="collapse navbar-collapse" id="navbarNav">
+	            <ul class="navbar-nav ms-auto">
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i> Servicios</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/dia/index}"><i class="fa fa-calendar-day"></i> Días</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/especialidad/index}"><i class="fa fa-stethoscope"></i> Especialidades</a>
+	                </li>
+	                <li class="nav-item">
+	                    <a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-hospital"></i> Establecimientos</a>
+	                </li>
+	            </ul>
+	        </div>
+	    </div>
+	</nav>
+
 
 <!-- CONTENIDO -->
 <main class="container my-5 flex-grow-1">
