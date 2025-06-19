@@ -30,5 +30,7 @@ public interface IEmpleadoService {
     
     public Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> findByIdWithEspecialidadesAndEstablecimiento2(Long id);
 
+	public Empleado getEmpleadoEntityById(Long id);
+
     
 }

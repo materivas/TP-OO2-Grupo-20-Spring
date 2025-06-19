@@ -28,4 +28,7 @@ public interface IDiaService {
 
 	public Dia findOrCreateByFecha(LocalDate fecha);
 	
+	public List<LocalDate> findFechasDisponiblesPorServicio(Long idServicio);
+	
+	
 }

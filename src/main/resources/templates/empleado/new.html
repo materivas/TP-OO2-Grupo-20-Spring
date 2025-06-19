@@ -49,6 +49,16 @@
                     <input type="text" id="apellido" class="form-control" th:field="*{apellido}" required />
                 </div>
 
+				<div class="mb-3">
+					<label for="username" class="form-label">Usuario</label>
+					<input type="text" id="username" th:field="*{username}" class="form-control" required>
+				</div>
+
+				<div class="mb-3">
+					 <label for="password" class="form-label">Contraseña</label>
+					 <input type="password" id="password" th:field="*{password}" class="form-control" required>
+				</div>
+				
                 <div class="mb-3">
                     <label for="email" class="form-label">Email:</label>
                     <input type="email" id="email" class="form-control" th:field="*{email}" />

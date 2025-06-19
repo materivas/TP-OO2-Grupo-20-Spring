@@ -1,5 +1,6 @@
 package com.oo2.grupo20.entities;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +24,15 @@ public class Servicio {
 	private double precio;
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
+	
+	
+	
+	@ElementCollection(targetClass = DayOfWeek.class)
+	@CollectionTable(name = "servicio_dias_disponibles", joinColumns = @JoinColumn(name = "servicio_id"))
+	@Column(name = "dia")
+	@Enumerated(EnumType.STRING)
+	private Set<DayOfWeek> diasDisponibles = new HashSet<>();
+
 	
 	//Relacion Many-To-One con establecimiento
 	@ManyToOne(fetch = FetchType.LAZY)

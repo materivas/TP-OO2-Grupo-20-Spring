@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.oo2.grupo20.entities.Dia;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.repositories.IDiaRepository;
+import com.oo2.grupo20.repositories.IServicioRepository;
 import com.oo2.grupo20.dto.DiaDTO;
 import com.oo2.grupo20.dto.ServicioDTO;
 import com.oo2.grupo20.services.IDiaService;
@@ -20,11 +21,13 @@ import jakarta.transaction.Transactional;
 public class DiaService implements IDiaService {
 	
 	private IDiaRepository diaRepository;
+	private IServicioRepository servicioRepository;
 	
 	private ModelMapper modelMapper = new ModelMapper ();
 	
-	public DiaService (IDiaRepository diaRepository) {
+	public DiaService (IDiaRepository diaRepository, IServicioRepository servicioRepository) {
 		this.diaRepository = diaRepository;
+		this.servicioRepository = servicioRepository;
 	}
 	
 	@Override
@@ -46,6 +49,16 @@ public class DiaService implements IDiaService {
 			return false;
 		}
 	}
+	
+	
+	public List<LocalDate> findFechasDisponiblesPorServicio(Long idServicio) {
+	    Servicio servicio = servicioRepository.findById(idServicio)
+	            .orElseThrow(() -> new IllegalArgumentException("Servicio no encontrado"));
+
+	    return diaRepository.findDiasDisponiblesPorServicio(servicio);
+	}
+
+	
 	
 	@Override
 	public Optional<DiaDTO> findByIdDia(long idDia){

@@ -2,6 +2,7 @@ package com.oo2.grupo20.repositories;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -28,4 +29,10 @@ public interface IDiaRepository extends JpaRepository<Dia, Serializable> {
 	Optional<Dia> findByFechaAndServicio(LocalDate fecha, Servicio servicio);
 	
 	public Dia findOrCreateByFecha(LocalDate fecha);
+	
+	@Query("SELECT d.fecha FROM Dia d WHERE d.servicio = :servicio")
+	List<LocalDate> findDiasDisponiblesPorServicio(@Param("servicio") Servicio servicio);
+
+
+	
 }

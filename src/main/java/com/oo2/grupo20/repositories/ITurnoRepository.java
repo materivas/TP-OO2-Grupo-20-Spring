@@ -36,6 +36,8 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
     List<Turno> findAllWithRelations();
 
 	 boolean existsByDiaAndHoraAndEmpleado(Dia dia, LocalTime hora, Empleado empleado);
+	 
+	 List<Turno> findByDia(Dia dia);
 
 
 
