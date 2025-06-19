@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Nuevo Empleado</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body {
+            background-color: #e9ecef;
+        }
+        .bg-azul-oscuro {
+            background-color: #001f3f !important;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
+    <div class="container-fluid">
+		<a class="navbar-brand" th:href="@{/}">
+		    <i class="fa-solid fa-clock"></i> Sistema de Turnos
+		</a>
+
+    </div>
+</nav>
+
+<!-- CONTENIDO -->
+<main class="container my-5 flex-grow-1">
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="card-title text-primary">
+                <i class="fa-solid fa-user-plus"></i> Nuevo Empleado
+            </h2>
+
+			<form th:action="@{/empleado/create}" th:object="${empleado}" method="post">
+
+
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" id="nombre" class="form-control" th:field="*{nombre}" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido:</label>
+                    <input type="text" id="apellido" class="form-control" th:field="*{apellido}" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" class="form-control" th:field="*{email}" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="dni" class="form-label">DNI:</label>
+                    <input type="number" id="dni" class="form-control" th:field="*{dni}" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="cuil" class="form-label">CUIL:</label>
+                    <input type="text" id="cuil" class="form-control" th:field="*{CUIL}" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="fechaDeNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                    <input type="date" id="fechaDeNacimiento" class="form-control" th:field="*{fechaDeNacimiento}" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="establecimiento" class="form-label">Establecimiento:</label>
+					<select id="establecimiento" th:field="*{establecimiento}" class="form-select">
+					    <option th:value="${null}">Seleccione un establecimiento (OPCIONAL)</option> //COLOCAMOS NULL SI QUEREMOS QUE ESE SEA EL VALOR POR DEFECTO, ASI NO TIENE PROBLEMAS LA BD
+					    <option th:each="establecimiento : ${establecimientos}"
+					            th:value="${establecimiento.idEstablecimiento}"
+					            th:text="${establecimiento.nombre}">
+					    </option>
+					</select>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="especialidades" class="form-label">Especialidades:</label>
+                    <select id="especialidades" name="especialidades" multiple size="5" class="form-select">
+                        <option th:each="especialidad : ${especialidades}"
+                                th:value="${especialidad.idEspecialidad}"
+                                th:text="${especialidad.nombre}"></option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-save"></i> Guardar
+                </button>
+                <a th:href="@{/empleado/index}" class="btn btn-secondary ms-2">
+                    <i class="fa fa-arrow-left"></i> Volver
+                </a>
+
+            </form>
+        </div>
+    </div>
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
+    <small>Grupo 20 &copy; Sistema de Turnos - Todos los derechos reservados</small>
+</footer>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

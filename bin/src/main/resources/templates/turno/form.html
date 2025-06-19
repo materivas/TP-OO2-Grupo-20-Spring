@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${turno.idTurno != null} ? 'Editar Turno' : 'Nuevo Turno'">Formulario de Turno</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #e9ecef;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .bg-azul-oscuro {
+            background-color: #001f3f !important;
+        }
+        .form-card {
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
+        <div class="container-fluid">
+            <a class="navbar-brand" th:href="@{/}">
+                <i class="fa-solid fa-clock"></i> Sistema de Turnos
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i> Servicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container my-5 flex-grow-1">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card form-card">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">
+                            <i class="fa fa-calendar-plus" th:unless="${turno.idTurno != null}"></i>
+                            <i class="fa fa-calendar-pen" th:if="${turno.idTurno != null}"></i>
+                            <span th:text="${turno.idTurno != null} ? ' Editar Turno #' + ${turno.idTurno} : ' Nuevo Turno'"></span>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
+                            <input type="hidden" th:field="*{idTurno}">
+
+                            <!-- Selección de Cliente -->
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fa fa-user"></i> Cliente</label>
+                                <select th:field="*{cliente.id}" class="form-select" required>
+                                    <option value="">Seleccione un cliente</option>
+                                    <option th:each="cliente : ${clientes}"
+                                            th:value="${cliente.id}"
+                                            th:text="${cliente.nombre} + ' ' + ${cliente.apellido}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Selección de Empleado -->
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fa fa-users"></i> Empleado</label>
+                                <select th:field="*{empleado.id}" class="form-select" required>
+                                    <option value="">Seleccione un empleado</option>
+                                    <option th:each="empleado : ${empleados}"
+                                            th:value="${empleado.id}"
+                                            th:text="${empleado.nombre} + ' ' + ${empleado.apellido}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Selección de Servicio -->
+                            <div class="mb-3">
+                                <label class="form-label"><i class="fa fa-concierge-bell"></i> Servicio</label>
+                                <select th:field="*{servicio.idServicio}" class="form-select" required>
+                                    <option value="">Seleccione un servicio</option>
+                                    <option th:each="servicio : ${servicios}"
+                                            th:value="${servicio.idServicio}"
+                                            th:text="${servicio.nombreServicio}">
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Campo de Fecha -->
+							<div class="mb-3">
+							    <label class="form-label"><i class="fa fa-calendar-day"></i> Fecha</label>
+							    <input type="date" 
+							           th:field="*{dia.fecha}" 
+							           class="form-control" 
+							           th:min="${#temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')}"
+							           required>
+							    <small th:if="${#fields.hasErrors('dia.fecha')}" 
+							           th:errors="*{dia.fecha}"
+							           class="text-danger"></small>
+							</div>
+							
+							<!-- Mostrar error general -->
+							<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+							<!-- Campo Hora con mejor retroalimentación -->
+							<div class="mb-3">
+							    <label class="form-label"><i class="fa fa-clock"></i> Hora</label>
+							    <input type="time" 
+							           th:field="*{hora}"
+							           class="form-control"
+							           min="08:00" 
+							           max="17:30"
+							           step="1800"
+							           required
+							           aria-describedby="horaHelp">
+							    <small id="horaHelp" class="form-text text-muted">
+							        Horario laboral: 08:00 - 17:30
+							    </small>
+							    <small th:if="${#fields.hasErrors('hora')}" 
+							           th:errors="*{hora}"
+							           class="text-danger d-block mt-1"></small>
+							</div>
+							<!-- Botones -->
+							<div class="d-flex justify-content-between">
+							    <a th:href="@{/turno/index}" class="btn btn-secondary">Cancelar</a>
+							    <button type="submit" class="btn btn-primary">Confirmar Turno</button>
+							</div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
+        <small>© 2025 Grupo 20 - Universidad Nacional - Todos los derechos reservados.</small>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

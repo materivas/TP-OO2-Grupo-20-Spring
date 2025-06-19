@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Eliminar Especialidad</title>
+</head>
+<body>
+    <h1>Eliminar Especialidad</h1>
+    <p>¿Estás seguro que deseas eliminar la especialidad: <strong th:text="${especialidad.nombre}">Nombre</strong>?</p>
+    
+    <form th:action="@{'/especialidad/delete/' + ${especialidad.idEspecialidad}}" method="post">
+        <button type="submit">Sí, eliminar</button>
+    </form>
+    
+    <a th:href="@{/especialidad/index}">Cancelar</a>
+</body>
+</html>

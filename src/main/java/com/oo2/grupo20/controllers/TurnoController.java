@@ -6,7 +6,6 @@ import com.oo2.grupo20.entities.Empleado;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.entities.Turno;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
-import com.oo2.grupo20.repositories.ITurnoRepository;
 import com.oo2.grupo20.services.IClienteService;
 import com.oo2.grupo20.services.IDiaService;
 import com.oo2.grupo20.services.IEmpleadoService;
@@ -29,7 +28,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-@SuppressWarnings("unused")
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/turno")
@@ -186,9 +184,7 @@ public class TurnoController {
         Turno turno = turnoService.findById(id)
             .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
         model.addAttribute("turno", turno);
-        model.addAttribute("clientes", clienteService.getAll());
-        model.addAttribute("empleados", empleadoService.getAll());
-        model.addAttribute("servicios", servicioService.getAll());
+        cargarDatosModelo(model);
         return ViewRouteHelper.TURNO_FORM;
     }
 

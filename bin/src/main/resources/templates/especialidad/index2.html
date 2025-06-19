@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Lista de Especialidades</title>
+</head>
+<body>
+    <h1>Lista de Especialidades</h1>
+    <a th:href="@{/especialidad/new}">Nueva Especialidad</a>
+    <table border="1" cellpadding="5" cellspacing="0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="especialidad : ${especialidades}">
+                <td th:text="${especialidad.idEspecialidad}"></td>
+                <td th:text="${especialidad.nombre}"></td>
+                <td>
+                    <a th:href="@{'/especialidad/' + ${especialidad.idEspecialidad}}">✏️ Editar</a> |
+                    <a th:href="@{'/especialidad/with_empleados/' + ${especialidad.idEspecialidad}}">📄 Detalle</a> |
+                    <form th:action="@{'/especialidad/delete/' + ${especialidad.idEspecialidad}}" method="post" style="display:inline;">
+                        <button type="submit">🗑️ Eliminar</button>
+                    </form>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
