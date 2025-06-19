@@ -30,7 +30,7 @@ public class UserSeeder {
                 emp.setEmail("empleado@example.com");
                 emp.setPassword(encoder.encode("1234"));
                 emp.setRol(Rol.EMPLEADO);
-                emp.setEstado(false);
+                emp.setEstado(true);
                 emp.setFechaDeNacimiento(LocalDate.of(1990, 5, 10));
                 emp.setCUIL("20-11111111-1");
                 empleadoRepo.save(emp);
@@ -45,7 +45,7 @@ public class UserSeeder {
                 cli.setEmail("cliente2@example.com");
                 cli.setPassword(encoder.encode("12345"));
                 cli.setRol(Rol.CLIENTE);
-                cli.setEstado(false);
+                cli.setEstado(true);
                 cli.setFechaDeNacimiento(LocalDate.of(1995, 8, 20));
                 cli.setFechaRegistro(LocalDate.now());
                 clienteRepo.save(cli);
@@ -60,7 +60,7 @@ public class UserSeeder {
                 cli.setEmail("cliente@example.com");
                 cli.setPassword(encoder.encode("1234"));
                 cli.setRol(Rol.CLIENTE);
-                cli.setEstado(false);
+                cli.setEstado(true);
                 cli.setFechaDeNacimiento(LocalDate.of(1995, 8, 20));
                 cli.setFechaRegistro(LocalDate.now());
                 clienteRepo.save(cli);
@@ -76,7 +76,7 @@ public class UserSeeder {
                 admin.setEmail("admin@example.com");
                 admin.setPassword(encoder.encode("admin123"));
                 admin.setRol(Rol.ADMIN);
-                admin.setEstado(false);
+                admin.setEstado(true);
                 admin.setFechaDeNacimiento(LocalDate.of(1985, 1, 1));
                 admin.setCUIL("20-33333333-1");
                 empleadoRepo.save(admin);

@@ -60,6 +60,14 @@
 	                <li class="nav-item">
 	                    <a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-hospital"></i> Establecimientos</a>
 	                </li>
+					<!-- Botón de Cerrar Sesión -->
+					<li class="nav-item">
+					    <form th:action="@{/logout}" method="post" class="d-inline">
+					        <button type="submit" class="nav-link btn btn-link border-0">
+					            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+					        </button>
+					    </form>
+					</li>
 	            </ul>
 	        </div>
 	    </div>

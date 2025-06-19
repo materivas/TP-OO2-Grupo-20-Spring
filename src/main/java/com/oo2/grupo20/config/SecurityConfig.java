@@ -36,11 +36,20 @@ public class SecurityConfig {
                 
             )
             .formLogin(login -> login
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/home", true)
+                    .loginPage("/login")
+                    .loginProcessingUrl("/loginprocess")  // Asegurar que coincida con tu form
+                    .usernameParameter("username")       // Campo del email (name del input)
+                    .passwordParameter("password")       // Campo de contraseña
+                    .defaultSuccessUrl("/home", true)
+                    .failureUrl("/login?error=true")     // Para mostrar mensaje de error
+                    .permitAll()
             )
             .logout(logout -> logout
-                .logoutSuccessUrl("/login?logout").permitAll()
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/login?logout_success") // Mensaje de éxito
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID")
+                    .permitAll()
             );
 
         return http.build();
