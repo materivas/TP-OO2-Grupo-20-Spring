@@ -100,7 +100,7 @@ public class ServicioService implements IServicioService {
 	@Override
 	public void generarDiasParaServicio(Servicio servicio) {
 	    LocalDate hoy = LocalDate.now();
-	    LocalDate fin = hoy.plusDays(365); //Creamos Días para un año.
+	    LocalDate fin = hoy.plusDays(50); //Creamos X cantidad de Dias.
 
 	    for (LocalDate fecha = hoy; !fecha.isAfter(fin); fecha = fecha.plusDays(1)) {
 	        if (servicio.getDiasDisponibles().contains(fecha.getDayOfWeek())) {

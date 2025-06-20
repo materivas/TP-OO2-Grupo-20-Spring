@@ -29,21 +29,21 @@ public class ServicioIntegrationTest {
     void testCrearServiciosYEstablecimientos() {
         // PRIMER ESTABLECIMIENTO
         Establecimiento est1 = new Establecimiento();
-        est1.setNombre("Clínica del Sur");
+        est1.setNombre("Clínica de Bernal");
         est1.setLocalidad("Avenida Siempreviva 742");
         Establecimiento est1Guardado = establecimientoRepository.save(est1);
         assertNotNull(est1Guardado.getIdEstablecimiento());
 
         // SEGUNDO ESTABLECIMIENTO
         Establecimiento est2 = new Establecimiento();
-        est2.setNombre("Sanatorio Central");
+        est2.setNombre("Sanatorio Max");
         est2.setLocalidad("Boulevard Salud 100");
         Establecimiento est2Guardado = establecimientoRepository.save(est2);
         assertNotNull(est2Guardado.getIdEstablecimiento());
 
         // PRIMER SERVICIO
         Servicio serv1 = new Servicio();
-        serv1.setNombreServicio("Pediatría");
+        serv1.setNombreServicio("Pediatría (Clínica de Bernal)");
         serv1.setDescripcion("Atención médica para niños");
         serv1.setDuracion(30);
         serv1.setPrecio(1200.0);
@@ -56,7 +56,7 @@ public class ServicioIntegrationTest {
 
         // SEGUNDO SERVICIO
         Servicio serv2 = new Servicio();
-        serv2.setNombreServicio("Traumatología");
+        serv2.setNombreServicio("Traumatología (Sanatorio Max)");
         serv2.setDescripcion("Consultas de lesiones óseas");
         serv2.setDuracion(60);
         serv2.setPrecio(2000.0);
@@ -70,15 +70,15 @@ public class ServicioIntegrationTest {
         // VERIFICACIÓN SERVICIO 1
         Optional<ServicioSinTurnoDiaDTO> dto1 = servicioService.findByIdWithEstablecimiento2(serv1Guardado.getIdServicio());
         assertTrue(dto1.isPresent());
-        assertEquals("Pediatría", dto1.get().getNombreServicio());
-        assertEquals("Clínica del Sur", dto1.get().getEstablecimiento().getNombre());
+        assertEquals("Pediatría (Clínica de Bernal)", dto1.get().getNombreServicio());
+        assertEquals("Clínica de Bernal", dto1.get().getEstablecimiento().getNombre());
         assertEquals("Avenida Siempreviva 742", dto1.get().getEstablecimiento().getLocalidad());
 
         // VERIFICACIÓN SERVICIO 2
         Optional<ServicioSinTurnoDiaDTO> dto2 = servicioService.findByIdWithEstablecimiento2(serv2Guardado.getIdServicio());
         assertTrue(dto2.isPresent());
-        assertEquals("Traumatología", dto2.get().getNombreServicio());
-        assertEquals("Sanatorio Central", dto2.get().getEstablecimiento().getNombre());
+        assertEquals("Traumatología (Sanatorio Max)", dto2.get().getNombreServicio());
+        assertEquals("Sanatorio Max", dto2.get().getEstablecimiento().getNombre());
         assertEquals("Boulevard Salud 100", dto2.get().getEstablecimiento().getLocalidad());
     }
 }

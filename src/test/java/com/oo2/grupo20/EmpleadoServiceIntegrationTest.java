@@ -44,11 +44,11 @@ public class EmpleadoServiceIntegrationTest {
 
     // CREAMOS LAS ESPECIALIDADES
     Especialidad especialidad1 = new Especialidad();
-    especialidad1.setNombre("Neurología");
+    especialidad1.setNombre("Oftalmología");
     especialidad1 = especialidadRepository.save(especialidad1);
 
     Especialidad especialidad2 = new Especialidad();
-    especialidad2.setNombre("Traumatología");
+    especialidad2.setNombre("Pediatría");
     especialidad2 = especialidadRepository.save(especialidad2);
 
     // CREAMOS LOS ESTABLECIMIENTOS
@@ -58,7 +58,7 @@ public class EmpleadoServiceIntegrationTest {
     establecimiento1 = establecimientoRepository.save(establecimiento1);
 
     Establecimiento establecimiento2 = new Establecimiento();
-    establecimiento2.setNombre("Clínica del Norte");
+    establecimiento2.setNombre("Clínica del Oeste");
     establecimiento2.setLocalidad("Avenida Siempre Viva 456");
     establecimiento2 = establecimientoRepository.save(establecimiento2);
 
@@ -101,7 +101,7 @@ public class EmpleadoServiceIntegrationTest {
     assertNotNull(dto1.getEstablecimiento());
     assertEquals("Hospital General", dto1.getEstablecimiento().getNombre());
     assertEquals(1, dto1.getEspecialidades().size());
-    assertTrue(dto1.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Neurología")));
+    assertTrue(dto1.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Oftalmología")));
 
     // EMPLEADO 2
     Empleado empleado2 = new Empleado();
@@ -140,8 +140,8 @@ public class EmpleadoServiceIntegrationTest {
     assertEquals("Ramírez", dto2.getApellido());
     assertEquals("20404040404", dto2.getCUIL());
     assertNotNull(dto2.getEstablecimiento());
-    assertEquals("Clínica del Norte", dto2.getEstablecimiento().getNombre());
+    assertEquals("Clínica del Oeste", dto2.getEstablecimiento().getNombre());
     assertEquals(1, dto2.getEspecialidades().size());
-    assertTrue(dto2.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Traumatología")));
+    assertTrue(dto2.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Pediatría")));
   }
 }
