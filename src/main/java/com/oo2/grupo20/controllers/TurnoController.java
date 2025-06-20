@@ -3,6 +3,7 @@ package com.oo2.grupo20.controllers;
 import com.oo2.grupo20.entities.Cliente;
 import com.oo2.grupo20.entities.Dia;
 import com.oo2.grupo20.entities.Empleado;
+import com.oo2.grupo20.entities.Establecimiento;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.entities.Turno;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
@@ -146,7 +147,19 @@ public class TurnoController {
             // 6. Completa las entidades relacionadas
             turno.setCliente(clienteService.getClienteEntityById(turno.getCliente().getId()));
             turno.setServicio(servicioService.getServicioEntityById(turno.getServicio().getIdServicio()));
+            turno.setEmpleado(empleadoService.getEmpleadoEntityById(turno.getEmpleado().getId())); 
 
+            
+            // Validación: que el empleado solo pueda brindar servicios de su establecimiento
+            Establecimiento estEmpleado = turno.getEmpleado().getEstablecimiento();
+            Establecimiento estServicio = turno.getServicio().getEstablecimiento();
+
+            if (estEmpleado == null || estServicio == null || !estEmpleado.getIdEstablecimiento().equals(estServicio.getIdEstablecimiento())) {
+                model.addAttribute("error", "El empleado seleccionado no puede brindar el servicio porque no pertenece al mismo establecimiento.");
+                cargarDatosModelo(model);
+                return "turno/form";
+            }
+            
             // 7. Guardar el turno (con validaciones internas)
             turnoService.save(turno);
 
@@ -188,8 +201,8 @@ public class TurnoController {
         return ViewRouteHelper.TURNO_FORM;
     }
 
-    // Ver detalle de un turno (opcional)
-    @GetMapping("/detalle/{id}")
+    // Ver detalle de un turno 
+    @GetMapping("/detail/{id}")
     public String detalleTurno(@PathVariable("id") Long id, Model model) {
         Turno turno = turnoService.findById(id)
             .orElseThrow(() -> new RuntimeException("Turno no encontrado"));

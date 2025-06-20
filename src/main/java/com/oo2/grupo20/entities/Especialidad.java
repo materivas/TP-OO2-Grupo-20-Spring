@@ -14,8 +14,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-
-
  @Entity
  @Getter @Setter
  @NoArgsConstructor
@@ -28,8 +26,8 @@ public class Especialidad {
 	 private String nombre;
 
 	 // Relación ManyToMany con Empleado (bidireccional)
-	    @ManyToMany(mappedBy = "especialidades", fetch = FetchType.LAZY)
-	    private Set<Empleado> empleados = new HashSet<>();
+	 @ManyToMany(mappedBy = "especialidades", fetch = FetchType.LAZY)
+	 private Set<Empleado> empleados = new HashSet<>();
 	 
 
 }

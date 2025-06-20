@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <title>Lista de Empleados</title>
 </head>
+
 <body>
     <h1>Empleados</h1>
     <a th:href="@{/empleado/new}">Nuevo Empleado</a>
     <table>
         <thead>
             <tr>
-                <th>ID</th><th>Nombre</th><th>Apellido</th><th>CUIL</th><th>Disponible</th>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>CUIL</th>
+                <th>Disponible</th>
             </tr>
         </thead>
         <tbody>
@@ -23,4 +29,5 @@
         </tbody>
     </table>
 </body>
+
 </html>

@@ -106,6 +106,13 @@ public class EmpleadoService implements IEmpleadoService {
     }
 
 
+    @Override
+    public Empleado getEmpleadoEntityById(Long id) {
+        return empleadoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+    }
+
+
 
 	
 	

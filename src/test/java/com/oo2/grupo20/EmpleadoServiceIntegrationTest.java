@@ -26,118 +26,122 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 public class EmpleadoServiceIntegrationTest {
 
-	//USAMOS AUTOWIRED UNICAMENTE PARA CORRER LOS TESTS
-    @Autowired
-    private IEmpleadoService empleadoService;
+  // USAMOS AUTOWIRED UNICAMENTE PARA CORRER LOS TESTS
+  @Autowired
+  private IEmpleadoService empleadoService;
 
-    @Autowired
-    private IEspecialidadRepository especialidadRepository;
+  @Autowired
+  private IEspecialidadRepository especialidadRepository;
 
-    @Autowired
-    private IEstablecimientoRepository establecimientoRepository;
-    
-    @Autowired
-  	PasswordEncoder encoder;
+  @Autowired
+  private IEstablecimientoRepository establecimientoRepository;
 
-    @Test
-    void testInsertarYBuscarEmpleadosConRelaciones() {
-    	
-    	
- 
-    	
-    	
-        // CREAMOS LAS ESPECIALIDADES
-        Especialidad especialidad1 = new Especialidad();
-        especialidad1.setNombre("Neurología");
-        especialidad1 = especialidadRepository.save(especialidad1);
+  @Autowired
+  PasswordEncoder encoder;
 
-        Especialidad especialidad2 = new Especialidad();
-        especialidad2.setNombre("Traumatología");
-        especialidad2 = especialidadRepository.save(especialidad2);
+  @Test
+  void testInsertarYBuscarEmpleadosConRelaciones() {
 
-        // CREAMOS LOS ESTABLECIMIENTOS
-        Establecimiento establecimiento1 = new Establecimiento();
-        establecimiento1.setNombre("Hospital General");
-        establecimiento1.setLocalidad("Calle Falsa 123");
-        establecimiento1 = establecimientoRepository.save(establecimiento1);
+    // CREAMOS LAS ESPECIALIDADES
+    Especialidad especialidad1 = new Especialidad();
+    especialidad1.setNombre("Neurología");
+    especialidad1 = especialidadRepository.save(especialidad1);
 
-        Establecimiento establecimiento2 = new Establecimiento();
-        establecimiento2.setNombre("Clínica del Sur");
-        establecimiento2.setLocalidad("Avenida Siempre Viva 456");
-        establecimiento2 = establecimientoRepository.save(establecimiento2);
+    Especialidad especialidad2 = new Especialidad();
+    especialidad2.setNombre("Traumatología");
+    especialidad2 = especialidadRepository.save(especialidad2);
 
-        // EMPLEADO 1
-        Empleado empleado1 = new Empleado();
-        empleado1.setNombre("Carlos");
-        empleado1.setApellido("García");
-        empleado1.setDni(32165498);
-        empleado1.setUsername("CarlosGarcia12");
-        empleado1.setEmail("carlos.garcia@test.com");
-        empleado1.setPassword("1234");
-        empleado1.setRol(Rol.EMPLEADO);
-        empleado1.setEstado(true);
-        empleado1.setFechaDeNacimiento(LocalDate.of(1985, 5, 20));
-        empleado1.setCUIL("20303030303");
-        
-        empleado1.setEstablecimiento(establecimiento1);
+    // CREAMOS LOS ESTABLECIMIENTOS
+    Establecimiento establecimiento1 = new Establecimiento();
+    establecimiento1.setNombre("Hospital General");
+    establecimiento1.setLocalidad("Calle Falsa 123");
+    establecimiento1 = establecimientoRepository.save(establecimiento1);
 
-        Set<Especialidad> especialidades1 = new HashSet<>();
-        especialidades1.add(especialidad1);
-        empleado1.setEspecialidades(especialidades1);
+    Establecimiento establecimiento2 = new Establecimiento();
+    establecimiento2.setNombre("Clínica del Sur");
+    establecimiento2.setLocalidad("Avenida Siempre Viva 456");
+    establecimiento2 = establecimientoRepository.save(establecimiento2);
 
-        Empleado empleadoGuardado1 = empleadoService.insertOrUpdate(empleado1);
-        assertNotNull(empleadoGuardado1.getId());
+    // EMPLEADO 1
+    Empleado empleado1 = new Empleado();
+    empleado1.setNombre("Carlos");
+    empleado1.setApellido("García");
+    empleado1.setDni(32165498);
+    empleado1.setUsername("CarlosGarcia12");
+    empleado1.setEmail("carlos.garcia@test.com");
+    empleado1.setPassword("1234");
+    empleado1.setRol(Rol.EMPLEADO);
+    empleado1.setEstado(true);
+    empleado1.setFechaDeNacimiento(LocalDate.of(1985, 5, 20));
+    empleado1.setCUIL("20303030303");
 
-        //UTILIZAMOS ESTE DTO DE EMPLEADO QUE NOS TRAE SUS ATRIBUTOS JUNTO CON LAS ESPECIALIDADES Y ESTABLECIMIENTOS ASOCIADOS
-        Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado1 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado1.getId());
-        assertTrue(resultado1.isPresent());
+    empleado1.setEstablecimiento(establecimiento1);
 
-        /*VERIFICAMOS QUE LOS DATOS SE HAYAN CARGADO CORRECTAMENTE CON assertEquals, 
-        QUE TIRA UNA EXCEPCION (NULL POINTER EXCEPTION) SI ENCUENTRA UN VALOR NULO */
-        EmpleadoConEspecialidadesYEstablecimientoDTO dto1 = resultado1.get();
-        assertEquals("Carlos", dto1.getNombre());
-        assertEquals("García", dto1.getApellido());
-        assertEquals("20303030303", dto1.getCUIL());
-        assertNotNull(dto1.getEstablecimiento());
-        assertEquals("Hospital General", dto1.getEstablecimiento().getNombre());
-        assertEquals(1, dto1.getEspecialidades().size());
-        assertTrue(dto1.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Neurología")));
+    Set<Especialidad> especialidades1 = new HashSet<>();
+    especialidades1.add(especialidad1);
+    empleado1.setEspecialidades(especialidades1);
 
-        // EMPLEADO 2
-        Empleado empleado2 = new Empleado();
-        empleado2.setNombre("Lucía");
-        empleado2.setApellido("Ramírez");
-        empleado2.setUsername("LuRamirez");
-        empleado2.setPassword("1234");
-        empleado1.setRol(Rol.EMPLEADO);
-        empleado2.setCUIL("20404040404");
-        empleado2.setDni(40251879);
-        empleado2.setEmail("lucia.ramirez@test.com");
-        empleado2.setFechaDeNacimiento(LocalDate.of(1990, 8, 15));
-        empleado2.setEstado(true);
-        
-        empleado2.setEstablecimiento(establecimiento2);
+    Empleado empleadoGuardado1 = empleadoService.insertOrUpdate(empleado1);
+    assertNotNull(empleadoGuardado1.getId());
 
-        Set<Especialidad> especialidades2 = new HashSet<>();
-        especialidades2.add(especialidad2);
-        empleado2.setEspecialidades(especialidades2);
+    // UTILIZAMOS ESTE DTO DE EMPLEADO QUE NOS TRAE SUS ATRIBUTOS JUNTO CON LAS
+    // ESPECIALIDADES Y ESTABLECIMIENTOS ASOCIADOS
+    Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado1 = empleadoService
+        .findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado1.getId());
+    assertTrue(resultado1.isPresent());
 
-        Empleado empleadoGuardado2 = empleadoService.insertOrUpdate(empleado2);
-        assertNotNull(empleadoGuardado2.getId());
+    /*
+     * VERIFICAMOS QUE LOS DATOS SE HAYAN CARGADO CORRECTAMENTE CON assertEquals,
+     * QUE TIRA UNA EXCEPCION (NULL POINTER EXCEPTION) SI ENCUENTRA UN VALOR NULO
+     */
+    EmpleadoConEspecialidadesYEstablecimientoDTO dto1 = resultado1.get();
+    assertEquals("Carlos", dto1.getNombre());
+    assertEquals("García", dto1.getApellido());
+    assertEquals("20303030303", dto1.getCUIL());
+    assertNotNull(dto1.getEstablecimiento());
+    assertEquals("Hospital General", dto1.getEstablecimiento().getNombre());
+    assertEquals(1, dto1.getEspecialidades().size());
+    assertTrue(dto1.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Neurología")));
 
-      //UTILIZAMOS ESTE DTO DE EMPLEADO QUE NOS TRAE SUS ATRIBUTOS JUNTO CON LAS ESPECIALIDADES Y ESTABLECIMIENTOS ASOCIADOS
-        Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado2 = empleadoService.findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado2.getId());
-        assertTrue(resultado2.isPresent());
+    // EMPLEADO 2
+    Empleado empleado2 = new Empleado();
+    empleado2.setNombre("Lucía");
+    empleado2.setApellido("Ramírez");
+    empleado2.setUsername("LuRamirez");
+    empleado2.setPassword("1234");
+    empleado1.setRol(Rol.EMPLEADO);
+    empleado2.setCUIL("20404040404");
+    empleado2.setDni(40251879);
+    empleado2.setEmail("lucia.ramirez@test.com");
+    empleado2.setFechaDeNacimiento(LocalDate.of(1990, 8, 15));
+    empleado2.setEstado(true);
 
-        /*VERIFICAMOS QUE LOS DATOS SE HAYAN CARGADO CORRECTAMENTE CON assertEquals, 
-        QUE TIRA UNA EXCEPCION (NULL POINTER EXCEPTION) SI ENCUENTRA UN VALOR NULO */
-        EmpleadoConEspecialidadesYEstablecimientoDTO dto2 = resultado2.get();
-        assertEquals("Lucía", dto2.getNombre());
-        assertEquals("Ramírez", dto2.getApellido());
-        assertEquals("20404040404", dto2.getCUIL());
-        assertNotNull(dto2.getEstablecimiento());
-        assertEquals("Clínica del Sur", dto2.getEstablecimiento().getNombre());
-        assertEquals(1, dto2.getEspecialidades().size());
-        assertTrue(dto2.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Traumatología")));
-    }
+    empleado2.setEstablecimiento(establecimiento2);
+
+    Set<Especialidad> especialidades2 = new HashSet<>();
+    especialidades2.add(especialidad2);
+    empleado2.setEspecialidades(especialidades2);
+
+    Empleado empleadoGuardado2 = empleadoService.insertOrUpdate(empleado2);
+    assertNotNull(empleadoGuardado2.getId());
+
+    // UTILIZAMOS ESTE DTO DE EMPLEADO QUE NOS TRAE SUS ATRIBUTOS JUNTO CON LAS
+    // ESPECIALIDADES Y ESTABLECIMIENTOS ASOCIADOS
+    Optional<EmpleadoConEspecialidadesYEstablecimientoDTO> resultado2 = empleadoService
+        .findByIdWithEspecialidadesAndEstablecimiento2(empleadoGuardado2.getId());
+    assertTrue(resultado2.isPresent());
+
+    /*
+     * VERIFICAMOS QUE LOS DATOS SE HAYAN CARGADO CORRECTAMENTE CON assertEquals,
+     * QUE TIRA UNA EXCEPCION (NULL POINTER EXCEPTION) SI ENCUENTRA UN VALOR NULO
+     */
+    EmpleadoConEspecialidadesYEstablecimientoDTO dto2 = resultado2.get();
+    assertEquals("Lucía", dto2.getNombre());
+    assertEquals("Ramírez", dto2.getApellido());
+    assertEquals("20404040404", dto2.getCUIL());
+    assertNotNull(dto2.getEstablecimiento());
+    assertEquals("Clínica del Sur", dto2.getEstablecimiento().getNombre());
+    assertEquals(1, dto2.getEspecialidades().size());
+    assertTrue(dto2.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Traumatología")));
+  }
 }

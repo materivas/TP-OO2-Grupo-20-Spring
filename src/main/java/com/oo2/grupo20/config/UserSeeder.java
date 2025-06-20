@@ -6,12 +6,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.oo2.grupo20.entities.Empleado;
+import com.oo2.grupo20.entities.Establecimiento;
 import com.oo2.grupo20.entities.Cliente;
 import com.oo2.grupo20.entities.Rol;
 import com.oo2.grupo20.repositories.IEmpleadoRepository;
 import com.oo2.grupo20.repositories.IClienteRepository;
-import com.oo2.grupo20.repositories.IPersonaRepository;
-
+import com.oo2.grupo20.repositories.IEstablecimientoRepository;
 import java.time.LocalDate;
 
 @Configuration
@@ -33,6 +33,7 @@ public class UserSeeder {
                 emp.setEstado(true);
                 emp.setFechaDeNacimiento(LocalDate.of(1990, 5, 10));
                 emp.setCUIL("20-11111111-1");
+               
                 empleadoRepo.save(emp);
             }
             

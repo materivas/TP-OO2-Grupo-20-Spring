@@ -1,105 +1,125 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Inicio - Sistema de Turnos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        body {
-            background-color: #e9ecef; 
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .bg-azul-oscuro {
-            background-color: #001f3f !important; 
-        }
-        .welcome-card {
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Inicio - Sistema de Turnos</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+	<style>
+		body {
+			background-color: #e9ecef;
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+		}
+
+		.bg-azul-oscuro {
+			background-color: #001f3f !important;
+		}
+
+		.welcome-card {
+			border: none;
+			border-radius: 10px;
+			box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+		}
+	</style>
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
-
+	<!-- NAVBAR -->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
-	    <div class="container-fluid">
-	        <a class="navbar-brand" th:href="@{/}">
-	            <i class="fa-solid fa-clock"></i> Sistema de Turnos
-	        </a>
-	        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-	            <span class="navbar-toggler-icon"></span>
-	        </button>
-	        <div class="collapse navbar-collapse" id="navbarNav">
-	            <ul class="navbar-nav ms-auto">
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i> Servicios</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/dia/index}"><i class="fa fa-calendar-day"></i> Días</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/especialidad/index}"><i class="fa fa-stethoscope"></i> Especialidades</a>
-	                </li>
-	                <li class="nav-item">
-	                    <a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-hospital"></i> Establecimientos</a>
-	                </li>
+		<div class="container-fluid">
+			<a class="navbar-brand" th:href="@{/}">
+				<i class="fa-solid fa-clock"></i> Sistema de Turnos
+			</a>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ms-auto">
+
+					<!-- Inicio (visible para todos) -->
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a>
+					</li>
+
+					<!-- Solo ADMIN -->
+					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
+						<a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
+						<a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
+						<a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i>
+							Servicios</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
+						<a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-building"></i>
+							Establecimientos</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
+						<a class="nav-link" th:href="@{/especialidad/index}"><i class="fa fa-stethoscope"></i>
+							Especialidades</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
+						<a class="nav-link" th:href="@{/dia/index}"><i class="fa fa-calendar-day"></i> Días</a>
+					</li>
+
+					<!-- ADMIN y EMPLEADO -->
+					<li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'EMPLEADO')">
+						<a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a>
+					</li>
+
+					<!-- CLIENTE solo ve sus turnos -->
+					<li class="nav-item" sec:authorize="hasRole('CLIENTE')">
+						<a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Mis
+							Turnos</a>
+					</li>
+
 					<!-- Botón de Cerrar Sesión -->
 					<li class="nav-item">
-					    <form th:action="@{/logout}" method="post" class="d-inline">
-					        <button type="submit" class="nav-link btn btn-link border-0">
-					            <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-					        </button>
-					    </form>
+						<form th:action="@{/logout}" method="post" class="d-inline">
+							<button type="submit" class="nav-link btn btn-link border-0">
+								<i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+							</button>
+						</form>
 					</li>
-	            </ul>
-	        </div>
-	    </div>
+				</ul>
+			</div>
+		</div>
 	</nav>
 
 
+	<main class="container my-5 flex-grow-1">
+		<div class="card welcome-card bg-white p-4 mx-auto" style="max-width: 800px;">
+			<div class="card-body text-center">
+				<h1 class="text-primary mb-4">
+					<i class="fa-solid fa-door-open"></i> ¡Bienvenido al Sistema de Turnos!
+				</h1>
+				<p class="lead mb-4">
+					Gestiona clientes, empleados, servicios y turnos desde el menú superior.
+				</p>
+				<div class="mt-4">
+					<img src="https://cdn-icons-png.flaticon.com/512/1570/1570887.png" width="120" alt="Reloj">
+				</div>
+				<p class="text-muted mt-4">
+					<i class="fa fa-university"></i> Grupo 20 - Universidad Nacional
+				</p>
+			</div>
+		</div>
+	</main>
 
-    <main class="container my-5 flex-grow-1">
-        <div class="card welcome-card bg-white p-4 mx-auto" style="max-width: 800px;">
-            <div class="card-body text-center">
-                <h1 class="text-primary mb-4">
-                    <i class="fa-solid fa-door-open"></i> ¡Bienvenido al Sistema de Turnos!
-                </h1>
-                <p class="lead mb-4">
-                    Gestiona clientes, empleados, servicios y turnos desde el menú superior.
-                </p>
-                <div class="mt-4">
-                    <img src="https://cdn-icons-png.flaticon.com/512/1570/1570887.png" width="120" alt="Reloj">
-                </div>
-                <p class="text-muted mt-4">
-                    <i class="fa fa-university"></i> Grupo 20 - Universidad Nacional
-                </p>
-            </div>
-        </div>
-    </main>
+
+	<footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
+		<small>© 2025 Grupo 20 - Universidad Nacional - Todos los derechos reservados.</small>
+	</footer>
 
 
-    <footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
-        <small>© 2025 Grupo 20 - Universidad Nacional - Todos los derechos reservados.</small>
-    </footer>
-
-  
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>
