@@ -1,5 +1,7 @@
 package com.oo2.grupo20.dto;
+import java.time.DayOfWeek;
 import java.time.LocalTime;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.oo2.grupo20.entities.Dia;
@@ -29,6 +31,9 @@ public class ServicioDTO {
 	private Set<Dia> dias;
 	private Set<Turno> turnos;
 	
+	private Set<DayOfWeek> diasDisponibles = new HashSet<>();
+
+	
 	public static ServicioDTO toDTO(Servicio servicio) {
 		ServicioDTO serviciodto=new ServicioDTO();
 		serviciodto.setDescripcion(servicio.getDescripcion());
@@ -40,6 +45,8 @@ public class ServicioDTO {
 		serviciodto.setDias(servicio.getDias());
 		serviciodto.setIdServicio(servicio.getIdServicio());
 		serviciodto.setTurnos(servicio.getTurnos());
+		serviciodto.setDiasDisponibles(servicio.getDiasDisponibles());
+
 		
 		return serviciodto;
 	}
@@ -56,6 +63,9 @@ public class ServicioDTO {
 	    servicio.setEstablecimiento(dto.getEstablecimiento());
 	    servicio.setDias(dto.getDias());
 	    servicio.setTurnos(dto.getTurnos());
+	    servicio.setDiasDisponibles(dto.getDiasDisponibles());
+	    
+	    
 	    return servicio;
 	}
 

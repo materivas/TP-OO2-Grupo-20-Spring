@@ -54,12 +54,12 @@
                 </div>
                 <p th:unless="${servicio.establecimiento != null}" class="text-muted">No tiene establecimiento asignado</p>
 
-                <h5 class="mt-4"><i class="fa fa-calendar-day"></i> Días asignados</h5>
-                <ul class="list-group mb-3" th:if="${servicio.dias != null and !#lists.isEmpty(servicio.dias)}">
-                    <li class="list-group-item" th:each="dia : ${servicio.dias}">
-                        <span th:text="${#temporals.format(dia.fecha, 'dd/MM/yyyy')}"></span>
-                    </li>
-                </ul>
+                <h5 class="mt-4"><i class="fa fa-calendar-day"></i> Días asignados (Muestra los Primeros siete)</h5>
+				<ul class="list-group mb-3" th:if="${servicio.dias != null and !#lists.isEmpty(servicio.dias)}">
+				    <li class="list-group-item" th:each="dia : ${servicio.dias}">
+				        <span th:text="${#temporals.format(dia.fecha, 'dd/MM/yyyy')}"></span>
+				    </li>
+				</ul>
                 <p th:unless="${servicio.dias != null and !#lists.isEmpty(servicio.dias)}" class="text-muted">No tiene días asignados</p>
             </div>
         </div>

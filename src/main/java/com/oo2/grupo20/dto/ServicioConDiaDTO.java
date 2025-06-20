@@ -1,6 +1,8 @@
 package com.oo2.grupo20.dto;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.oo2.grupo20.entities.Dia;
@@ -25,7 +27,8 @@ public class ServicioConDiaDTO {
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
 	private EstablecimientoBasicDTO establecimiento;
-	private Set<DiaSinTurnoServicioDTO> dias = new HashSet<>();
+	private List<DiaSinTurnoServicioDTO> dias = new ArrayList<>();
+
 
 
 	

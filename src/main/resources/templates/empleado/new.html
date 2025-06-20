@@ -28,6 +28,89 @@
                 <i class="fa-solid fa-clock"></i> Sistema de Turnos
             </a>
 
+    </div>
+</nav>
+
+<!-- CONTENIDO -->
+<main class="container my-5 flex-grow-1">
+    <div class="card shadow">
+        <div class="card-body">
+            <h2 class="card-title text-primary">
+                <i class="fa-solid fa-user-plus"></i> Nuevo Empleado
+            </h2>
+
+			<form th:action="@{/empleado/create}" th:object="${empleado}" method="post">
+
+
+                <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre:</label>
+                    <input type="text" id="nombre" class="form-control" th:field="*{nombre}" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido:</label>
+                    <input type="text" id="apellido" class="form-control" th:field="*{apellido}" required />
+                </div>
+
+				<div class="mb-3">
+					<label for="username" class="form-label">Usuario</label>
+					<input type="text" id="username" th:field="*{username}" class="form-control" required>
+				</div>
+
+				<div class="mb-3">
+					 <label for="password" class="form-label">Contraseña</label>
+					 <input type="password" id="password" th:field="*{password}" class="form-control" required>
+				</div>
+				
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email:</label>
+                    <input type="email" id="email" class="form-control" th:field="*{email}" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="dni" class="form-label">DNI:</label>
+                    <input type="number" id="dni" class="form-control" th:field="*{dni}" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="cuil" class="form-label">CUIL:</label>
+                    <input type="text" id="cuil" class="form-control" th:field="*{CUIL}" required />
+                </div>
+
+                <div class="mb-3">
+                    <label for="fechaDeNacimiento" class="form-label">Fecha de Nacimiento:</label>
+                    <input type="date" id="fechaDeNacimiento" class="form-control" th:field="*{fechaDeNacimiento}" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="establecimiento" class="form-label">Establecimiento:</label>
+					<select id="establecimiento" th:field="*{establecimiento}" class="form-select">
+					    <option th:value="${null}">Seleccione un establecimiento (OPCIONAL)</option> //COLOCAMOS NULL SI QUEREMOS QUE ESE SEA EL VALOR POR DEFECTO, ASI NO TIENE PROBLEMAS LA BD
+					    <option th:each="establecimiento : ${establecimientos}"
+					            th:value="${establecimiento.idEstablecimiento}"
+					            th:text="${establecimiento.nombre}">
+					    </option>
+					</select>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="especialidades" class="form-label">Especialidades:</label>
+                    <select id="especialidades" name="especialidades" multiple size="5" class="form-select">
+                        <option th:each="especialidad : ${especialidades}"
+                                th:value="${especialidad.idEspecialidad}"
+                                th:text="${especialidad.nombre}"></option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">
+                    <i class="fa fa-save"></i> Guardar
+                </button>
+                <a th:href="@{/empleado/index}" class="btn btn-secondary ms-2">
+                    <i class="fa fa-arrow-left"></i> Volver
+                </a>
+
+            </form>
         </div>
     </nav>
 

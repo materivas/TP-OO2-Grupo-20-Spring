@@ -1,24 +1,13 @@
 package com.oo2.grupo20.controllers;
 
-import com.oo2.grupo20.entities.Cliente;
-import com.oo2.grupo20.entities.Dia;
-import com.oo2.grupo20.entities.Empleado;
-import com.oo2.grupo20.entities.Establecimiento;
-import com.oo2.grupo20.entities.Servicio;
-import com.oo2.grupo20.entities.Turno;
+import com.oo2.grupo20.entities.*;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
-import com.oo2.grupo20.services.IClienteService;
-import com.oo2.grupo20.services.IDiaService;
-import com.oo2.grupo20.services.IEmpleadoService;
-import com.oo2.grupo20.services.IServicioService;
-import com.oo2.grupo20.services.ITurnoService;
+import com.oo2.grupo20.services.*;
 import com.oo2.grupo20.services.implementation.EmailService;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,44 +29,26 @@ public class TurnoController {
     private final IServicioService servicioService;
     private final IDiaService diaService;
     private final EmailService emailService;
-    
-    
+
     @GetMapping("/index")
     public String listarTurnos(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName(); // Es el DNI o email
+        String username = auth.getName();
 
-        // Determinar el rol
-        boolean isAdmin = auth.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
-        boolean isEmpleado = auth.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_EMPLEADO"));
-        boolean isCliente = auth.getAuthorities().stream()
-                .anyMatch(r -> r.getAuthority().equals("ROLE_CLIENTE"));
+        boolean isAdmin = auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"));
+        boolean isEmpleado = auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_EMPLEADO"));
+        boolean isCliente = auth.getAuthorities().stream().anyMatch(r -> r.getAuthority().equals("ROLE_CLIENTE"));
 
         List<Turno> turnos;
-
         if (isAdmin) {
-            // Admin ve todos los turnos
             turnos = turnoService.findAll();
         } else if (isEmpleado) {
-            // Empleado ve turnos asignados a él
-            Empleado empleado = empleadoService.findByEmail(username); // o findByDni si usás DNI
-            if (empleado == null) {
-                model.addAttribute("error", "Empleado no encontrado");
-                return ViewRouteHelper.TURNO_INDEX;
-            }
-            turnos = turnoService.findByEmpleadoDni(empleado.getDni());
+            Empleado empleado = empleadoService.findByEmail(username);
+            turnos = (empleado != null) ? turnoService.findByEmpleadoDni(empleado.getDni()) : List.of();
         } else if (isCliente) {
-            // Cliente ve sus propios turnos
-            Cliente cliente = clienteService.findByEmail(username); // o findByDni si usás DNI
-            if (cliente == null) {
-                model.addAttribute("error", "Cliente no encontrado");
-                return ViewRouteHelper.TURNO_INDEX;
-            }
-            turnos = turnoService.findByClienteDni(cliente.getDni());
+            Cliente cliente = clienteService.findByEmail(username);
+            turnos = (cliente != null) ? turnoService.findByClienteDni(cliente.getDni()) : List.of();
         } else {
-            // Por seguridad, no muestra nada si no se identifica correctamente
             turnos = List.of();
         }
 
@@ -85,41 +56,90 @@ public class TurnoController {
         return ViewRouteHelper.TURNO_INDEX;
     }
 
-
     private void cargarDatosModelo(Model model) {
         model.addAttribute("clientes", clienteService.getAll());
         model.addAttribute("empleados", empleadoService.getAll());
         model.addAttribute("servicios", servicioService.getAll());
     }
-    
+
+    // Paso 1: Elegir servicio
+    @GetMapping("/seleccionar-servicio")
+    public String seleccionarServicio(Model model) {
+        model.addAttribute("servicios", servicioService.getAll());
+        return "turno/seleccionar-servicio";
+    }
+
+    // Paso 2: Formulario de turno con días disponibles
     @GetMapping("/nuevo")
-    public String nuevoTurno(Model model) {
+    public String nuevoTurno(@RequestParam(name = "servicioId", required = false) Long servicioId,
+                             @RequestParam(name = "diaFecha", required = false) String diaFechaStr,
+                             Model model) {
+        if (servicioId == null) {
+            return "redirect:/turno/seleccionar-servicio";
+        }
+
         Turno turno = new Turno();
-        turno.setCliente(new Cliente());    
-        turno.setEmpleado(new Empleado());  
-        turno.setServicio(new Servicio()); 
-        turno.setDia(new Dia());            
+        turno.setCliente(new Cliente());
+        turno.setEmpleado(new Empleado());
+        turno.setServicio(new Servicio());
+        turno.setDia(new Dia());
+
         model.addAttribute("turno", turno);
-
         cargarDatosModelo(model);
+        model.addAttribute("servicioId", servicioId);
+        model.addAttribute("diasDisponibles", diaService.findFechasDisponiblesPorServicio(servicioId));
 
-        return "turno/form"; 
+        
+        // Si llegó una fecha seleccionada (diaFecha):
+        // 1. La convierto a LocalDate.
+        // 2. Traigo el servicio con ese servicioId.
+        // 3. Busco o creo el día para ese servicio y fecha.
+        // 4. Calculo las horas disponibles ese día para ese servicio.
+        // 5. Paso esas horas y la fecha seleccionada al modelo para el formulario.
+
+        if (diaFechaStr != null && !diaFechaStr.isEmpty()) {
+            LocalDate fecha = LocalDate.parse(diaFechaStr);
+            Servicio servicio = servicioService.getServicioEntityById(servicioId);
+            Dia dia = diaService.findOrCreateByFechaAndServicio(fecha, servicio);
+            List<LocalTime> horasDisponibles = turnoService.generarHorasDisponibles(servicio, dia);
+            model.addAttribute("horasDisponibles", horasDisponibles);
+            model.addAttribute("diaSeleccionada", fecha);
+        }
+
+        return "turno/form";
     }
 
     @PostMapping("/guardar")
-    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
+    public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno,
+                                BindingResult result,
+                                Model model,
+                                RedirectAttributes redirectAttributes,
+                                @RequestParam(value = "diaFecha", required = false) String diaFechaStr) {
 
-        // 1. Cargar datos necesarios para el formulario (si hay errores)
         cargarDatosModelo(model);
 
-        // 2. Validación manual de fecha futura
-        if (turno.getDia() == null || turno.getDia().getFecha() == null) {
-            result.rejectValue("dia.fecha", "error.fecha", "La fecha es requerida");
-        } else if (turno.getDia().getFecha().isBefore(LocalDate.now())) {
-            result.rejectValue("dia.fecha", "error.fecha", "La fecha debe ser futura");
+        if (diaFechaStr == null || diaFechaStr.isEmpty()) {
+            model.addAttribute("error", "Debe seleccionar una fecha disponible");
+            return "turno/form";
         }
 
-        // 3. Validación manual de hora
+        LocalDate fechaSeleccionada;
+        try {
+            fechaSeleccionada = LocalDate.parse(diaFechaStr);
+        } catch (Exception e) {
+            model.addAttribute("error", "Fecha inválida");
+            return "turno/form";
+        }
+
+        if (fechaSeleccionada.isBefore(LocalDate.now())) {
+            model.addAttribute("error", "La fecha debe ser futura");
+            return "turno/form";
+        }
+
+        Servicio servicio = servicioService.getServicioEntityById(turno.getServicio().getIdServicio());
+        Dia diaPersistido = diaService.findOrCreateByFechaAndServicio(fechaSeleccionada, servicio);
+        turno.setDia(diaPersistido);
+
         if (turno.getHora() == null) {
             result.rejectValue("hora", "error.hora", "La hora es requerida");
         } else if (turno.getHora().isBefore(LocalTime.of(8, 0))) {
@@ -128,54 +148,25 @@ public class TurnoController {
             result.rejectValue("hora", "error.hora", "La hora máxima es 18:00");
         }
 
-        // 4. Si hay errores, volver al formulario
         if (result.hasErrors()) {
             return "turno/form";
         }
 
+        turno.setCliente(clienteService.getClienteEntityById(turno.getCliente().getId()));
+        turno.setServicio(servicio);
+
         try {
-            // 5. Validación y persistencia del día
-            if (turno.getServicio() == null) {
-                throw new IllegalArgumentException("El servicio es requerido");
-            }
-            Dia diaPersistido = diaService.findOrCreateByFechaAndServicio(
-                turno.getDia().getFecha(),
-                turno.getServicio()
-            );
-            turno.setDia(diaPersistido);
-
-            // 6. Completa las entidades relacionadas
-            turno.setCliente(clienteService.getClienteEntityById(turno.getCliente().getId()));
-            turno.setServicio(servicioService.getServicioEntityById(turno.getServicio().getIdServicio()));
-            turno.setEmpleado(empleadoService.getEmpleadoEntityById(turno.getEmpleado().getId())); 
-
-            
-            // Validación: que el empleado solo pueda brindar servicios de su establecimiento
-            Establecimiento estEmpleado = turno.getEmpleado().getEstablecimiento();
-            Establecimiento estServicio = turno.getServicio().getEstablecimiento();
-
-            if (estEmpleado == null || estServicio == null || !estEmpleado.getIdEstablecimiento().equals(estServicio.getIdEstablecimiento())) {
-                model.addAttribute("error", "El empleado seleccionado no puede brindar el servicio porque no pertenece al mismo establecimiento.");
-                cargarDatosModelo(model);
-                return "turno/form";
-            }
-            
-            // 7. Guardar el turno (con validaciones internas)
             turnoService.save(turno);
-
-            // 8. Enviar email
             emailService.enviarEmailHtml(
-            	    turno.getCliente().getEmail(),
-            	    "Confirmación de Turno",
-            	    turno.getCliente().getNombre(),
-            	    turno.getDia().getFecha().toString(),
-            	    turno.getHora().toString(),
-            	    turno.getServicio().getNombreServicio()
-            	);
-
-            redirectAttributes.addFlashAttribute("mensajeExito", 
-                "¡Turno registrado! Se envió un correo a " + turno.getCliente().getEmail());
-
+                turno.getCliente().getEmail(),
+                "Confirmación de Turno",
+                turno.getCliente().getNombre(),
+                turno.getDia().getFecha().toString(),
+                turno.getHora().toString(),
+                turno.getServicio().getNombreServicio()
+            );
+            redirectAttributes.addFlashAttribute("mensajeExito",
+                    "¡Turno registrado! Se envió un correo a " + turno.getCliente().getEmail());
         } catch (Exception e) {
             model.addAttribute("error", "Error al guardar: " + e.getMessage());
             return "turno/form";
@@ -184,14 +175,12 @@ public class TurnoController {
         return "redirect:/turno/index";
     }
 
-    
     @PostMapping("/eliminar/{id}")
     public String eliminarTurno(@PathVariable("id") Long id) {
         turnoService.deleteById(id);
         return "redirect:/turno/index";
     }
 
-    //Editar turno existente
     @GetMapping("/editar/{id}")
     public String editarTurno(@PathVariable("id") Long id, Model model) {
         Turno turno = turnoService.findById(id)
@@ -201,13 +190,16 @@ public class TurnoController {
         return ViewRouteHelper.TURNO_FORM;
     }
 
+<<<<<<< HEAD
     // Ver detalle de un turno 
     @GetMapping("/detail/{id}")
+=======
+    @GetMapping("/detalle/{id}")
+>>>>>>> a1876f18bedb85ead5bab7d1d61aaca33bdae264
     public String detalleTurno(@PathVariable("id") Long id, Model model) {
         Turno turno = turnoService.findById(id)
             .orElseThrow(() -> new RuntimeException("Turno no encontrado"));
         model.addAttribute("turno", turno);
         return ViewRouteHelper.TURNO_DETAIL;
     }
- 
 }

@@ -1,5 +1,7 @@
 package com.oo2.grupo20.services.implementation;
 
+import com.oo2.grupo20.entities.Dia;
+import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.entities.Turno;
 import com.oo2.grupo20.repositories.ITurnoRepository;
 import com.oo2.grupo20.services.ITurnoService;
@@ -9,8 +11,11 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service("turnoService")
 @RequiredArgsConstructor
@@ -41,6 +46,37 @@ public class TurnoService implements ITurnoService {
         
         return turnoRepository.save(turno);
     }
+    
+    
+    
+    // Calcula todas las horas libres para un servicio en un día específico.
+    // Empieza desde la hora de inicio del servicio y va sumando bloques según su duración.
+    // Si una hora ya tiene un turno, se salta. Devuelve solo las horas disponibles.
+    @Override
+    public List<LocalTime> generarHorasDisponibles(Servicio servicio, Dia dia) {
+        List<Turno> turnosTomados = findByDia(dia); // método existente que trae los turnos de ese día
+        Set<LocalTime> horasOcupadas = turnosTomados.stream()
+            .map(Turno::getHora)
+            .collect(Collectors.toSet());
+
+        List<LocalTime> disponibles = new ArrayList<>();
+        LocalTime hora = servicio.getHoraInicio();
+        while (!hora.isAfter(servicio.getHoraFin().minusMinutes(servicio.getDuracion()))) {
+            if (!horasOcupadas.contains(hora)) {
+                disponibles.add(hora);
+            }
+            hora = hora.plusMinutes(servicio.getDuracion());
+        }
+
+        return disponibles;
+    }
+
+    
+    @Override
+    public List<Turno> findByDia(Dia dia) {
+        return turnoRepository.findByDia(dia);
+    }
+
     
     @Override
     public List<Turno> findByEmpleadoDni(Integer dni) {

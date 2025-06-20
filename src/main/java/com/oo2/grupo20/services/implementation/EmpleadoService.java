@@ -8,6 +8,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.oo2.grupo20.entities.Cliente;
 import com.oo2.grupo20.entities.Empleado;
 import com.oo2.grupo20.entities.Rol;
 import com.oo2.grupo20.dto.EmpleadoConEspecialidadesYEstablecimientoDTO;
@@ -45,6 +46,7 @@ public class EmpleadoService implements IEmpleadoService {
 	    }
 
 	    empleado.setRol(Rol.EMPLEADO); // Asignar rol
+	    empleado.setEstado(true);
 	    return empleadoRepository.save(empleado);
 	}
 	
@@ -109,11 +111,8 @@ public class EmpleadoService implements IEmpleadoService {
     @Override
     public Empleado getEmpleadoEntityById(Long id) {
         return empleadoRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Empleado no encontrado"));
+            .orElseThrow(() -> new RuntimeException("Empleado no encontrado con ID: " + id));
     }
-
-
-
 	
 	
 	

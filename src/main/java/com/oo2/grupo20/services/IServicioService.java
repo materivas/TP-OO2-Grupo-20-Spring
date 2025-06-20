@@ -35,6 +35,8 @@ public interface IServicioService {
 	
 	public Optional<ServicioSinTurnoDiaDTO> findByIdWithEstablecimiento2(Long id);
 	
+	public void generarDiasParaServicio(Servicio servicio);
+	
 	Servicio getServicioEntityById(Long id);
 
 

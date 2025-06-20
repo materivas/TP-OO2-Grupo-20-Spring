@@ -34,162 +34,124 @@
 
 <body class="d-flex flex-column min-vh-100">
 
-	<!-- NAVBAR -->
-	<nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
-		<div class="container-fluid">
-			<a class="navbar-brand" th:href="@{/}">
-				<i class="fa-solid fa-clock"></i> Sistema de Turnos
-			</a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav ms-auto">
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-azul-oscuro">
+    <div class="container-fluid">
+        <a class="navbar-brand" th:href="@{/}">
+            <i class="fa-solid fa-clock"></i> Sistema de Turnos
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i> Servicios</a></li>
+                <li class="nav-item"><a class="nav-link active" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-					<!-- Inicio (visible para todos) -->
-					<li class="nav-item">
-						<a class="nav-link" th:href="@{/}"><i class="fa fa-home"></i> Inicio</a>
-					</li>
+<!-- CONTENIDO PRINCIPAL -->
+<main class="container my-5 flex-grow-1">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card form-card">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fa fa-calendar-plus" th:unless="${turno.idTurno != null}"></i>
+                        <i class="fa fa-calendar-pen" th:if="${turno.idTurno != null}"></i>
+                        <span th:text="${turno.idTurno != null} ? ' Editar Turno #' + ${turno.idTurno} : ' Nuevo Turno'"></span>
+                    </h4>
+                </div>
+                <div class="card-body">
 
-					<!-- Solo ADMIN -->
-					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
-						<a class="nav-link" th:href="@{/cliente/index}"><i class="fa fa-user"></i> Clientes</a>
-					</li>
-					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
-						<a class="nav-link" th:href="@{/empleado/index}"><i class="fa fa-users"></i> Empleados</a>
-					</li>
-					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
-						<a class="nav-link" th:href="@{/servicio/index}"><i class="fa fa-concierge-bell"></i>
-							Servicios</a>
-					</li>
-					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
-						<a class="nav-link" th:href="@{/establecimiento/index}"><i class="fa fa-building"></i>
-							Establecimientos</a>
-					</li>
-					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
-						<a class="nav-link" th:href="@{/especialidad/index}"><i class="fa fa-stethoscope"></i>
-							Especialidades</a>
-					</li>
-					<li class="nav-item" sec:authorize="hasRole('ADMIN')">
-						<a class="nav-link" th:href="@{/dia/index}"><i class="fa fa-calendar-day"></i> Días</a>
-					</li>
+                    <!-- Formulario separado para cambiar la fecha -->
+					<form method="get" th:action="@{/turno/nuevo}" id="formDia">
+					    <input type="hidden" name="servicioId" th:value="${servicioId}" />
+					    <input type="hidden" name="clienteId" th:value="${turno.cliente != null ? turno.cliente.id : ''}" />
+					    <input type="hidden" name="empleadoId" th:value="${turno.empleado != null ? turno.empleado.id : ''}" />
+					    <input type="hidden" name="hora" th:value="${turno.hora}" />
+					    
+					    <div class="mb-3">
+					        <label class="form-label"><i class="fa fa-calendar-day"></i> Día disponible</label>
+					        <select class="form-select" name="diaFecha" required onchange="document.getElementById('formDia').submit();">
+					            <option value="">Seleccione una fecha</option>
+					            <option th:each="fecha : ${diasDisponibles}" 
+					                    th:value="${fecha}" 
+					                    th:text="${fecha}" 
+					                    th:selected="${fecha == diaSeleccionada}">
+					            </option>
+					        </select>
+					    </div>
+					</form>
 
-					<!-- ADMIN y EMPLEADO -->
-					<li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'EMPLEADO')">
-						<a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Turnos</a>
-					</li>
+                    <!-- Formulario principal para guardar el turno -->
+                    <form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
+                        <input type="hidden" th:field="*{idTurno}"/>
+                        <input type="hidden" name="servicio.idServicio" th:value="${servicioId}" />
+                        <input type="hidden" name="diaFecha" th:value="${diaSeleccionada}" />
 
-					<!-- CLIENTE solo ve sus turnos -->
-					<li class="nav-item" sec:authorize="hasRole('CLIENTE')">
-						<a class="nav-link" th:href="@{/turno/index}"><i class="fa fa-calendar-check"></i> Mis
-							Turnos</a>
-					</li>
+                        <!-- Cliente -->
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fa fa-user"></i> Cliente</label>
+                            <select th:field="*{cliente.id}" class="form-select" required>
+                                <option value="">Seleccione un cliente</option>
+                                <option th:each="cliente : ${clientes}"
+                                        th:value="${cliente.id}"
+                                        th:text="${cliente.nombre} + ' ' + ${cliente.apellido}">
+                                </option>
+                            </select>
+                        </div>
 
-					<!-- Botón de Cerrar Sesión -->
-					<li class="nav-item">
-						<form th:action="@{/logout}" method="post" class="d-inline">
-							<button type="submit" class="nav-link btn btn-link border-0">
-								<i class="fas fa-sign-out-alt"></i> Cerrar Sesión
-							</button>
-						</form>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</nav>
+                        <!-- Empleado -->
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fa fa-users"></i> Empleado</label>
+                            <select th:field="*{empleado.id}" class="form-select" required>
+                                <option value="">Seleccione un empleado</option>
+                                <option th:each="empleado : ${empleados}"
+                                        th:value="${empleado.id}"
+                                        th:text="${empleado.nombre} + ' ' + ${empleado.apellido}">
+                                </option>
+                            </select>
+                        </div>
 
-	<!-- CONTENIDO PRINCIPAL -->
-	<main class="container my-5 flex-grow-1">
-		<div class="row justify-content-center">
-			<div class="col-lg-8">
-				<div class="card form-card">
-					<div class="card-header bg-primary text-white">
-						<h4 class="mb-0">
-							<i class="fa fa-calendar-plus" th:unless="${turno.idTurno != null}"></i>
-							<i class="fa fa-calendar-pen" th:if="${turno.idTurno != null}"></i>
-							<span
-								th:text="${turno.idTurno != null} ? ' Editar Turno #' + ${turno.idTurno} : ' Nuevo Turno'"></span>
-						</h4>
-					</div>
-					<div class="card-body">
-						<form th:action="@{/turno/guardar}" th:object="${turno}" method="post">
-							<input type="hidden" th:field="*{idTurno}">
+                        <!-- Hora -->
+                        <div class="mb-3" th:if="${horasDisponibles != null}">
+                            <label class="form-label"><i class="fa fa-clock"></i> Hora disponible</label>
+                            <select th:field="*{hora}" class="form-select" required>
+                                <option value="">Seleccione una hora</option>
+                                <option th:each="hora : ${horasDisponibles}" 
+                                        th:value="${hora}" 
+                                        th:text="${hora}"></option>
+                            </select>
+                        </div>
 
-							<!-- Selección de Cliente -->
-							<div class="mb-3">
-								<label class="form-label"><i class="fa fa-user"></i> Cliente</label>
-								<select th:field="*{cliente.id}" class="form-select" required>
-									<option value="">Seleccione un cliente</option>
-									<option th:each="cliente : ${clientes}" th:value="${cliente.id}"
-										th:text="${cliente.nombre} + ' ' + ${cliente.apellido}">
-									</option>
-								</select>
-							</div>
+                        <!-- Error general -->
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-							<!-- Selección de Empleado -->
-							<div class="mb-3">
-								<label class="form-label"><i class="fa fa-users"></i> Empleado</label>
-								<select th:field="*{empleado.id}" class="form-select" required>
-									<option value="">Seleccione un empleado</option>
-									<option th:each="empleado : ${empleados}" th:value="${empleado.id}"
-										th:text="${empleado.nombre} + ' ' + ${empleado.apellido}">
-									</option>
-								</select>
-							</div>
+                        <!-- Botones -->
+                        <div class="d-flex justify-content-between">
+                            <a th:href="@{/turno/index}" class="btn btn-secondary">Cancelar</a>
+                            <button type="submit" class="btn btn-primary">Confirmar Turno</button>
+                        </div>
+                    </form>
 
-							<!-- Selección de Servicio -->
-							<div class="mb-3">
-								<label class="form-label"><i class="fa fa-concierge-bell"></i> Servicio</label>
-								<select th:field="*{servicio.idServicio}" class="form-select" required>
-									<option value="">Seleccione un servicio</option>
-									<option th:each="servicio : ${servicios}" th:value="${servicio.idServicio}"
-										th:text="${servicio.nombreServicio}">
-									</option>
-								</select>
-							</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
-							<!-- Campo de Fecha -->
-							<div class="mb-3">
-								<label class="form-label"><i class="fa fa-calendar-day"></i> Fecha</label>
-								<input type="date" th:field="*{dia.fecha}" class="form-control"
-									th:min="${#temporals.format(T(java.time.LocalDate).now(), 'yyyy-MM-dd')}" required>
-								<small th:if="${#fields.hasErrors('dia.fecha')}" th:errors="*{dia.fecha}"
-									class="text-danger"></small>
-							</div>
+<!-- FOOTER -->
+<footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
+    <small>© 2025 Grupo 20 - Universidad Nacional - Todos los derechos reservados.</small>
+</footer>
 
-							<!-- Mostrar error general -->
-							<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-
-							<!-- Campo Hora con mejor retroalimentación -->
-							<div class="mb-3">
-								<label class="form-label"><i class="fa fa-clock"></i> Hora</label>
-								<input type="time" th:field="*{hora}" class="form-control" min="08:00" max="17:30"
-									step="1800" required aria-describedby="horaHelp">
-								<small id="horaHelp" class="form-text text-muted">
-									Horario laboral: 08:00 - 17:30
-								</small>
-								<small th:if="${#fields.hasErrors('hora')}" th:errors="*{hora}"
-									class="text-danger d-block mt-1"></small>
-							</div>
-							<!-- Botones -->
-							<div class="d-flex justify-content-between">
-								<a th:href="@{/turno/index}" class="btn btn-secondary">Cancelar</a>
-								<button type="submit" class="btn btn-primary">Confirmar Turno</button>
-							</div>
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	</main>
-
-	<!-- FOOTER -->
-	<footer class="bg-azul-oscuro text-light text-center py-3 mt-auto">
-		<small>© 2025 Grupo 20 - Universidad Nacional - Todos los derechos reservados.</small>
-	</footer>
-
-	<!-- Bootstrap JS -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
 </html>

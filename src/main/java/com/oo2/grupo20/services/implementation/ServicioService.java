@@ -1,12 +1,15 @@
 package com.oo2.grupo20.services.implementation;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.oo2.grupo20.entities.Dia;
 import com.oo2.grupo20.entities.Servicio;
+import com.oo2.grupo20.repositories.IDiaRepository;
 import com.oo2.grupo20.repositories.IServicioRepository;
 import com.oo2.grupo20.services.IServicioService;
 import com.oo2.grupo20.dto.EmpleadoDTO;
@@ -18,11 +21,13 @@ import com.oo2.grupo20.dto.ServicioSinTurnoDiaDTO;
 public class ServicioService implements IServicioService {
 	
 	private IServicioRepository servicioRepository;
+	private IDiaRepository diaRepository;
 	
 	private ModelMapper modelMapper = new ModelMapper ();
 	
-	public ServicioService (IServicioRepository servicioRepository) {
+	public ServicioService (IServicioRepository servicioRepository, IDiaRepository diaRepository) {
 		this.servicioRepository = servicioRepository;
+		this.diaRepository = diaRepository;
 	}
 	
 	@Override
@@ -32,7 +37,9 @@ public class ServicioService implements IServicioService {
 	
 	@Override
 	public Servicio insertOrUpdate(Servicio servicio) {
-		return servicioRepository.save(servicio);
+	    Servicio saved = servicioRepository.save(servicio);
+	    generarDiasParaServicio(saved); // <- esto genera los objetos Dia en base a los días disponibles
+	    return saved;
 	}
 	
 	@Override
@@ -80,6 +87,22 @@ public class ServicioService implements IServicioService {
 	            // Mapeamos con ModelMapper
 	            return modelMapper.map(servicio, ServicioConDiaDTO.class);
 	        });
+	}
+
+	
+	@Override
+	public void generarDiasParaServicio(Servicio servicio) {
+	    LocalDate hoy = LocalDate.now();
+	    LocalDate fin = hoy.plusDays(365); //Creamos Días para un año.
+
+	    for (LocalDate fecha = hoy; !fecha.isAfter(fin); fecha = fecha.plusDays(1)) {
+	        if (servicio.getDiasDisponibles().contains(fecha.getDayOfWeek())) {
+	            Dia dia = new Dia();
+	            dia.setFecha(fecha);
+	            dia.setServicio(servicio);
+	            diaRepository.save(dia);
+	        }
+	    }
 	}
 
 	

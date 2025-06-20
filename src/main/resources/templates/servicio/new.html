@@ -64,6 +64,19 @@
                     <label for="horaFin" class="form-label">Hora de Fin:</label>
                     <input type="time" id="horaFin" class="form-control" th:field="*{horaFin}" required />
                 </div>
+				
+				<div class="mb-3">
+				    <label class="form-label">Días disponibles:</label>
+				    <div class="form-check" th:each="dia : ${T(java.time.DayOfWeek).values()}">
+				        <input class="form-check-input" type="checkbox"
+				               th:value="${dia}" th:field="*{diasDisponibles}" th:id="${'dia_' + dia}">
+							   <label class="form-check-label"
+							          th:for="${'dia_' + dia}"
+							          th:text="${dia.getDisplayName(T(java.time.format.TextStyle).FULL, T(java.util.Locale).forLanguageTag('es'))}">
+							   </label>
+				    </div>
+				</div>
+
 
                 <div class="mb-3">
                     <label for="establecimiento" class="form-label">Establecimiento:</label>

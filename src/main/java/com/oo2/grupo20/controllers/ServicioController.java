@@ -9,10 +9,20 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.oo2.grupo20.dto.ServicioDTO;
+import com.oo2.grupo20.dto.DiaSinTurnoServicioDTO;
 import com.oo2.grupo20.entities.Servicio;
 import com.oo2.grupo20.helpers.ViewRouteHelper;
 import com.oo2.grupo20.services.IEstablecimientoService;
 import com.oo2.grupo20.services.IServicioService;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+
+
+
 
 @Controller
 @RequestMapping("/servicio")
@@ -110,11 +120,22 @@ public class ServicioController {
     @GetMapping("/detail/{id}")
     public ModelAndView detalle(@PathVariable("id") Long id) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_DETAIL);
-        servicioService.findByIdServicioWithDias2(id).ifPresent(servicio -> 
-            mAV.addObject("servicio", servicio)
-        );
+
+        servicioService.findByIdServicioWithDias2(id).ifPresent(servicio -> {
+            List<DiaSinTurnoServicioDTO> primerosDias = servicio.getDias().stream()
+                .filter(d -> d.getFecha() != null)
+                .sorted(Comparator.comparing(DiaSinTurnoServicioDTO::getFecha))
+                .limit(7)
+                .toList(); 
+
+            servicio.setDias(new ArrayList<>(primerosDias));
+
+            mAV.addObject("servicio", servicio);
+        });
+
         return mAV;
     }
+
 
 
 }
