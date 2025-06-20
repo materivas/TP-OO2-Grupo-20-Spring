@@ -29,8 +29,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             		.requestMatchers("/admin/**").hasRole("ADMIN")
             		.requestMatchers("/empleado/**").hasAnyRole("EMPLEADO", "ADMIN")
-            		.requestMatchers("/cliente/**").hasAnyRole("CLIENTE", "ADMIN")
-
+                    .requestMatchers("/cliente/new").permitAll()  // GET para mostrar formulario
+                    .requestMatchers("/cliente/create").permitAll() // POST para procesar formulario
+                    .requestMatchers("/cliente/**").hasAnyRole("CLIENTE", "ADMIN")
                 .requestMatchers("/login", "/css/**", "/js/**").permitAll()
                 .anyRequest().authenticated()
                 
