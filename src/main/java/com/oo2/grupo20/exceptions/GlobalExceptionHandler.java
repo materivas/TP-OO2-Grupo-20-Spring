@@ -10,6 +10,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.NoHandlerFoundException;
+
 
 import com.oo2.grupo20.exceptions.EstablecimientoConEmpleadosException;
 import com.oo2.grupo20.exceptions.EstablecimientoNoEncontradoException;
@@ -63,8 +65,28 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", ex.getMessage());
         return "error/especialidad-con-empleados";
     }
-
     
+    @ExceptionHandler(EstablecimientoConServiciosException.class)
+    public String handleEstablecimientoConServicios(EstablecimientoConServiciosException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/establecimiento-con-servicios";
+    }
+
+
+ // Error 404 - Ruta no encontrada
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public String handle404(NoHandlerFoundException ex, Model model) {
+        model.addAttribute("errorMessage", "La página que estás buscando no fue encontrada.");
+        return "error/404";
+    }
+
+    // Error 500 - Error interno del servidor
+    @ExceptionHandler(RuntimeException.class)
+    public String handle500(RuntimeException ex, Model model) {
+        model.addAttribute("errorMessage", "Ocurrió un error interno en el servidor.");
+        return "error/500";
+    }
+
     
     
     

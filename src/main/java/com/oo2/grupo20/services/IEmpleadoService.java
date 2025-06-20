@@ -32,5 +32,9 @@ public interface IEmpleadoService {
 
 	public Empleado getEmpleadoEntityById(Long id);
 
+	List<Empleado> findByEstablecimientoId(Long idEstablecimiento);
+
+	Empleado findById(Long id);
+
     
 }

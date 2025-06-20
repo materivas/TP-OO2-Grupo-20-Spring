@@ -100,7 +100,7 @@
 	<main class="container my-5 flex-grow-1">
 		<div class="d-flex justify-content-between align-items-center mb-4">
 			<h1 class="h3"><i class="fa fa-calendar-days"></i> Listado de Turnos</h1>
-			<a th:href="@{/turno/nuevo}" class="btn btn-primary" sec:authorize="hasRole('CLIENTE')">
+			<a th:href="@{/turno/nuevo}" class="btn btn-primary" sec:authorize="hasAnyRole('CLIENTE', 'ADMIN')">
 				<i class="fa fa-plus"></i> Nuevo Turno
 			</a>
 		</div>

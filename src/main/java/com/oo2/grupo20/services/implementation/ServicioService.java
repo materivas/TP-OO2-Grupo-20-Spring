@@ -37,10 +37,17 @@ public class ServicioService implements IServicioService {
 	
 	@Override
 	public Servicio insertOrUpdate(Servicio servicio) {
+	    boolean esNuevo = servicio.getIdServicio() == null;
+
 	    Servicio saved = servicioRepository.save(servicio);
-	    generarDiasParaServicio(saved); // <- esto genera los objetos Dia en base a los días disponibles
+
+	    if (esNuevo) {
+	        generarDiasParaServicio(saved); // solo generar si es nuevo
+	    }
+
 	    return saved;
 	}
+
 	
 	@Override
 	public boolean remove(Long idServicio) {

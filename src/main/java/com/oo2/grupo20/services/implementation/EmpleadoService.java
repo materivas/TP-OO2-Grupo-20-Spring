@@ -58,7 +58,11 @@ public class EmpleadoService implements IEmpleadoService {
 
 
 
-	
+	@Override
+	public List<Empleado> findByEstablecimientoId(Long idEstablecimiento) {
+	    return empleadoRepository.findByEstablecimientoId(idEstablecimiento);
+	}
+
 	
 	@Override
 	public boolean remove (long idEmpleado) {
@@ -69,6 +73,14 @@ public class EmpleadoService implements IEmpleadoService {
 			return false;
 		}
 	}
+	
+	
+	@Override
+	public Empleado findById(Long id) {
+	    return empleadoRepository.findById(id)
+	            .orElseThrow(() -> new RuntimeException("Empleado no encontrado con ID: " + id));
+	}
+
 	
 	@Override
 	public Optional<EmpleadoDTO> findByNombre(String nombre) {

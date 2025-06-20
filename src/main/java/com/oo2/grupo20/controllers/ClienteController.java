@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,7 @@ public class ClienteController {
     
     //Creación de clientes
     @GetMapping("/new")
+    @PreAuthorize("hasRole('ADMIN') or isAnonymous()")
     public ModelAndView create() {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.CLIENTE_FORM);
         mAV.addObject("cliente", new ClienteDTO());

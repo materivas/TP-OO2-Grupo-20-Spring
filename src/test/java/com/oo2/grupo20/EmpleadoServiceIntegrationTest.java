@@ -58,7 +58,7 @@ public class EmpleadoServiceIntegrationTest {
     establecimiento1 = establecimientoRepository.save(establecimiento1);
 
     Establecimiento establecimiento2 = new Establecimiento();
-    establecimiento2.setNombre("Clínica del Sur");
+    establecimiento2.setNombre("Clínica del Norte");
     establecimiento2.setLocalidad("Avenida Siempre Viva 456");
     establecimiento2 = establecimientoRepository.save(establecimiento2);
 
@@ -140,7 +140,7 @@ public class EmpleadoServiceIntegrationTest {
     assertEquals("Ramírez", dto2.getApellido());
     assertEquals("20404040404", dto2.getCUIL());
     assertNotNull(dto2.getEstablecimiento());
-    assertEquals("Clínica del Sur", dto2.getEstablecimiento().getNombre());
+    assertEquals("Clínica del Norte", dto2.getEstablecimiento().getNombre());
     assertEquals(1, dto2.getEspecialidades().size());
     assertTrue(dto2.getEspecialidades().stream().anyMatch(e -> e.getNombre().equals("Traumatología")));
   }

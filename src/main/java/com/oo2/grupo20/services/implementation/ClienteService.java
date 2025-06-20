@@ -64,6 +64,13 @@ public class ClienteService implements IClienteService {
     }
 
     @Override
+    public Cliente findById(Long id) {
+        return clienteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + id));
+    }
+
+    
+    @Override
     public Optional<ClienteDTO> findByDni(Integer dni) {
         return clienteRepository.findByDni(dni)
                 .map(cliente -> modelMapper.map(cliente, ClienteDTO.class));

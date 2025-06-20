@@ -29,6 +29,8 @@ public interface IClienteService {
 	public ClienteDTO getById(long id);
 
 	public Cliente getClienteEntityById(long id);
+
+	Cliente findById(Long id);
 	    
 	
 }

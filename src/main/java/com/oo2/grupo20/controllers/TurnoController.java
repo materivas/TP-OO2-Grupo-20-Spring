@@ -73,33 +73,72 @@ public class TurnoController {
     @GetMapping("/nuevo")
     public String nuevoTurno(@RequestParam(name = "servicioId", required = false) Long servicioId,
                              @RequestParam(name = "diaFecha", required = false) String diaFechaStr,
+                             @RequestParam(name = "clienteId", required = false) Long clienteId,
+                             @RequestParam(name = "empleadoId", required = false) Long empleadoId,
+                             @RequestParam(name = "hora", required = false) String hora,
                              Model model) {
+
         if (servicioId == null) {
             return "redirect:/turno/seleccionar-servicio";
         }
 
+        Servicio servicio = servicioService.getServicioEntityById(servicioId);
+
         Turno turno = new Turno();
-        turno.setCliente(new Cliente());
-        turno.setEmpleado(new Empleado());
-        turno.setServicio(new Servicio());
-        turno.setDia(new Dia());
+        turno.setServicio(servicio);
+
+        // Recuperar cliente si se pasó
+        if (clienteId != null) {
+            Cliente cliente = clienteService.findById(clienteId);
+            turno.setCliente(cliente);
+            model.addAttribute("clienteLogueado", cliente); // Para mostrar el nombre abajo
+        } else {
+            // Si es cliente logueado, cargar desde el principal
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            String username = auth.getName();
+            boolean isCliente = auth.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_CLIENTE"));
+
+            if (isCliente) {
+                Cliente cliente = clienteService.findByEmail(username);
+                turno.setCliente(cliente);
+                model.addAttribute("clienteLogueado", cliente);
+            } else {
+                model.addAttribute("clientes", clienteService.getAll());
+            }
+        }
+
+        // Recuperar empleado si se pasó
+        if (empleadoId != null) {
+            Empleado empleado = empleadoService.findById(empleadoId);
+            turno.setEmpleado(empleado);
+        }
+
+        // Recuperar hora si se pasó
+        if (hora != null && !hora.isEmpty()) {
+            turno.setHora(LocalTime.parse(hora));
+        }
+
 
         model.addAttribute("turno", turno);
-        cargarDatosModelo(model);
         model.addAttribute("servicioId", servicioId);
+
+        Long idEstablecimiento = servicio.getEstablecimiento().getIdEstablecimiento();
+        List<Empleado> empleados = empleadoService.findByEstablecimientoId(idEstablecimiento);
+        model.addAttribute("empleados", empleados);
+
+        // Busca los días disponibles
         model.addAttribute("diasDisponibles", diaService.findFechasDisponiblesPorServicio(servicioId));
 
-        
+
         // Si llegó una fecha seleccionada (diaFecha):
         // 1. La convierto a LocalDate.
         // 2. Traigo el servicio con ese servicioId.
         // 3. Busco o creo el día para ese servicio y fecha.
         // 4. Calculo las horas disponibles ese día para ese servicio.
         // 5. Paso esas horas y la fecha seleccionada al modelo para el formulario.
-
         if (diaFechaStr != null && !diaFechaStr.isEmpty()) {
             LocalDate fecha = LocalDate.parse(diaFechaStr);
-            Servicio servicio = servicioService.getServicioEntityById(servicioId);
             Dia dia = diaService.findOrCreateByFechaAndServicio(fecha, servicio);
             List<LocalTime> horasDisponibles = turnoService.generarHorasDisponibles(servicio, dia);
             model.addAttribute("horasDisponibles", horasDisponibles);
@@ -108,6 +147,9 @@ public class TurnoController {
 
         return "turno/form";
     }
+
+
+
 
     @PostMapping("/guardar")
     public String guardarTurno(@Valid @ModelAttribute("turno") Turno turno,
@@ -190,12 +232,9 @@ public class TurnoController {
         return ViewRouteHelper.TURNO_FORM;
     }
 
-<<<<<<< HEAD
+
     // Ver detalle de un turno 
     @GetMapping("/detail/{id}")
-=======
-    @GetMapping("/detalle/{id}")
->>>>>>> a1876f18bedb85ead5bab7d1d61aaca33bdae264
     public String detalleTurno(@PathVariable("id") Long id, Model model) {
         Turno turno = turnoService.findById(id)
             .orElseThrow(() -> new RuntimeException("Turno no encontrado"));

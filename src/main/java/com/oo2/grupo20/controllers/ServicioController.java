@@ -106,10 +106,19 @@ public class ServicioController {
 
     @PostMapping("/update")
     public RedirectView update(@ModelAttribute("servicio") ServicioDTO servicioDTO) {
-        Servicio servicio = ServicioDTO.fromDTO(servicioDTO);
-        servicioService.insertOrUpdate(servicio);
+        Servicio servicioExistente = servicioService.getServicioEntityById(servicioDTO.getIdServicio());
+
+        if (servicioExistente != null) {
+            servicioExistente.setNombreServicio(servicioDTO.getNombreServicio());
+            servicioExistente.setDescripcion(servicioDTO.getDescripcion());
+            servicioExistente.setPrecio(servicioDTO.getPrecio());
+
+            servicioService.insertOrUpdate(servicioExistente);
+        }
+
         return new RedirectView(ViewRouteHelper.SERVICIO_ROOT);
     }
+
 
     @PostMapping("/delete/{id}")
     public RedirectView delete(@PathVariable("id") long id) {

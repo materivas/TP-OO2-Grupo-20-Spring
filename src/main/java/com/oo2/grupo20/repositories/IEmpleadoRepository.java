@@ -27,6 +27,12 @@ public interface IEmpleadoRepository extends JpaRepository <Empleado, Serializab
 
 	
     boolean existsByEmail(String email);
+    
+    
+    
+    @Query("SELECT e FROM Empleado e WHERE e.establecimiento.id = :idEstablecimiento")
+    List<Empleado> findByEstablecimientoId(@Param("idEstablecimiento") Long idEstablecimiento);
+
 
 	//Hacemos una Query para traer las especialidades asociadas a este CUIL
 	@Query("SELECT e FROM Empleado e LEFT JOIN FETCH e.especialidades WHERE e.CUIL = :cuil")
