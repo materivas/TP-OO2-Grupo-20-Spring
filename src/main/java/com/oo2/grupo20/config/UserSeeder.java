@@ -127,13 +127,13 @@ public class UserSeeder {
                 empleadoRepo.save(admin);
             }
 
-            if (!clienteRepo.existsByEmail("cliente1@example.com")) {
+            if (!clienteRepo.existsByEmail("testspringboot55@gmail.com")) {
                 Cliente cli = new Cliente();
                 cli.setNombre("Ana");
                 cli.setApellido("Gómez");
                 cli.setDni(21111111);
                 cli.setUsername("cliente1");
-                cli.setEmail("cliente1@example.com");
+                cli.setEmail("testspringboot55@gmail.com");
                 cli.setPassword(encoder.encode("1234"));
                 cli.setRol(Rol.CLIENTE);
                 cli.setEstado(true);
