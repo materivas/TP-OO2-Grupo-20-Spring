@@ -26,9 +26,10 @@ Descargalo desde: [https://spring.io/tools](https://spring.io/tools)
 ![Instalación de STS](imagen_2025-06-21_132634127.png)
 
 #### 2. Lombok
-Descargalo desde: [https://projectlombok.org/download](https://projectlombok.org/download)
+Descargalo desde: [https://projectlombok.org/download](https://projectlombok.org/download).
+
 Para lombok es necesario instalarlo en la ruta donde se encuentra previamente instalado sts.
-Adjunto imagen para representarlo
+
 ![ruta_lombok](imagen_2025-06-21_133737354.png)
 
 ### 3. Base de Datos
