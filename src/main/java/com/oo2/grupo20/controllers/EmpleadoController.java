@@ -47,30 +47,6 @@ public class EmpleadoController {
 			this.especialidadService = especialidadService;
 		}
 		
-		//GET Example: SERVER/index
-	/*	@GetMapping("/index")
-	    public ModelAndView index() {
-	        ModelAndView mAV = new ModelAndView(ViewRouteHelper.EMPLEADO_INDEX);
-	        mAV.addObject("empleados", empleadoService.getAll());
-	        return mAV;
-	    } */
-		
-		// Vista del sistema de turnos con Bootstrap
-		
-	  /*  @GetMapping("/indexBootstrap")
-	    public ModelAndView indexBootstrap() {
-	        ModelAndView modelAndView = new ModelAndView("empleado/indexBootstrap");
-	        
-	        List<EmpleadoDTO> empleadosDisponibles = empleadoService.getAll()
-	            .stream()
-	            .map(e -> modelMapper.map(e, EmpleadoDTO.class))
-	            .collect(Collectors.toList());
-	        
-	        modelAndView.addObject("empleadosDisponibles", empleadosDisponibles);
-	        return modelAndView;
-	    }*/
-		
-		
 		
 		
 		@GetMapping("/index")
@@ -152,8 +128,20 @@ public class EmpleadoController {
 	    
 	    @PostMapping("/update")
 	    public RedirectView update(@ModelAttribute("empleado") EmpleadoDTO empleadoDTO) {
-	        Empleado empleado = modelMapper.map(empleadoDTO, Empleado.class);
-	        empleadoService.insertOrUpdate(empleado);
+	        // Traer el empleado original desde la base de datos
+	        Empleado existente = empleadoService.getEmpleadoEntityById(empleadoDTO.getId());
+
+	        // Mapear los datos nuevos
+	        Empleado actualizado = modelMapper.map(empleadoDTO, Empleado.class);
+
+	        // Reasignar campos críticos que no vienen del formulario
+	        actualizado.setPassword(existente.getPassword()); // 
+	        actualizado.setUsername(existente.getUsername()); // Si tenés username también
+
+	        actualizado.setRol(existente.getRol());
+	        
+	        // Guardar
+	        empleadoService.insertOrUpdate(actualizado);
 	        return new RedirectView(ViewRouteHelper.EMPLEADO_ROOT);
 	    }
 

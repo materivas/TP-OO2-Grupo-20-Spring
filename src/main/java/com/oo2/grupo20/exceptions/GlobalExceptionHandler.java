@@ -71,6 +71,13 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", ex.getMessage());
         return "error/establecimiento-con-servicios";
     }
+    
+    @ExceptionHandler(EmpleadoTieneTurnoException.class)
+    public String handleEmpleadoTieneTurno(EmpleadoTieneTurnoException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/empleado-con-turnos";
+    }
+
 
 
  // Error 404 - Ruta no encontrada

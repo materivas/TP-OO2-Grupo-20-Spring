@@ -11,10 +11,12 @@ import org.springframework.stereotype.Service;
 import com.oo2.grupo20.entities.Cliente;
 import com.oo2.grupo20.entities.Empleado;
 import com.oo2.grupo20.entities.Rol;
+import com.oo2.grupo20.exceptions.EmpleadoTieneTurnoException;
 import com.oo2.grupo20.dto.EmpleadoConEspecialidadesYEstablecimientoDTO;
 import com.oo2.grupo20.dto.EmpleadoDTO;
 import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.repositories.IEmpleadoRepository;
+import com.oo2.grupo20.repositories.ITurnoRepository;
 
 
 
@@ -23,12 +25,14 @@ public class EmpleadoService implements IEmpleadoService {
 	
 	private IEmpleadoRepository empleadoRepository;
 	private final PasswordEncoder passwordEncoder;
+	private final ITurnoRepository turnoRepository;
 	
 	private ModelMapper modelMapper = new ModelMapper ();
 	
-	public EmpleadoService(IEmpleadoRepository empleadoRepository, PasswordEncoder passwordEncoder) {
+	public EmpleadoService(IEmpleadoRepository empleadoRepository, PasswordEncoder passwordEncoder, ITurnoRepository turnoRepository) {
 	    this.empleadoRepository = empleadoRepository;
 	    this.passwordEncoder = passwordEncoder;
+	    this.turnoRepository = turnoRepository;
 	}
 
 	
@@ -65,14 +69,19 @@ public class EmpleadoService implements IEmpleadoService {
 
 	
 	@Override
-	public boolean remove (long idEmpleado) {
-		try {
-			empleadoRepository.deleteById(idEmpleado);
-			return true;
-		} catch (Exception e) {
-			return false;
+	public boolean remove(long idEmpleado) {
+		if (turnoRepository.existsByEmpleadoId(idEmpleado)) {
+		    throw new EmpleadoTieneTurnoException("No se puede eliminar el empleado porque tiene turnos asignados.");
 		}
+
+	    try {
+	        empleadoRepository.deleteById(idEmpleado);
+	        return true;
+	    } catch (Exception e) {
+	        return false;
+	    }
 	}
+
 	
 	
 	@Override

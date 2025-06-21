@@ -21,6 +21,8 @@ public interface ITurnoRepository extends JpaRepository<Turno, Long> {
 	public abstract List<Turno> findByDia_Fecha(LocalDate fecha);
 
 	public abstract List<Turno> findByDia_FechaBetween(LocalDate inicio, LocalDate fin);
+	
+	boolean existsByEmpleadoId(Long empleadoId);
 
     List<Turno> findByEmpleadoId(Long id);
     
