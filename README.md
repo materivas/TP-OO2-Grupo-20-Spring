@@ -28,11 +28,12 @@ Descargalo desde: [https://spring.io/tools](https://spring.io/tools)
 #### 2. Lombok
 Descargalo desde: [https://projectlombok.org/download](https://projectlombok.org/download).
 
-Para lombok es necesario instalarlo en la ruta donde se encuentra previamente instalado sts.
-
+Para lombok es necesario instalarlo en la ruta donde se encuentra previamente instalado sts. Luego de descargar el `.jar`, ejecutalo y seleccioná el directorio donde tengas instalado **Spring Tool Suite** para integrarlo correctamente.
 ![ruta_lombok](imagen_2025-06-21_133737354.png)
 
-### 3. Base de Datos
+
+
+#### 3. Base de Datos
 
 Es necesario crear previamente la base de datos que será utilizada por el proyecto. Asegurate de que el nombre coincida con el valor configurado en `DB_URL` dentro del archivo `application.yml`.
 
@@ -40,7 +41,21 @@ Además, una vez iniciado el proyecto, se recomienda ejecutar un script adiciona
 
 ➡️ Ver sección [Script SQL Inicial](#script-sql-inicial) para más detalles.
 
-Luego de descargar el `.jar`, ejecutalo y seleccioná el directorio donde tengas instalado **Spring Tool Suite** para integrarlo correctamente.
+#### 4. Variables de Entorno
+
+Además, es necesario configurar las variables de entorno que utiliza el archivo `application.yml` del proyecto para conectarse tanto a la **base de datos** como al **correo electrónico**.
+
+Las variables requeridas son:
+
+- `DB_URL`: URL de conexión a la base de datos (por ejemplo, `jdbc:mysql://localhost:3306/mi_base_datos_spring`)
+- `USERNAME`: Usuario de la base de datos
+- `PASSWORD`: Contraseña de la base de datos
+- `EMAIL_USERNAME`: Dirección de correo que se utilizará para enviar notificaciones (verificacion en 2 pasos activada si o si)
+- `EMAIL_PASSWORD`: Contraseña o clave de aplicación del correo
+
+Estas variables deben estar definidas en tu sistema operativo o bien en un archivo `.env` si usás herramientas como Spring Boot DevTools o Docker.
+
+
 ## Ejecución
 
 Para ejecutar el proyecto:
