@@ -22,6 +22,7 @@ Antes de ejecutar el proyecto, asegurate de contar con los siguientes componente
 Descargalo desde: [https://spring.io/tools](https://spring.io/tools)
 
 > ⚠️ Asegurate de instalar la versión para Eclipse.
+![Instalación de STS]([./assets/sts-install.png](https://github.com/materivas/TP-OO2-Grupo-20-Spring/blob/aeaa11bc9a839a0713f8eb7034bc594b06ca8b09/imagen_2025-06-21_132634127.png))
 
 #### 2. Lombok
 Descargalo desde: [https://projectlombok.org/download](https://projectlombok.org/download)
