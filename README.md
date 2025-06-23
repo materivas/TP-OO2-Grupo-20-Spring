@@ -51,7 +51,7 @@ Las variables requeridas son:
 - `USERNAME`: Usuario de la base de datos
 - `PASSWORD`: Contraseña de la base de datos
 - `EMAIL_USERNAME`: Dirección de correo que se utilizará para enviar notificaciones (verificacion en 2 pasos activada si o si)
-- `EMAIL_PASSWORD`: Contraseña o clave de aplicación del correo
+- `EMAIL_PASSWORD`: Se debe generar una Contraseña de Aplicacion desde una cuenta de Gmail (verificacion en 2 pasos activada si o si)
 
 Estas variables deben estar definidas en tu sistema operativo o bien en un archivo `.env` si usás herramientas como Spring Boot DevTools o Docker.
 
