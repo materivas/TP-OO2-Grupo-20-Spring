@@ -71,6 +71,20 @@ public class GlobalExceptionHandler {
         model.addAttribute("errorMessage", ex.getMessage());
         return "error/establecimiento-con-servicios";
     }
+    
+    @ExceptionHandler(EmpleadoTieneTurnoException.class)
+    public String handleEmpleadoTieneTurno(EmpleadoTieneTurnoException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/empleado-con-turnos";
+    }
+    
+    @ExceptionHandler(EmailDuplicadoException.class)
+    public String handleEmailDuplicado(EmailDuplicadoException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error/email-duplicado"; // 
+    }
+
+
 
 
  // Error 404 - Ruta no encontrada

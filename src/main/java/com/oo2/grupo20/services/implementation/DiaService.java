@@ -51,11 +51,14 @@ public class DiaService implements IDiaService {
 	}
 	
 	
+	@Override
 	public List<LocalDate> findFechasDisponiblesPorServicio(Long idServicio) {
 	    Servicio servicio = servicioRepository.findById(idServicio)
 	            .orElseThrow(() -> new IllegalArgumentException("Servicio no encontrado"));
 
-	    return diaRepository.findDiasDisponiblesPorServicio(servicio);
+	    return diaRepository.findDiasDisponiblesPorServicio(servicio).stream()
+	            .filter(fecha -> fecha.isAfter(LocalDate.now()))
+	            .toList(); // Solo fechas futuras
 	}
 
 	

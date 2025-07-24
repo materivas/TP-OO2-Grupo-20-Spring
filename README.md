@@ -23,10 +23,39 @@ Descargalo desde: [https://spring.io/tools](https://spring.io/tools)
 
 > ⚠️ Asegurate de instalar la versión para Eclipse.
 
-#### 2. Lombok
-Descargalo desde: [https://projectlombok.org/download](https://projectlombok.org/download)
+![Instalación de STS](imagen_2025-06-21_132634127.png)
 
-Luego de descargar el `.jar`, ejecutalo y seleccioná el directorio donde tengas instalado **Spring Tool Suite** para integrarlo correctamente.
+#### 2. Lombok
+Descargalo desde: [https://projectlombok.org/download](https://projectlombok.org/download).
+
+Para lombok es necesario instalarlo en la ruta donde se encuentra previamente instalado sts. Luego de descargar el `.jar`, ejecutalo y seleccioná el directorio donde tengas instalado **Spring Tool Suite** para integrarlo correctamente.
+![ruta_lombok](imagen_2025-06-21_133737354.png)
+
+
+
+#### 3. Base de Datos
+
+Es necesario crear previamente la base de datos que será utilizada por el proyecto. Asegurate de que el nombre coincida con el valor configurado en `DB_URL` dentro del archivo `application.yml`.
+
+Además, una vez iniciado el proyecto, se recomienda ejecutar un script adicional para insertar las especialidades médicas y asociarlas con los empleados que ya se cargan automáticamente.
+
+➡️ Ver sección [Script SQL Inicial](#script-sql-inicial) para más detalles.
+
+#### 4. Variables de Entorno
+
+Además, es necesario configurar las variables de entorno que utiliza el archivo `application.yml` del proyecto para conectarse tanto a la **base de datos** como al **correo electrónico**.
+
+Las variables requeridas son:
+
+- `DB_URL`: URL de conexión a la base de datos (por ejemplo, `jdbc:mysql://localhost:3306/mi_base_datos_spring`)
+- `USERNAME`: Usuario de la base de datos
+- `PASSWORD`: Contraseña de la base de datos
+- `EMAIL_USERNAME`: Dirección de correo que se utilizará para enviar notificaciones (verificacion en 2 pasos activada si o si)
+- `EMAIL_PASSWORD`: Se debe generar una Contraseña de Aplicacion desde una cuenta de Gmail (verificacion en 2 pasos activada si o si)
+
+Estas variables deben estar definidas en tu sistema operativo o bien en un archivo `.env` si usás herramientas como Spring Boot DevTools o Docker.
+
+
 ## Ejecución
 
 Para ejecutar el proyecto:
@@ -36,6 +65,34 @@ Para ejecutar el proyecto:
     3. Ejecutá la aplicación con tu IDE (por ejemplo Eclipse o IntelliJ).
     4. Accedé desde el navegador a: [http://localhost:8080]
 
+
+## Script SQL Inicial
+
+A continuación se detallan los scripts necesarios para crear la base de datos y poblarla con datos esenciales para el funcionamiento del sistema:
+
+```sql
+-- Crear la base de datos (si no existe)
+CREATE DATABASE IF NOT EXISTS `mi_base_datos_spring`;
+
+-- Usar la base de datos
+USE `mi_base_datos_spring`;
+
+-- Insertar especialidades
+INSERT INTO especialidad (nombre) VALUES
+('Neurología'),
+('Cardiología'),
+('Traumatología');
+
+-- Asociar especialidades a empleados (IDs 1 a 5)
+INSERT INTO empleado_especialidad (id_empleado, id_especialidad) VALUES
+(1, 1),
+(1, 3),
+(2, 2),
+(3, 1),
+(3, 2),
+(4, 3),
+(5, 2);
+```
 
 ## Autores
 

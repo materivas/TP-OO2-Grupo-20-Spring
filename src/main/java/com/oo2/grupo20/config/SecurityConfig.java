@@ -30,6 +30,12 @@ public class SecurityConfig {
         http
             .csrf().disable()
             .authorizeHttpRequests(auth -> auth
+            		
+            	// Swagger
+            	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            	// Login REST
+            	
+            	.requestMatchers("/api/auth/login").permitAll()	
                 // Recursos públicos
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/login").permitAll()
                 .requestMatchers("/cliente/new", "/cliente/create").permitAll()

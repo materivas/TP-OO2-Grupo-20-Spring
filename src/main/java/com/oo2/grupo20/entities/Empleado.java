@@ -41,8 +41,8 @@ public class Empleado extends Persona {
     private Set<Especialidad> especialidades = new HashSet<>();
     
     //Relación OneToMany con Turnos
-    @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Turno> turnos;
+    @OneToMany(mappedBy = "empleado", fetch = FetchType.LAZY)
+    private Set<Turno> turnos = new HashSet<>();
     
     
     
