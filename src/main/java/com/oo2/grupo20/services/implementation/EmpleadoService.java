@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.oo2.grupo20.entities.Cliente;
 import com.oo2.grupo20.entities.Empleado;
 import com.oo2.grupo20.entities.Rol;
+import com.oo2.grupo20.exceptions.EmailDuplicadoException;
 import com.oo2.grupo20.exceptions.EmpleadoTieneTurnoException;
 import com.oo2.grupo20.dto.EmpleadoConEspecialidadesYEstablecimientoDTO;
 import com.oo2.grupo20.dto.EmpleadoDTO;
@@ -44,15 +45,28 @@ public class EmpleadoService implements IEmpleadoService {
 	
 	@Override
 	public Empleado insertOrUpdate(Empleado empleado) {
-	    // Si es nuevo, codificamos la contraseña
+	    // Verificar si el email ya existe
+	    Optional<Empleado> existente = empleadoRepository.findByEmail(empleado.getEmail());
+
+	    // Si está registrando un nuevo empleado (id == null)
+	    if (empleado.getId() == null && existente.isPresent()) {
+	        throw new EmailDuplicadoException("Ya existe un empleado registrado con ese email.");
+	    }
+
+	    // Si está actualizando y quiere usar el email de otro empleado existente
+	    if (empleado.getId() != null && existente.isPresent() && !existente.get().getId().equals(empleado.getId())) {
+	        throw new EmailDuplicadoException("El email ingresado ya pertenece a otro empleado.");
+	    }
+
 	    if (empleado.getId() == null) {
 	        empleado.setPassword(passwordEncoder.encode(empleado.getPassword()));
 	    }
 
-	    empleado.setRol(Rol.EMPLEADO); // Asignar rol
+	    empleado.setRol(Rol.EMPLEADO);
 	    empleado.setEstado(true);
 	    return empleadoRepository.save(empleado);
 	}
+
 	
 	@Override
 	public Empleado findByEmail(String email) {
