@@ -137,4 +137,8 @@ public class DiaService implements IDiaService {
 	    return diaRepository.save(nuevoDia);
 	 }
 
+	 public Optional<Dia> findDiaEntityById(long idDia) {
+		    return diaRepository.findById(idDia);
+		}
+
 }

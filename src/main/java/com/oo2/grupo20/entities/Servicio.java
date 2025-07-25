@@ -5,6 +5,8 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.oo2.grupo20.dto.DiaDTO;
+
 import lombok.Data;
 
 import jakarta.persistence.*;

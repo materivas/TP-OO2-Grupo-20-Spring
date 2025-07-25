@@ -100,6 +100,11 @@ private IEstablecimientoRepository establecimientoRepository;
 	    return establecimientoRepository.findByIdWithServicios(idEstablecimiento);
 	}
 	
+	@Override
+    public Establecimiento getEstablecimientoEntityById(Long id) {
+        return establecimientoRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Establecimiento no encontrado con ID: " + id));
+    }
 	
 	
 
