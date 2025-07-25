@@ -36,6 +36,10 @@ public class SecurityConfig {
             	// Login REST
             	
             	.requestMatchers("/api/auth/login").permitAll()	
+            	
+            	// Empleado REST
+            	.requestMatchers("/api/empleados/**").permitAll()
+
                 // Recursos públicos
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/login").permitAll()
                 .requestMatchers("/cliente/new", "/cliente/create").permitAll()

@@ -3,6 +3,7 @@ package com.oo2.grupo20.exceptions;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
@@ -19,6 +20,7 @@ import com.oo2.grupo20.exceptions.EstablecimientoNoEncontradoException;
 import jakarta.persistence.EntityNotFoundException;
 
 @ControllerAdvice
+@Order(2)
 public class GlobalExceptionHandler {
 
     // Manejo genérico
