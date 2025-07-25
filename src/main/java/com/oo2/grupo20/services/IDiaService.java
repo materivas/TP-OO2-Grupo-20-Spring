@@ -30,5 +30,6 @@ public interface IDiaService {
 	
 	public List<LocalDate> findFechasDisponiblesPorServicio(Long idServicio);
 	
+	Dia getDiaEntityById(Long idDia);
 	
 }
