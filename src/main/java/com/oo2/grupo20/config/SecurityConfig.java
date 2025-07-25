@@ -32,7 +32,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             		
             	// Swagger
-            	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasRole("ADMIN")
+            	.requestMatchers("/api/**").permitAll() //TEMPORAL BORRAR DESPUES
+            	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             	// Login REST
             	
             	.requestMatchers("/api/auth/login").permitAll()	

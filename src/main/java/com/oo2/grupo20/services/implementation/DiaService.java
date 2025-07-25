@@ -76,6 +76,13 @@ public class DiaService implements IDiaService {
 	            .map(dia -> DiaDTO.toDTO(dia));
 	}
  
+	public Dia getDiaEntityById(Long idDia) {
+	    return diaRepository.findById(idDia)
+	            .orElseThrow(() -> new RuntimeException("Día no encontrado con id: " + idDia));
+	}
+
+	
+	
 	public Optional<DiaDTO> findDiaByIdWithTurnos(long idDia){
 		return diaRepository.findDiaByIdWithTurnos(idDia)
 				.map(dia -> DiaDTO.toDTO(dia));
