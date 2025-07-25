@@ -32,13 +32,13 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             		
             	// Swagger
-            	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasRole("ADMIN")
             	// Login REST
             	
             	.requestMatchers("/api/auth/login").permitAll()	
             	
             	// Empleado REST
-            	.requestMatchers("/api/empleados/**").permitAll()
+            	.requestMatchers("/api/empleados/**").hasRole("ADMIN")
 
                 // Recursos públicos
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/login").permitAll()
