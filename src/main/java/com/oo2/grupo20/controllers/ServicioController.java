@@ -70,16 +70,7 @@ public class ServicioController {
         return mAV;
     }
     
-    /*    @GetMapping("/{id}")
-    public ModelAndView get(@PathVariable("id") long id) {
-        ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_UPDATE);
-        servicioService.findByIdServicio(id).ifPresent(servicio ->
-            mAV.addObject("servicio", servicio) 
-        );
-        mAV.addObject("establecimientos", establecimientoService.getAllFull());
-        return mAV;
-    } */
-
+ 
     @GetMapping("/by_nombre/{nombre}")
     public ModelAndView getByNombre(@PathVariable("nombre") String nombre) {
         ModelAndView mAV = new ModelAndView(ViewRouteHelper.SERVICIO_UPDATE);

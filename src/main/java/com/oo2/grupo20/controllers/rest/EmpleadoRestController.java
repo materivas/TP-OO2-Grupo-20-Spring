@@ -5,6 +5,7 @@ import com.oo2.grupo20.entities.Empleado;
 import com.oo2.grupo20.entities.Especialidad;
 import com.oo2.grupo20.entities.Establecimiento;
 import com.oo2.grupo20.entities.Rol;
+import com.oo2.grupo20.exceptions.EmpleadoTieneTurnoException;
 import com.oo2.grupo20.services.IEmpleadoService;
 import com.oo2.grupo20.services.IEspecialidadService;
 import com.oo2.grupo20.services.IEstablecimientoService;
@@ -144,4 +145,32 @@ public class EmpleadoRestController {
 
         return ResponseEntity.ok(respuesta);
     }
+    
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar un empleado por ID")
+    public ResponseEntity<?> eliminarEmpleado(@PathVariable Long id) {
+        Empleado empleado = empleadoService.getEmpleadoEntityById(id);
+
+        if (empleado == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        try {
+            boolean eliminado = empleadoService.remove(id);
+            if (eliminado) {
+                return ResponseEntity.ok(Map.of("mensaje", "Empleado eliminado correctamente"));
+            } else {
+                return ResponseEntity.internalServerError()
+                        .body(Map.of("error", "Ocurrió un error al intentar eliminar el empleado"));
+            }
+        } catch (EmpleadoTieneTurnoException ex) {
+            return ResponseEntity.badRequest()
+                    .body(Map.of("error", ex.getMessage()));
+        }
+    }
+
+    
+    
+    
+    
 }

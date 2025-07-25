@@ -32,6 +32,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             		
             	// Swagger
+            	.requestMatchers("/api/**").permitAll() //TEMPORAL BORRAR DESPUES
             	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
             	// Login REST
             	
@@ -42,6 +43,8 @@ public class SecurityConfig {
  
             	// Cliente REST
             	.requestMatchers("/api/clientes/**").permitAll()
+
+            	.requestMatchers("/api/empleados/**").hasRole("ADMIN")
 
                 // Recursos públicos
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/login").permitAll()
