@@ -29,6 +29,8 @@ public interface IEstablecimientoService {
     
     public Optional <Establecimiento> findByIdWithServicios(long idEstablecimiento);
 
+	Establecimiento getEstablecimientoEntityById(Long id);
+
     
     
 	
