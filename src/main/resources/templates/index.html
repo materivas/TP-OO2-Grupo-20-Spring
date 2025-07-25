@@ -71,8 +71,8 @@
 
 					<li class="nav-item" sec:authorize="hasAnyRole('ADMIN', 'EMPLEADO')">
 					  <a class="nav-link" th:href="@{/turno/index}">
-					    <i class="fa" th:classappend="${#authorization.expression('hasRole(''EMPLEADO'')') ? 'fa-users' : 'fa-calendar-check'}"></i>
-					    <span th:text="${#authorization.expression('hasRole(''EMPLEADO'')') ? 'Mis Clientes' : 'Turnos'}"></span>
+					    <i class="fa" th:classappend="${#authorization.expression('hasRole(''EMPLEADO'')') ? 'fa-calendar-check' : 'fa-calendar-check'}"></i>
+					    <span th:text="${#authorization.expression('hasRole(''EMPLEADO'')') ? 'Turnos' : 'Turnos'}"></span>
 					  </a>
 					</li>
 

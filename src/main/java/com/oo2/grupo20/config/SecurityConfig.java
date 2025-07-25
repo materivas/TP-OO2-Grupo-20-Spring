@@ -39,6 +39,9 @@ public class SecurityConfig {
             	
             	// Empleado REST
             	.requestMatchers("/api/empleados/**").permitAll()
+ 
+            	// Cliente REST
+            	.requestMatchers("/api/clientes/**").permitAll()
 
                 // Recursos públicos
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/login").permitAll()
@@ -56,6 +59,7 @@ public class SecurityConfig {
 
                 // Cualquier otra petición requiere autenticación
                 .anyRequest().authenticated()
+                
             )
             // resto del config
             .formLogin(login -> login

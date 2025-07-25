@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class Cliente extends Persona {
 	
-	@Column(name = "fecha_registro", nullable = false) // Obligatorio
+	@Column(name = "fecha_registro", nullable = false) 
     private LocalDate fechaRegistro;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
