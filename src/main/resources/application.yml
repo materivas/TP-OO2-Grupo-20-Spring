@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/grupo20bdspring
+    url: ${DB_URL}
     username: ${USERNAME}
     password: ${PASSWORD}
   jpa:
