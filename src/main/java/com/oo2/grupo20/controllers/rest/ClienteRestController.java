@@ -52,6 +52,7 @@ public class ClienteRestController {
                 cliente.getEmail(),
                 cliente.getFechaDeNacimiento(),
                 cliente.isEstado(),
+                cliente.getFechaRegistro(),
                 turnosIds
         );
 
@@ -75,7 +76,7 @@ public class ClienteRestController {
         cliente.setUsername(dto.username());
         cliente.setPassword(dto.password());
         cliente.setFechaDeNacimiento(dto.fechaDeNacimiento());
-        cliente.setFechaRegistro(LocalDate.now());
+        cliente.setFechaRegistro(dto.fechaRegistro());
         cliente.setEstado(dto.estado());
 
         try {
@@ -97,6 +98,7 @@ public class ClienteRestController {
                 guardado.getEmail(),
                 guardado.getFechaDeNacimiento(),
                 guardado.isEstado(),
+                guardado.getFechaRegistro(),
                 new HashSet<>() // Si no tiene turnos aún
         );
 

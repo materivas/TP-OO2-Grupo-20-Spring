@@ -14,5 +14,6 @@ public record ClienteRestDTO(
     String email,
     LocalDate fechaDeNacimiento,
     boolean estado,
+    LocalDate fechaRegistro,
     Set<Long> turnosIds
 ) {}
