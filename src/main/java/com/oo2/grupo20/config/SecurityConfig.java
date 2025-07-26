@@ -32,19 +32,22 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
             		
             	// Swagger
-            	.requestMatchers("/api/**").permitAll() //TEMPORAL BORRAR DESPUES
-            	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+            	.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").hasRole("ADMIN")
             	// Login REST
             	
             	.requestMatchers("/api/auth/login").permitAll()	
             	
             	// Empleado REST
-            	.requestMatchers("/api/empleados/**").permitAll()
- 
-            	// Cliente REST
-            	.requestMatchers("/api/clientes/**").permitAll()
-
             	.requestMatchers("/api/empleados/**").hasRole("ADMIN")
+            	
+            	// Cliente REST
+            	.requestMatchers("/api/clientes/**").hasRole("ADMIN")
+            	
+            	// Turno REST
+            	.requestMatchers("/api/turnos/**").hasRole("ADMIN")
+            	
+            	// Servicio REST
+            	.requestMatchers("/api/servicios/**").hasRole("ADMIN")
 
                 // Recursos públicos
                 .requestMatchers("/css/**", "/js/**", "/img/**", "/login").permitAll()
@@ -62,7 +65,6 @@ public class SecurityConfig {
 
                 // Cualquier otra petición requiere autenticación
                 .anyRequest().authenticated()
-                
             )
             // resto del config
             .formLogin(login -> login
