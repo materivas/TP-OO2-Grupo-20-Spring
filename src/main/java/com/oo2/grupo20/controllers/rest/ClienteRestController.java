@@ -8,6 +8,7 @@ import com.oo2.grupo20.services.IClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -74,6 +75,7 @@ public class ClienteRestController {
         cliente.setUsername(dto.username());
         cliente.setPassword(dto.password());
         cliente.setFechaDeNacimiento(dto.fechaDeNacimiento());
+        cliente.setFechaRegistro(LocalDate.now());
         cliente.setEstado(dto.estado());
 
         try {
