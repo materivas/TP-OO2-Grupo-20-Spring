@@ -93,6 +93,77 @@ INSERT INTO empleado_especialidad (id_empleado, id_especialidad) VALUES
 (4, 3),
 (5, 2);
 ```
+# 📌 Instrucciones para realizar solicitudes POST en la API
+
+Este proyecto cuenta con varios endpoints que permiten cargar información en la base de datos mediante peticiones POST. A continuación se detallan los diferentes **JSON** que deben utilizarse según el tipo de entidad.  
+> ⚠️ **Importante**: Asegúrese de que todos los ID referenciados existan previamente en la base de datos.
+
+---
+
+## 🗓️ POST - Crear un Turno
+
+**Endpoint:** `/api/turnos`  
+Este JSON permite cargar un nuevo turno.
+
+```json
+{
+  "hora": "10:30:00",
+  "idCliente": 7,
+  "idEmpleado": 2,
+  "idServicio": 3,
+  "idDia": 4
+}
+```
+
+## 🗓️ POST - Crear un Empleado
+
+**Endpoint:** `/api/empleado`  
+Este JSON permite cargar un nuevo empleado.
+
+```json
+{
+  "nombre": "NombreEjemplo",
+  "apellido": "ApellidoEjemplo",
+  "dni": 41855575,
+  "cuil": "12345678910",
+  "email": "email@example.com",
+  "username": "UsernameEjemplo",
+  "password": "ContraEjemplo",
+  "fechaDeNacimiento": "1999-07-25",
+  "estado": true,
+  "rol": "EMPLEADO",
+  "establecimientoId": 1,
+  "especialidadesIds": [3]
+}
+```
+## 🗓️ POST - Login
+**Endpoint:** `/api/auth/login`  
+Este JSON se utiliza para autenticar un usuario en el sistema.
+
+```json
+{
+  "username": "empleado1@example.com",
+  "password": "1234"
+}
+```
+## 🗓️ POST - Crear un Cliente
+**Endpoint:** `/api/clientes` 
+```json
+{
+  "username": "mario.rossi",
+  "password": "4567",
+  "nombre": "Mario",
+  "apellido": "Rossi",
+  "dni": "12345678",
+  "email": "mario.rossi@gmail.com",
+  "fechaDeNacimiento": "1990-05-30",
+  "fechaRegistro": "2025-07-22",
+  "estado": true,
+  "turnosIds": []
+}
+```
+
+
 
 ## Autores
 
